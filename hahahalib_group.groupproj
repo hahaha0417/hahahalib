@@ -1,0 +1,96 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{861E377D-99E5-42B0-BD58-EC8168D4E9AC}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="hahahalib\hahahalib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="hahahatestlib\hahahatestlib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="hahahavcllib\hahahavcllib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="hahahadumplib\hahahadumplib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="hahahagarbagelib\hahahagarbagelib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="hahaharecyclelib\hahaharecyclelib.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="hahahalib">
+        <MSBuild Projects="hahahalib\hahahalib.cbproj"/>
+    </Target>
+    <Target Name="hahahalib:Clean">
+        <MSBuild Projects="hahahalib\hahahalib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="hahahalib:Make">
+        <MSBuild Projects="hahahalib\hahahalib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="hahahatestlib">
+        <MSBuild Projects="hahahatestlib\hahahatestlib.cbproj"/>
+    </Target>
+    <Target Name="hahahatestlib:Clean">
+        <MSBuild Projects="hahahatestlib\hahahatestlib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="hahahatestlib:Make">
+        <MSBuild Projects="hahahatestlib\hahahatestlib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="hahahavcllib">
+        <MSBuild Projects="hahahavcllib\hahahavcllib.cbproj"/>
+    </Target>
+    <Target Name="hahahavcllib:Clean">
+        <MSBuild Projects="hahahavcllib\hahahavcllib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="hahahavcllib:Make">
+        <MSBuild Projects="hahahavcllib\hahahavcllib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="hahahadumplib">
+        <MSBuild Projects="hahahadumplib\hahahadumplib.cbproj"/>
+    </Target>
+    <Target Name="hahahadumplib:Clean">
+        <MSBuild Projects="hahahadumplib\hahahadumplib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="hahahadumplib:Make">
+        <MSBuild Projects="hahahadumplib\hahahadumplib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="hahahagarbagelib">
+        <MSBuild Projects="hahahagarbagelib\hahahagarbagelib.cbproj"/>
+    </Target>
+    <Target Name="hahahagarbagelib:Clean">
+        <MSBuild Projects="hahahagarbagelib\hahahagarbagelib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="hahahagarbagelib:Make">
+        <MSBuild Projects="hahahagarbagelib\hahahagarbagelib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="hahaharecyclelib">
+        <MSBuild Projects="hahaharecyclelib\hahaharecyclelib.cbproj"/>
+    </Target>
+    <Target Name="hahaharecyclelib:Clean">
+        <MSBuild Projects="hahaharecyclelib\hahaharecyclelib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="hahaharecyclelib:Make">
+        <MSBuild Projects="hahaharecyclelib\hahaharecyclelib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="hahahalib;hahahatestlib;hahahavcllib;hahahadumplib;hahahagarbagelib;hahaharecyclelib"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="hahahalib:Clean;hahahatestlib:Clean;hahahavcllib:Clean;hahahadumplib:Clean;hahahagarbagelib:Clean;hahaharecyclelib:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="hahahalib:Make;hahahatestlib:Make;hahahavcllib:Make;hahahadumplib:Make;hahahagarbagelib:Make;hahaharecyclelib:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

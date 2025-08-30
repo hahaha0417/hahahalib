@@ -1,0 +1,555 @@
+object hahaha_image_view_form: Thahaha_image_view_form
+  Left = 0
+  Top = 0
+  BorderIcons = [biMinimize, biMaximize]
+  Caption = 'hahaha_image_view_form'
+  ClientHeight = 647
+  ClientWidth = 1091
+  Color = clBtnFace
+  CustomTitleBar.Control = TitleBarPanel
+  CustomTitleBar.Height = 70
+  CustomTitleBar.SystemHeight = False
+  CustomTitleBar.ShowCaption = False
+  CustomTitleBar.ShowIcon = False
+  CustomTitleBar.SystemColors = False
+  CustomTitleBar.SystemButtons = False
+  CustomTitleBar.BackgroundColor = clWhite
+  CustomTitleBar.ForegroundColor = 65793
+  CustomTitleBar.InactiveBackgroundColor = clWhite
+  CustomTitleBar.InactiveForegroundColor = 10066329
+  CustomTitleBar.ButtonForegroundColor = 65793
+  CustomTitleBar.ButtonBackgroundColor = clWhite
+  CustomTitleBar.ButtonHoverForegroundColor = 65793
+  CustomTitleBar.ButtonHoverBackgroundColor = 16053492
+  CustomTitleBar.ButtonPressedForegroundColor = 65793
+  CustomTitleBar.ButtonPressedBackgroundColor = 15395562
+  CustomTitleBar.ButtonInactiveForegroundColor = 10066329
+  CustomTitleBar.ButtonInactiveBackgroundColor = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  GlassFrame.Top = 70
+  ScreenSnap = True
+  StyleElements = [seFont]
+  TextHeight = 15
+  object MainBox: TScrollBox
+    Left = 8
+    Top = 76
+    Width = 1075
+    Height = 563
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 0
+    object PageControl1: TPageControl
+      Left = 16
+      Top = 16
+      Width = 1041
+      Height = 540
+      ActivePage = TabSheet1
+      TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = #20027#35201
+        object ScrollBox3: TScrollBox
+          Left = 3
+          Top = 3
+          Width = 1022
+          Height = 504
+          TabOrder = 0
+          object BodyBox: TScrollBox
+            Left = 3
+            Top = 3
+            Width = 990
+            Height = 494
+            TabOrder = 0
+            object Splitter_Top: TSplitter
+              Left = 19
+              Top = 87
+              Width = 798
+              Height = 17
+              Align = alNone
+              Color = clBtnFace
+              ParentColor = False
+            end
+            object Splitter_Bottom: TSplitter
+              Left = 19
+              Top = 351
+              Width = 798
+              Height = 18
+              Align = alNone
+              Color = clBtnFace
+              ParentColor = False
+            end
+            object TopBox: TScrollBox
+              Left = 19
+              Top = 3
+              Width = 798
+              Height = 78
+              TabOrder = 0
+            end
+            object BodyBodyBox: TScrollBox
+              Left = 19
+              Top = 110
+              Width = 798
+              Height = 235
+              TabOrder = 1
+              object Splitter_Left: TSplitter
+                Left = 241
+                Top = 3
+                Width = 16
+                Height = 222
+                Align = alNone
+                Color = clBtnFace
+                ParentColor = False
+              end
+              object Splitter_Right: TSplitter
+                Left = 523
+                Top = 3
+                Width = 16
+                Height = 222
+                Align = alNone
+                Color = clBtnFace
+                ParentColor = False
+              end
+              object LeftBox: TScrollBox
+                Left = 3
+                Top = 3
+                Width = 232
+                Height = 219
+                TabOrder = 0
+              end
+              object RightBox: TScrollBox
+                Left = 545
+                Top = 3
+                Width = 246
+                Height = 219
+                TabOrder = 1
+              end
+              object BodyMainBox: TScrollBox
+                Left = 263
+                Top = 3
+                Width = 246
+                Height = 219
+                TabOrder = 2
+              end
+            end
+            object BottomBox: TScrollBox
+              Left = 19
+              Top = 375
+              Width = 798
+              Height = 78
+              TabOrder = 2
+              object Panel_B: TPanel
+                AlignWithMargins = True
+                Left = 694
+                Top = 3
+                Width = 97
+                Height = 68
+                Align = alRight
+                TabOrder = 0
+              end
+              object Panel_G: TPanel
+                AlignWithMargins = True
+                Left = 591
+                Top = 3
+                Width = 97
+                Height = 68
+                Align = alRight
+                TabOrder = 1
+              end
+              object Panel_Y: TPanel
+                AlignWithMargins = True
+                Left = 385
+                Top = 3
+                Width = 97
+                Height = 68
+                Align = alRight
+                TabOrder = 2
+              end
+              object Panel_X: TPanel
+                AlignWithMargins = True
+                Left = 282
+                Top = 3
+                Width = 97
+                Height = 68
+                Align = alRight
+                TabOrder = 3
+              end
+              object Panel_R: TPanel
+                AlignWithMargins = True
+                Left = 488
+                Top = 3
+                Width = 97
+                Height = 68
+                Align = alRight
+                TabOrder = 4
+              end
+              object view_ratio: TComboBox
+                Left = 0
+                Top = 0
+                Width = 145
+                Height = 38
+                Align = alLeft
+                Style = csDropDownList
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -21
+                Font.Name = 'Segoe UI'
+                Font.Style = []
+                ParentFont = False
+                TabOrder = 5
+                OnChange = view_ratioChange
+              end
+              object Panel_Time: TPanel
+                AlignWithMargins = True
+                Left = 179
+                Top = 3
+                Width = 97
+                Height = 68
+                Align = alRight
+                TabOrder = 6
+              end
+            end
+          end
+        end
+      end
+      object TabSheet2: TTabSheet
+        Caption = #27425#35201
+        ImageIndex = 1
+        object ScrollBox2: TScrollBox
+          Left = 3
+          Top = 3
+          Width = 1027
+          Height = 504
+          TabOrder = 0
+          object view_box: TScrollBox
+            Left = 11
+            Top = 11
+            Width = 786
+            Height = 486
+            TabOrder = 0
+            object view_main_box: TScrollBox
+              Left = 19
+              Top = 14
+              Width = 757
+              Height = 364
+              TabOrder = 0
+              object vertical_box: TScrollBox
+                Left = 698
+                Top = 12
+                Width = 52
+                Height = 345
+                TabOrder = 0
+                object vertical_bar: TScrollBar
+                  Left = 3
+                  Top = 16
+                  Width = 34
+                  Height = 313
+                  Kind = sbVertical
+                  PageSize = 0
+                  TabOrder = 0
+                  OnChange = vertical_barChange
+                end
+              end
+              object main_box: TScrollBox
+                Left = 3
+                Top = 12
+                Width = 689
+                Height = 345
+                TabOrder = 1
+                OnMouseWheelDown = main_boxMouseWheelDown
+                OnMouseWheelUp = main_boxMouseWheelUp
+                OnResize = main_boxResize
+                object view_image: TImage
+                  Left = 30
+                  Top = 24
+                  Width = 137
+                  Height = 113
+                end
+              end
+            end
+            object view_bottom_box: TScrollBox
+              Left = 19
+              Top = 384
+              Width = 757
+              Height = 71
+              TabOrder = 1
+              object horizontal_box: TScrollBox
+                Left = 3
+                Top = 3
+                Width = 688
+                Height = 52
+                TabOrder = 0
+                object horizontal_bar: TScrollBar
+                  Left = 3
+                  Top = 3
+                  Width = 654
+                  Height = 42
+                  Ctl3D = True
+                  PageSize = 0
+                  ParentCtl3D = False
+                  TabOrder = 0
+                  OnChange = horizontal_barChange
+                end
+              end
+              object corner_box: TScrollBox
+                Left = 697
+                Top = 3
+                Width = 53
+                Height = 52
+                TabOrder = 1
+              end
+            end
+          end
+          object Memo1: TMemo
+            Left = 803
+            Top = 27
+            Width = 185
+            Height = 89
+            Lines.Strings = (
+              'BodyMainBox'#20839)
+            TabOrder = 1
+          end
+        end
+      end
+      object TabSheet3: TTabSheet
+        Caption = #20854#20182
+        ImageIndex = 2
+        object ScrollBox1: TScrollBox
+          Left = 3
+          Top = 3
+          Width = 1027
+          Height = 437
+          TabOrder = 0
+        end
+      end
+    end
+  end
+  object TitleBarPanel: TTitleBarPanel
+    Left = 0
+    Top = 0
+    Width = 1091
+    Height = 70
+    CustomButtons = <>
+    object Image_Title_Icon: TImage
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
+      Width = 81
+      Height = 64
+      Align = alLeft
+      Picture.Data = {
+        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000510000
+        0040080600000062059B08000000017352474200AECE1CE90000000467414D41
+        0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000013
+        1E4944415478DAED5B07585357DFFF2721090910F61E0105D922CA121050A620
+        A828A838AA55ABD66A555C9FA3EED7AFC35AABB5EE5527A2A8207BA92C41F692
+        297B0490913042D6776FA82302B56804FC5E7FCFC343EED9E777CFF9AF732E06
+        BEE0A38119E901FC7FC0171285802F240A019F94C4B484580A9D4E17031CF4CA
+        CBCB338C4DAD99233DE14F814F42E2B93F8F785596976CEF686D35EBECA4E3B1
+        381C4849CB3028D2322126A6E63B3D67FB958FF4C48509A19378F2B74387531E
+        C76E63B35903B64D9192E9B4B1739ABB78C577E11FDB577274A4445161BE4F63
+        43AD058BD58BE3F178182E87036C76AF88A4B46C939EBEF1B519F317657D5624
+        DE0BBC32F96150C0E34E7A87883846141CC42682BC880CF4F25850C02C839C9E
+        72E0001764E5143A3D3CBD2DDD66FBE57F685FE78FFDE258909576AEA1A65213
+        216FC032E2144996C1449B1D1B76EDF9655493585D522882052C4F5547977360
+        E7FA5B85B959BE7844082E959B014A78B9D7E5D069E6328BE1C1CB04E4370FF4
+        F58D0376FFF8C7BC0FE9F3C6D9139EF1E12101F4F656513E59D21464F5B1A187
+        D1D5D7D15B2092C4C0669AFBAC151B37DF1F55248685DC55CFCF4CDF545355E6
+        C6E1B0B5B080C18810F0550C7A87069DDE41D0C6ABC20239B701EB5E6D0A8517
+        EC7A505452ED5EF8F577726656365DFFB6DFBCF4547C79619E476C78F0055A43
+        9D349E88079B95D34196AAC8CF2F4F2A84CCA0847EF59455D5EB35A89AE7C5A4
+        64695A7A46771DDD3D6B4794C4EBD74F3A26C5C4DD79D9D42839581913511DF0
+        92B61B302F929E0A4F19B9208AAC90390B574DF6F09A95F2BE3E43AF5F35C9CE
+        4C5DDDD24C9B436BA89167B358FCF4F11E56A0E360FCBA1CAB8B090F0F5E030E
+        8B33685B88ACEC19A36B74C4C9CD6B9FA9AD2D6BD849BC7F37403536F26E7153
+        5D1D197DD620288222411644B10428EFA987FADE26E0F2B860C9D30317559B01
+        DB78D499058F3BD24144040F9EF3963BF8CCF37B34587F81174F5BE7A6A71EAA
+        ADAEB0EFEA64BC1E2B068B01190D0598B2D21D700411C1F64F874073693DB237
+        FA8A0F242F516BC1D4CAFEA0FFBEC3BB879DC4FD3B371F7D9E9BBA0187C83C67
+        090B30133778DD00171146F5BD34A0B5D3404F4A074878D101DB88A1A7411223
+        0708445198BB68B5E58C99DEA9EF96C9488C27468705EF29CECBDAD6C56060D1
+        340289008ABAEAA062A4058A3A2A802713076C9FD9CD84E68A06905692051C06
+        07A5497950149FDD8F4C197945A697DFD7AA2E9EB35A8695C41FB66FC82F2DC8
+        3050C2CBC272B99980FD00917AAFF511E4F6948282A23273C1B2B5F296D676F4
+        B7F31F474588C70407C69516E69AA113A7C84B81CED4F1A06AA409781271C8FD
+        A148BA1001F58555FDD2ED67CC9DBA6AC396F8612571DFCECD0945B9A9365238
+        7158A5E00D04C00FA933542B9FA3DD8306CE4BA052C7D61C3E7E51FDEDFCDCD4
+        A7D8DBD72E0695E6677AA1CFF26355C0FA2B67104156E18782C7E541DC89FBD0
+        5ADD24908EC58980EBBCC5E68BBF5EFD6C5849FCEDA7039B5213A28EA02BD04D
+        DC122649180EA9B3361E034E36DCE6DB8A067A26E777FD747CC5ABBCFCAC6798
+        E8FB77F63C4B7ABC07D1F820ABA504B6CBDD408438B41725C82040497C0EE484
+        3DED67FA28A869D67B2E5EA9E5E8E8F4D1AEE890488C0B0FA6843E08C8A9ADA9
+        A4A244DA8B998035C514D9D6D87F553F85910751F4A7802710C065A68FFBC2C5
+        ABC25EE59DF9F5D077493191BFF7327B30B26394FB087C47690C95C0ECE06428
+        4BC8EF270F892412D762AADBBC359BB6077E2C814326110562E8DA3C7E121DD5
+        DEF6928456D62568808B8415481224DE5B37B0210A0A7955A042D5AAF55DB242
+        C7C27C4A379AFED79FBF9927C54624B7B7BEC491A5C461DAF7B380284EFAA889
+        75BEA443C48FB7F8DBF96D90C86430B198BC7BFDAEFF1C1406811F44227FD2E7
+        7FF7C8484B39DB5857A38C3E8BB108A0455401058234288ACA01052706242C11
+        083802103078A4130C30B94C385D7F07DAB1DD606432E9E28E0347BF46EB2684
+        864886DCBDFEA4AAA2CC1883C382DD371E203746E9A327C666B22064DF55C466
+        640BA4AB685099DF6DDB45D6D41DCF1D511251C4C5864AA73E79E2DF5053B192
+        46AB537877CBE07938C063712086230195A8045C0C173218257CFBCDD563D6FC
+        25DF6CBC8596DBBB7E55607141D61CF4B7A19B39E8394E10D6DC20F2C700A037
+        B70BA489512461CDD69DFA13ADEC9F8F3889AFF034218A9C919136BFB9A1CE8B
+        D1D161DAD5D5AD416F6F835E562FF493E608C86212B064C53A2B3B47B7A7D7FE
+        3C312BE2C1AD20365256595F0326239A185D8DC242C29950682C11F4F088A264
+        58B67E8BB79D8B7BD0A821F15D6427272A37D11A343ADA5A25EA1B1B26D7D555
+        4D6A6F7FE9DEDAD284474D1C050595F6B51B77C9D3684D22F7AF9D2BACA928A5
+        8A9249E0BC613610A4C5843A96E44B5150975F219086C31360E1EA4DF3DC66CE
+        0E18B5240E8494F8184A465AE2E2AAAA0A5B3535CDE0EFB6FD70FDD0D68DBFE4
+        6726FBF395939D097024B0D056D904A21412E83B4E040989F72BAA0F21518440
+        84C56BFC7D9D3D67DEFEAC487C1777AE5CB608BB7BF54917A38380BA71968BA6
+        F1435928F004FC6BBFF7DFA0B98E06EDD5CD204B550229251981BCC7C8766E7A
+        673B931071B2FCFBED56D6D39C9E8E3A1213C343E5CA4B8B1C2A2ACAD4D96C16
+        59942CD6AE6B34FEB1B7DFD29C77CBEE58B524A9A2AC68321A4870D9EA0BE2B2
+        940FEE97D9C38486E7D550935D0664450A98BA4DEECB40C47138A2583A5B0415
+        0BE233C36AFF5D924666161DA386C4BB01D79473D29E1EA555967B77B4B5E0B9
+        DC379683849474AFFEF8097B37FCF0BF875FA55DFCED17F7B8887B0FD17096BA
+        E958B0F09B26ACB90880CBE642F0BEBF80DDD32B90AEAC46A51FB914F0E16F4D
+        D82406075C9B101E7433AAB58926A7A6A90C46137511435A09D1C0A2D058D70C
+        D10F1280DEDEC93332353FEBEEEDFBAD281ECF3B77E26872D58B520BD41F76DE
+        3C17C814E12A9357E869EF82D043D7FB792B63740D730FFE7161FCA821F1C44F
+        077E4A8A0CD962EB64051EF31CFAC9B28E76065C3A16008DB52D6036C5E1A88A
+        824A68C8BD9B51ACDE5ED0753001230F0B7EB9575E05BABD858586E73590783E
+        AC5FBAB6C1F873FB7F3FBB72D49078E9F489D98F820303B91C3656DB40130C4D
+        7590416A8194CC9BDD42AB6F8193FFB98CFCC2F29494552B2ACA4BB570223870
+        D9E203641909C80D4F83EAF412C062B1A0E732093427E9086562859119501095
+        DE2FDDD1D367CBF2EF370BF5E0EAA35FFD1F3FEF9F5159FC7C6D27A3635A5B73
+        3301278205335B1370F37600D1BFE37FA5051570F9F86D60FDED8269DB1882C9
+        2C6B687ED108B17FDC031CA6CFC0E6E001A66F9E071232EF175968F0B53ABF1C
+        388C5E501AA706922AB202F971BFDF8797D5348134A228097C96AE32749FBBA0
+        605491F80A29899172F999D9CE253939FE55E5C59314946561E93A5F905190E2
+        E7075F8F86C4D834FE9677F69F0B128A525083909B7C291259A37DC3E0225C3A
+        6F9CD3CF5479175C3607622E864047711F49E81181ED4A3790D3E4BBF2C0EA64
+        42C881ABC0E508BAC7AAEAD4DAE5EB376BE9995AB0321F3F526D6B6F37268A93
+        2B65E4E49EEB194FE0C10742E876627244A4587458D095E7F999DE327252B07C
+        D37CC4AC90822BC703A120BB04643514C1611D3FE60A1C848CD01377A0A7AE8D
+        1FA4A018A982A39F2BA0DBFD9F407FD90111476E03A6F70D493AF646307E469F
+        79539F5F0949C8CB791716936DE329728ABF9614156E6A6F69B26374B4638924
+        32C8292AE668EA8C3BEE3E63E679F571C64326F39318DB5929892221776F5C2F
+        CC4AF751A32AC3C255B3E0E89EB3C064F682D1740BD09D66F2BA2C9BC581FA8A
+        5A201009A0A0AEF8AF0C6D762F1BA28EDE81AEE6BF4D3DA4CE24DF29A069A6CB
+        7F4C0F7C0C154F8BFAD5A352C7306B6AAB883CC40C53569507F531AAD0DCD80A
+        2F4AAB9026B0A0AD67186661376595DBEC45D5234E228AECB44491F07B774EE6
+        A425AF24E045F804A270DE341728CAD21FDD7E5B5D0B14C7E7403762CAA88ED7
+        82B1D6FAFC1780AEEEF0C337A1A7A3FF71369A6F80283FD759F6A0A0F2E66241
+        2BF23282AE844171413950B5C7D54D9F3DDFDCCED5A36EC4494491939A2C72EB
+        F299B01745054EE8330151341EBB1702168FFBD8A60745433162DA9CED6FDA88
+        8993C1CBCF19C69BEB0FB8DA3988711E70F60164A71782A9A5DDA92D877E5E33
+        2A48441116784D3734F066664B338D842A0C47FF3983962DCE2C86F2D4429095
+        9202228584F8B924204B8B030131DE491224E43FF247FEE713BFB41B8FA02AA3
+        58204D8DAA020BBEF10259C5373BA0ED251D8AF3CBA0BD850E381C8E6F6235D6
+        3441665A1EE8189A24EC3B7666CAA8211185FF129FFAFABA2A2545C414B15D39
+        7DD072E9B71059F6AC08A4C962D0D5CB0426FBADA834B27A3004C47CF29B0A1A
+        882D3A1050591976E806F476F5FC5D050393A79A82DB9C6988CCC50307D1D625
+        F92F20253E134A90AD8B6E7D3C9E00A8AB8A86E9B0581C28AAAA35E8189B2EF9
+        E6FBAD51A386C4DA9262FCB1C37B983555E5182A228FCCFC1C062D9B72291A5A
+        8A6B618B93237A7501BA11FFBA83D9036DDD3DF0ACB616CA1B1A60F20A5750D1
+        D518B07E1DA29593DFD2CA4E5E5310E3DA863FCDF2E79510121003F5D58DA8BD
+        C85354517FAA49D53E33D6C0A8A8ABBB0BC7E272312238025B5E5E2EDBC6C9B9
+        732873FCE424D65714E37EDDFF43676DD50BA2AAA116582D751AB46CF2D51868
+        CAAB821D2ECE88012E38B49B39399047AB018F6D0B107F5B7CC0FAE9B71E212B
+        B96F2B8F9FA40FF357CD846E463704DF8C86EC6705E8AAE3A952C7C61A995AEE
+        3336314D34B2B014CA39CBB06CE71DAB97945594168D91420C70C78DDE83F69A
+        17910E45D119B0CEDE1EE4C5DE04261888AFFDC7E32700B2A2E0BAD16740C5D0
+        43EF86889F6E01BBA7EF8E92FB5C27C4632240DCC344686BA3838A9A7AA191B9
+        E5561B07A787DAFA261F6C588F188907FCBFBD55989DEE8B1AD133F62C0211D1
+        816F34B4543741FCA9076024AB08DE26262082087B2687033733D2A1ACA919CC
+        7CED806AAE3B60DDE24779901B92DC2F5D525A96693061E23657AFD927C6194F
+        1AFCBAD86827F1F2F1A3CB221FDCBA8086A5AC97BA82B2E1C0320DCD4FB91907
+        75196520411205154949A8696D4356221334266A83998F3D600738C842638751
+        BFDE054653AB403A454A06A6CF59E83073C1A2416F9E7D362426858589DFB874
+        B2B1A585465636A42244BA0C5A968368D882B82CA8C92A835E648B8A4A8A01D5
+        460FC6591A0E48208ADAFC2A442945F44BD7D2D64D3E74EA8AF5A79EDFB09DB1
+        1CDDBDED97B4E4787F346668B3623A28EAA8BEB70E1A67E4CBBF7F1825BA7AE3
+        CE86406B4983403A6AF739BACDF45926A4AB22FF84612331312C5CE1F6D5D325
+        B4C63A8A8482144C5DEB35E81DC3A1A0F1451D3C39130A18B6A0AE5050566DF0
+        5BFEAD96858353CFA79EDBB09EF69D3CB46F69F293C88B1CC4885635D604CB45
+        4E1F15CDE65F9B3B7E0F5A6B9AFBE5D9384EDFBDF67FF60AEDBECD3F6158492C
+        487D86B973FDFCB5C2BC8C05E8B3BA19627CCFB51B54D6BD0F258F722127A4FF
+        956F6575CD7A4FDF85E31CA67B3186635EC37EEE9C141929117EEF567469711E
+        FF8045CD780C982F7018525002958315C9CF21F37E12F0B882F632594C9CE3E0
+        E63973D19A0D0F876B4E2372789F10FC5039E8F6A562C49FE6BB1EE82D30B3F9
+        53414C5AFCBD75BBDB3B21F7612A5F7BBF7B92472012C1CA6EDAF6D5DBF6FE38
+        9CF319B1AF4CB72CF76BACAD2C5378F58CDEC7D69B3611C6DAEA0F18D94643FD
+        F96188D19D94D7EFBA1C0A92188535C1C2F680E7EC3907350D8C84EA91BC0F23
+        42E2B347B11A974EFD56D1D3D581F15E3C1D1EDC8C848EB63EF18586BE342C75
+        41CFDE4480CCCACC3248BB1EDB6FC0E212923C650DAD500353EB9DF3967E953D
+        12F3191112C36E5F75B971E17404554B09566E5D085D9D3D10139C082971E9C0
+        E1F4796606CE9340DF65E2EB3A2997A3A136EF85403B68E8CA7BC1B225DECB56
+        FE3512F378851121F1C7EDEB7FCD7EF674A3E30C6B709E65CF4F6376F7C2915D
+        67A0A3BDEF8B0CA29828B86CF10582589F2D39E0854D090AE7AB359B656C5D5C
+        8576AFE6B32031FCEE4D3DE42FA9A9B1417AFD0FCB1073A4EFBBBCF0C078880F
+        4F060313D3E7CF7373F4B85C0E8CB5368009B36DF8979342F65F0526A35BA02D
+        2919F9EEB55BF74A1B9A998DE8C7E8C34A62CCC3076AF7AE5D2868A1D54B9859
+        9BC09C65EE68C01AAA4A6AE0D4CFD74052569E3E73C112A398FB41F1D595A55A
+        785102B86EF3E55F828F3D861AD582DFA2104964DE82E5EBC6B8CCF2AEF8AF21
+        313624C8EAAF53C792983DDD1863533D3030D5063C1E8F289668E8EA6282F914
+        C74DEB76EC3D7AF9F7A30BA343EF5CE5B05960E06A0EFA4E1320EB6E229425F7
+        BFB830C9C6EE8AFFBE9FBFFAAF2111C5E99F0FFA549616EF6E6AAC33EC64D0F9
+        AE8A988424D7C4CC6AB79BD79CC3DAC626BCD2CC4CCCA533C743CA4BF2DDB188
+        8656331A033826175E1496F56B4F594DA3F7DBCD3B64C61A990E29A4FF5993F8
+        0A312141BA95E5A5DA9D743A618C8E7E9187AFE0FD987B7F5DD28C8F7890426B
+        A8551C74F0882C3034B37CB8E3F0B11923350FFE3846B2F3F7E1E19D1B7ACF12
+        1F1D6C696C34C662301444BF701085D383FC6621DE49A79CB26AA8BD9BC741AB
+        298EBD1FDFDB87635493F8B9E00B8942C0171285802F240A015F481402FE0FC9
+        CF7AAA953F73DF0000000049454E44AE426082}
+      Stretch = True
+      OnMouseDown = Image_Title_IconMouseDown
+      ExplicitLeft = 16
+      ExplicitTop = 8
+      ExplicitHeight = 49
+    end
+    object Label_Title: TLabel
+      Left = 104
+      Top = 26
+      Width = 63
+      Height = 15
+      Caption = 'Image_View'
+      OnMouseDown = Label_TitleMouseDown
+    end
+    object Image_Title_Background: TImage
+      Left = 672
+      Top = 3
+      Width = 351
+      Height = 64
+      OnMouseDown = Image_Title_BackgroundMouseDown
+    end
+    object Button_Min: TButton
+      AlignWithMargins = True
+      Left = 836
+      Top = 3
+      Width = 80
+      Height = 64
+      Align = alRight
+      Caption = '-'
+      TabOrder = 0
+      OnClick = Button_MinClick
+    end
+    object Button_Max: TButton
+      AlignWithMargins = True
+      Left = 922
+      Top = 3
+      Width = 80
+      Height = 64
+      Align = alRight
+      Caption = #21475
+      TabOrder = 1
+      OnClick = Button_MaxClick
+    end
+    object ButtonClose: TButton
+      AlignWithMargins = True
+      Left = 1008
+      Top = 3
+      Width = 80
+      Height = 64
+      Align = alRight
+      Caption = 'X'
+      TabOrder = 2
+      OnClick = ButtonCloseClick
+    end
+  end
+end
