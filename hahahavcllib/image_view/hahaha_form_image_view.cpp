@@ -6,13 +6,21 @@
 #include <image_view\hahaha_image_view.h>
 #include <image_view\hahaha_image_view_painter.h>
 #include <timer\hahaha_timer_high_precision.h>
+#include <image_view\hahaha_image_view.h>
 //---------------------------------------------------------------------------
 #include <System.SysUtils.hpp>
 
 #include "hahaha_form_image_view.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma resource "*.dfm"
+// 要這樣加，編輯器才會出現，應該是Bug
+#if defined(DESIGNED_DFM)
+	#pragma resource "*.dfm"                // 讓 IDE 找得到設計檔
+#else
+	#pragma resource "hahaha_form_image_view.dfm"
+#endif
+
+//#pragma resource "*.dfm"
 Thahaha_image_view_form *hahaha_image_view_form;
 //---------------------------------------------------------------------------
 __fastcall Thahaha_image_view_form::Thahaha_image_view_form(TComponent* Owner)
@@ -20,7 +28,7 @@ __fastcall Thahaha_image_view_form::Thahaha_image_view_form(TComponent* Owner)
 {
 
     //---------------------------------------------------------------------------
-    Image_View_ = NULL;
+    Image_View_ = nullptr;
     //---------------------------------------------------------------------------
 
     if(Timer_.get() == NULL)

@@ -84,7 +84,7 @@ void CALLBACK hahaha_thread_pool_queue_timer::Timer_Callback(PVOID parameter, BO
 //---------------------------------------------------------------------------
 int hahaha_thread_pool_queue_timer::Handle()
 {
-
+    return 0;
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_pool_queue_timer::Create(DWORD due_timer, DWORD period)
@@ -97,12 +97,14 @@ int hahaha_thread_pool_queue_timer::Create(DWORD due_timer, DWORD period)
         period,
         WT_EXECUTEDEFAULT
     );
+    return 0;
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_pool_queue_timer::Change_Timer(DWORD due_timer, DWORD period)
 {
     // 把週期改成 500ms，立即觸發下一次
     ChangeTimerQueueTimer(NULL, Timer_, due_timer, period);
+    return 0;
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_pool_queue_timer::Close()
@@ -113,6 +115,7 @@ int hahaha_thread_pool_queue_timer::Close()
     	DeleteTimerQueueTimer(NULL, Timer_, NULL);
         Timer_ = NULL;
     }
+    return 0;
 }
 //---------------------------------------------------------------------------
 

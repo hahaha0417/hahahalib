@@ -82,7 +82,7 @@ public:
 		hahaha_parameter_deal_xml_node& root,
 		hahaha_parameter_deal_xml_node& node,
 		hahahalib::hahaha_parameter_deal_xml_mapping& mapping,
-		std::wofstream& out,
+		std::ofstream& out,
 		int& tab
 	);
 public:

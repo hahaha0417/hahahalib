@@ -318,11 +318,13 @@ int hahaha_thread_command::Add_Command()
     SetEvent(Event_Run_);
 
     Mutex_->Un_Lock();
+
+    return 0;
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_command::On_Command()
 {
-
+    return 0;
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_command::Terminate()
@@ -356,7 +358,7 @@ int hahaha_thread_command::Wait()
         case WAIT_OBJECT_0 + 1:
             return -1;
     }
-
+    return 0;
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

@@ -533,7 +533,8 @@ halib_def::result hahaha_parameter_deal_xml::Load(
 //---------------------------------------------------------------------------
 halib_def::result hahaha_parameter_deal_xml::Save(hahahalib::hahaha_parameter_deal_xml_mapping& mapping)
 {
-	std::wofstream out_(File_Name_.c_str());
+
+	std::ofstream out_(hahahalib::wstring_to_utf8(File_Name_).c_str(), std::ios::binary);
 
 	halib_def::result result_ = halib_def::result::SUCCESS;
 
@@ -624,7 +625,7 @@ halib_def::result hahaha_parameter_deal_xml::Save(
 	hahaha_parameter_deal_xml_node& root,
 	hahaha_parameter_deal_xml_node& node,
 	hahahalib::hahaha_parameter_deal_xml_mapping& mapping,
-	std::wofstream& out,
+	std::ofstream& out,
 	int& tab
 )
 {
@@ -748,7 +749,7 @@ halib_def::result hahaha_parameter_deal_xml::Save(
 		std::wstring xml_wstring = L"";
 		Value_To_Xml(xml_wstring, node_.Type_, node_.Value_);
 		text_ += xml_wstring;
-		out << hahahalib::wstring_to_utf8(text_).c_str();
+		out << hahahalib::wstring_to_utf8(text_);
 
 
         if(node_.Xml_Type_ == halib_def::xml_type::NODE)
@@ -779,7 +780,7 @@ halib_def::result hahaha_parameter_deal_xml::Save(
 			text_ += node_.Name_;
 			text_ += L">";
 
-			out << hahahalib::wstring_to_utf8(text_).c_str() << std::endl;
+			out << hahahalib::wstring_to_utf8(text_) << std::endl;
 		}
 
 

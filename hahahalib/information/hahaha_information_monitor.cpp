@@ -126,6 +126,7 @@ int hahaha_information_monitor::Get_Monitor_Primary_Index()
         	return i;
         }
     }
+    return 0;
 }
 //---------------------------------------------------------------------------
 std::wstring hahaha_information_monitor::Get_Monitor_Model_From_HMonitor(HMONITOR hmonitor)
