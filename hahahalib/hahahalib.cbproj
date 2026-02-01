@@ -224,10 +224,6 @@
             <DependentOn>f_lib.h</DependentOn>
             <BuildOrder>73</BuildOrder>
         </CppCompile>
-        <CppCompile Include="gps\hahaha_gps_gnss.cpp">
-            <DependentOn>gps\hahaha_gps_gnss.h</DependentOn>
-            <BuildOrder>86</BuildOrder>
-        </CppCompile>
         <CppCompile Include="hahahalib.cpp">
             <DependentOn>hahahalib.h</DependentOn>
             <BuildOrder>1</BuildOrder>
