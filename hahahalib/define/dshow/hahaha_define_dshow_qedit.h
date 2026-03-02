@@ -1,34 +1,41 @@
 //---------------------------------------------------------------------------
 
-#ifndef hahaha_define_comH
-#define hahaha_define_comH
+#ifndef hahaha_define_dshow_qeditH
+#define hahaha_define_dshow_qeditH
 //---------------------------------------------------------------------------
 #pragma once
 //---------------------------------------------------------------------------
-#include <memory>
 
-#include <mfapi.h>
-#include <mfidl.h>
-#include <mfreadwrite.h>
+#include <dshow.h>
+
+EXTERN_C const CLSID CLSID_SampleGrabber;
+EXTERN_C const CLSID CLSID_NullRenderer;
+
+EXTERN_C const IID IID_ISampleGrabberCB;
+EXTERN_C const IID IID_ISampleGrabber;
+
+interface ISampleGrabberCB : public IUnknown
+{
+    virtual STDMETHODIMP SampleCB(double SampleTime, IMediaSample *pSample) = 0;
+    virtual STDMETHODIMP BufferCB(double SampleTime, BYTE *pBuffer, long BufferLen) = 0;
+};
+
+interface ISampleGrabber : public IUnknown
+{
+    virtual STDMETHODIMP SetOneShot(BOOL OneShot) = 0;
+    virtual STDMETHODIMP SetMediaType(const AM_MEDIA_TYPE *pType) = 0;
+    virtual STDMETHODIMP GetConnectedMediaType(AM_MEDIA_TYPE *pType) = 0;
+    virtual STDMETHODIMP SetBufferSamples(BOOL BufferThem) = 0;
+    virtual STDMETHODIMP GetCurrentBuffer(long *pBufferSize, long *pBuffer) = 0;
+    virtual STDMETHODIMP GetCurrentSample(IMediaSample **ppSample) = 0;
+    virtual STDMETHODIMP SetCallback(ISampleGrabberCB *pCallback, long WhichMethodToCallback) = 0;
+};
+
 
 //---------------------------------------------------------------------------
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
-// Simple COM releaser for use with std::unique_ptr
-template<typename T>
-struct hahaha_define_com_releaser {
-    void operator()(T* p) const noexcept;
-};
-
-// List available video capture devices (names)
-// (declared as a static class method)
-
-
-
-
-template<typename T>
-using hahaha_define_com_ptr = std::unique_ptr<T, hahaha_define_com_releaser<T>>;
 
 
 //---------------------------------------------------------------------------
@@ -45,11 +52,6 @@ using hahaha_define_com_ptr = std::unique_ptr<T, hahaha_define_com_releaser<T>>;
 namespace halib_def
 {
 //---------------------------------------------------------------------------
-
-
-
-template<typename T>
-using com_ptr = hahahalib::hahaha_define_com_ptr<T>;
 
 
 //---------------------------------------------------------------------------

@@ -69,8 +69,10 @@ private:
 	bool Is_Open_ = false;
 
     // Media Foundation 元件 (wrapped in unique_ptr with COM releaser)
-    std::unique_ptr<IMFSourceReader, halib_def::com_releaser_imf_source_reader> Source_Reader_;
-    std::unique_ptr<IMFMediaSource, halib_def::com_releaser_imf_media_source> Media_Source_;
+
+
+    halib_def::com_ptr<IMFSourceReader> Source_Reader_;
+    halib_def::com_ptr<IMFMediaSource> Media_Source_;
 
     int Width_ = 0;
     int Height_ = 0;

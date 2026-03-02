@@ -54,7 +54,7 @@
         <_TCHARMapping>char</_TCHARMapping>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <BCC_EnableBatchCompilation>true</BCC_EnableBatchCompilation>
-        <IncludePath>gps\;camera\webcam\;rs232\;capture\webcam\;capture\form\;capture\desktop\;information\webcam\;information\process\;information\form\;information\monitor\;information\;ui\;thread_pool\base\;thread\base\;thread\box\;queue_timer\;define\shape\;bitmap\function\base\;bitmap\function\;shape\function\;function\shape\;image_process\alpha\;define\image_process\alpha\;function\bitmap\;bitmap\base\;bitmap\;function\image\;image_process\copy\;image_process\set\;define\image_process\warp_affine\;image_process\wrap_affine\;define\image_process\rotate\;image_process\rotate\;shape\;define\image_process\resize\;image_process\resize\;image_process\color\;image_process\;define\bitmap\;image\base\;image\pixel\;image\image\;image\;define\xml\;process\;thread\;thread_pool\;file\;empty\;xml\;parameter_deal\ini\;parameter_deal\xml\;parameter_deal\;ini\;function\;token\;convert\;define\;lock\;sync\;timer\;$(hahahalib)\hahahalib;$(hahahalib)\hahahatestlib;$(hahahalib)\hahahavcllib;$(hahahalib)\hahahadumplib;$(hahahalib)\hahahagarbagelib;$(hahahalib)\hahaharecyclelib;$(hahaha)\include;$(hahaha)\include\iconv;$(hahaha)\include\ipp;$(hahaha)\include\ipp\ipp;$(IncludePath)</IncludePath>
+        <IncludePath>define\dshow\;gps\;camera\webcam\;rs232\;capture\webcam\;capture\form\;capture\desktop\;information\webcam\;information\process\;information\form\;information\monitor\;information\;ui\;thread_pool\base\;thread\base\;thread\box\;queue_timer\;define\shape\;bitmap\function\base\;bitmap\function\;shape\function\;function\shape\;image_process\alpha\;define\image_process\alpha\;function\bitmap\;bitmap\base\;bitmap\;function\image\;image_process\copy\;image_process\set\;define\image_process\warp_affine\;image_process\wrap_affine\;define\image_process\rotate\;image_process\rotate\;shape\;define\image_process\resize\;image_process\resize\;image_process\color\;image_process\;define\bitmap\;image\base\;image\pixel\;image\image\;image\;define\xml\;process\;thread\;thread_pool\;file\;empty\;xml\;parameter_deal\ini\;parameter_deal\xml\;parameter_deal\;ini\;function\;token\;convert\;define\;lock\;sync\;timer\;$(hahahalib)\hahahalib;$(hahahalib)\hahahatestlib;$(hahahalib)\hahahavcllib;$(hahahalib)\hahahadumplib;$(hahahalib)\hahahagarbagelib;$(hahahalib)\hahaharecyclelib;$(hahaha)\include;$(hahaha)\include\iconv;$(hahaha)\include\ipp;$(hahaha)\include\ipp\ipp;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>$(hahaha)\lib\$(Platform);$(hahaha)\lib\$(Platform)\ipp;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <VerInfo_Locale>1028</VerInfo_Locale>
         <RunBCCOutOfProcess>true</RunBCCOutOfProcess>
@@ -144,8 +144,8 @@
             <DependentOn>capture\webcam\hahaha_capture_webcam_desktop_duplication.h</DependentOn>
             <BuildOrder>82</BuildOrder>
         </CppCompile>
-        <CppCompile Include="capture\webcam\hahaha_capture_webcam_gdi.cpp">
-            <DependentOn>capture\webcam\hahaha_capture_webcam_gdi.h</DependentOn>
+        <CppCompile Include="capture\webcam\hahaha_capture_webcam_direct_show.cpp">
+            <DependentOn>capture\webcam\hahaha_capture_webcam_direct_show.h</DependentOn>
             <BuildOrder>79</BuildOrder>
         </CppCompile>
         <CppCompile Include="capture\webcam\hahaha_capture_webcam_media_foundation.cpp">
@@ -159,6 +159,10 @@
         <CppCompile Include="define\bitmap\hahaha_define_bitmap.cpp">
             <DependentOn>define\bitmap\hahaha_define_bitmap.h</DependentOn>
             <BuildOrder>36</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="define\dshow\hahaha_define_dshow_qedit.cpp">
+            <DependentOn>define\dshow\hahaha_define_dshow_qedit.h</DependentOn>
+            <BuildOrder>86</BuildOrder>
         </CppCompile>
         <CppCompile Include="define\hahaha_define_com.cpp">
             <DependentOn>define\hahaha_define_com.h</DependentOn>
