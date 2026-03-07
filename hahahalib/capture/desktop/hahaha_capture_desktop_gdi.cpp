@@ -1,4 +1,7 @@
-﻿#pragma hdrstop
+﻿//---------------------------------------------------------------------------
+
+#pragma hdrstop
+//---------------------------------------------------------------------------
 #include <shape\function\hahaha_shape_function_roi.h>
 #include <shape\hahaha_point.h>
 #include "hahaha_capture_desktop_gdi.h"
