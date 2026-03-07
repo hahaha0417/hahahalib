@@ -70,6 +70,7 @@ public:
     int Width_;
     int Height_;
     int Camera_Index_;
+    GUID Sub_Type_;
 public:
     // 上下翻轉
     bool Flip_;

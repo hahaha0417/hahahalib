@@ -201,11 +201,12 @@ halib_def::result hahaha_image_process_copy::Copy(const halib::bitmap_argb& src,
     	roi_src.Height() == roi_dst.Height()
     );
 #endif
-    Ipp8u number_channels_ = 4;
+    Ipp8u number_channels_src_ = 4;
+    Ipp8u number_channels_dst_ = 3;
 
     // Allocate memory for the source RGB image and destination grayscale image
-    Ipp8u* ptr_src_ = &src[roi_src.Y1_][roi_src.X1_ * number_channels_]; // RGB image has 1 channels
-	Ipp8u* ptr_dst_ = &dst[roi_dst.Y1_][roi_dst.X1_ * number_channels_]; // Grayscale image has 1 channel
+    Ipp8u* ptr_src_ = &src[roi_src.Y1_][roi_src.X1_ * number_channels_src_]; // RGB image has 1 channels
+	Ipp8u* ptr_dst_ = &dst[roi_dst.Y1_][roi_dst.X1_ * number_channels_dst_]; // Grayscale image has 1 channel
 
     // Initialize your source image data here...
 

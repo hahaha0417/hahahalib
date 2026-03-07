@@ -277,6 +277,7 @@ int hahaha_c_bitmap_alloc<T, U>::Clear()
 //https://blog.csdn.net/qq_30835655/article/details/76850894
 // template 實例化
 template class hahaha_c_bitmap_alloc<unsigned char, 1>;
+template class hahaha_c_bitmap_alloc<unsigned char, 2>;
 template class hahaha_c_bitmap_alloc<unsigned char, 3>;
 template class hahaha_c_bitmap_alloc<unsigned char, 4>;
 template class hahaha_c_bitmap_alloc<float, 1>;

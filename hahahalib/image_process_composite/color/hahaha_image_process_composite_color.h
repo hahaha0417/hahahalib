@@ -1,7 +1,7 @@
 ﻿//---------------------------------------------------------------------------
 
-#ifndef hahaha_image_process_colorH
-#define hahaha_image_process_colorH
+#ifndef hahaha_image_process_composite_colorH
+#define hahaha_image_process_composite_colorH
 //---------------------------------------------------------------------------
 #pragma once
 //---------------------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace hahahalib
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-namespace image_process
+namespace image_process_composite
 {
 //---------------------------------------------------------------------------
 
@@ -23,78 +23,31 @@ namespace image_process
 namespace color
 {
 //---------------------------------------------------------------------------
-
-class hahaha_image_process_color
+class hahaha_image_process_composite_color
 {
 public:
     //---------------------------------------------------------------------------
-    static halib_def::result RGB_To_Gray(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
-        const halib::roi& roi_dst
-    );
+
     //---------------------------------------------------------------------------
-    static halib_def::result Gray_To_RGB(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result ARGB_To_Gray(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result Gray_To_ARGB(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
-        const halib::roi& roi_dst,
-    	const unsigned char value_alpha
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result RGB_To_YUV422(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_yuy2& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result YUV422_To_RGB(const halib::bitmap_yuy2& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result YUY2_To_UYVY(const halib::bitmap_yuy2& src,
-        const halib::roi& roi_src,
-        halib::bitmap_uyvy& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result UYVY_To_YUY2(const halib::bitmap_uyvy& src,
-        const halib::roi& roi_src,
-        halib::bitmap_yuy2& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result YUY2_To_YVYU(const halib::bitmap_yuy2& src,
-        const halib::roi& roi_src,
-        halib::bitmap_yvyu& dst,
-        const halib::roi& roi_dst
-    );
-    //---------------------------------------------------------------------------
-    static halib_def::result YVYU_To_YUY2(const halib::bitmap_yvyu& src,
+    halib_def::result ARGB_To_YUV422(const halib::bitmap_argb& src,
         const halib::roi& roi_src,
         halib::bitmap_yuy2& dst,
         const halib::roi& roi_dst
     );
 
+    //---------------------------------------------------------------------------
+    halib_def::result YUV422_To_ARGB(const halib::bitmap_yuy2& src,
+        const halib::roi& roi_src,
+        halib::bitmap_argb& dst,
+        const halib::roi& roi_dst
+    );
     //---------------------------------------------------------------------------
     //---------------------------------------------------------------------------
 
 public:
 
 };
+
 
 
 
@@ -107,8 +60,9 @@ public:
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-} // image_process
+} // image_process_composite
 //---------------------------------------------------------------------------
+
 
 
 //---------------------------------------------------------------------------
@@ -116,12 +70,12 @@ public:
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-namespace halib_image
+namespace halib_image_composite
 {
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-typedef hahahalib::image_process::color::hahaha_image_process_color color;
+ typedef hahahalib::image_process_composite::color::hahaha_image_process_composite_color color;
 
 
 
@@ -130,5 +84,7 @@ typedef hahahalib::image_process::color::hahaha_image_process_color color;
 //---------------------------------------------------------------------------
 } // halib_image
 //---------------------------------------------------------------------------
+
+
 
 #endif

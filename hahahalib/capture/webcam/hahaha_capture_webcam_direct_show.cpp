@@ -14,7 +14,32 @@
 //
 //CoUninitialize();
 
-
+//CoInitializeEx(NULL, COINIT_MULTITHREADED);
+//
+//hahahalib::hahaha_capture_webcam_direct_show capture_webcam_direct_show_;
+//capture_webcam_direct_show_.Open(0, 1920, 1080);
+////	SetFormat(1920, 1080, GUID subtype)
+//{
+//    std::vector<std::wstring> list;
+//    capture_webcam_direct_show_.List_Format(list);
+//    list_box_webcam->Items->BeginUpdate();
+//    list_box_webcam->Clear();
+//    for(int i = 0; i < list.size(); i++)
+//    {
+//        list_box_webcam->Items->Add(list[i].c_str());
+//    }
+//    list_box_webcam->Items->EndUpdate();
+//}
+//capture_webcam_direct_show_.Start();
+//Sleep(5000);
+//hahahalib::bitmap_alloc_rgb bitmap_rgb_;
+//bitmap_rgb_.Resize(1920, 1080);
+//capture_webcam_direct_show_.Flip_ = true;
+//capture_webcam_direct_show_.Grab(bitmap_rgb_);
+//f_lib::bmp::Save(L"D:\\Desktop\\ttt\\webcam.bmp", bitmap_rgb_);
+//capture_webcam_direct_show_.Stop();
+//capture_webcam_direct_show_.Close();
+//CoUninitialize();
 //---------------------------------------------------------------------------
 namespace hahahalib
 {
@@ -81,6 +106,7 @@ void hahaha_capture_webcam_direct_show::Move(hahaha_capture_webcam_direct_show&&
 
     Flip_ = hcwds.Flip_;
     Is_Open_ = hcwds.Is_Open_;
+    Sub_Type_ = hcwds.Sub_Type_;
 
     hcwds.Buffer_Size_ = 0;
 }
@@ -99,6 +125,7 @@ int hahaha_capture_webcam_direct_show::Reset()
     Width_ = 640;
     Height_ = 480;
     Camera_Index_ = 0;
+    Sub_Type_ = MEDIASUBTYPE_None;
 
     Flip_ = false;
     Is_Open_ = false;
@@ -108,9 +135,10 @@ int hahaha_capture_webcam_direct_show::Reset()
 //---------------------------------------------------------------------------
 int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int height, GUID sub_type)
 {
-    Camera_Index_ = camera_index;
-    Width_ = width;
-    Height_ = height;
+    if(Is_Open_)
+    {
+        return -1;
+    }
 
     // 1) 建立 Graph
     IGraphBuilder* g_ = nullptr;
@@ -278,6 +306,13 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     Graph_->QueryInterface(IID_IMediaControl, (void**)&mc_);
     Media_Control_.reset(mc_);
 
+    Is_Open_ = true;
+
+    Camera_Index_ = camera_index;
+    Width_ = width;
+    Height_ = height;
+    Sub_Type_ = sub_type;
+
     return hr_;
 }
 
@@ -294,11 +329,16 @@ int hahaha_capture_webcam_direct_show::Start()
 //---------------------------------------------------------------------------
 int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
 {
+    if(!Is_Open_)
+    {
+        return -1;
+    }
+
     HRESULT hr_ = Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, NULL);
 
     if(bitmap.Size_ != Buffer_Size_)
     {
-        return false;
+        return -1;
     }
 
 
@@ -321,7 +361,7 @@ int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
         Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, (long*)bitmap.Image_Ptr_);
     }
 
-    return true;
+    return 0;
 }
 //---------------------------------------------------------------------------
 void hahaha_capture_webcam_direct_show::Stop()
@@ -504,6 +544,10 @@ int  hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID s
     }
     CoTaskMemFree(mt_);
     config_->Release();
+
+    Width_ = width;
+    Height_ = height;
+    Sub_Type_ = sub_type;
 
     return SUCCEEDED(hr_);
 }

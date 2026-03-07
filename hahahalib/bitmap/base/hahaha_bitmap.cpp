@@ -76,7 +76,7 @@ void hahaha_bitmap::Move(hahaha_bitmap&& hb) noexcept
 	Stride_ = hb.Stride_;
 	Size_ = hb.Size_;
 
-    Bmp_Info_Header_ = std::move(Bmp_Info_Header_);
+    Bmp_Info_Header_ = std::move(hb.Bmp_Info_Header_);
 }
 //---------------------------------------------------------------------------
 int hahaha_bitmap::Reset()

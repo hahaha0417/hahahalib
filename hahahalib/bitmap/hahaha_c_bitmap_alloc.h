@@ -61,11 +61,15 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 1> bitmap_alloc_gray;
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_yuv422;
 typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 3> bitmap_alloc_rgb;
 typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 4> bitmap_alloc_argb;
 typedef hahahalib::hahaha_c_bitmap_alloc<float, 1> bitmap_alloc_float;
 typedef hahahalib::hahaha_c_bitmap_alloc<double, 1> bitmap_alloc_double;
 //---------------------------------------------------------------------------
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_yuy2;
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_uyvy;
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_yvyu;
 
 
 //---------------------------------------------------------------------------
@@ -82,11 +86,15 @@ namespace halib
 
 //---------------------------------------------------------------------------
 typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 1> bitmap_alloc_gray;
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_yuv422;
 typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 3> bitmap_alloc_rgb;
 typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 4> bitmap_alloc_argb;
 typedef hahahalib::hahaha_c_bitmap_alloc<float, 1> bitmap_alloc_float;
 typedef hahahalib::hahaha_c_bitmap_alloc<double, 1> bitmap_alloc_double;
 //---------------------------------------------------------------------------
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_yuy2;
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_uyvy;
+typedef hahahalib::hahaha_c_bitmap_alloc<unsigned char, 2> bitmap_alloc_yvyu;
 
 
 //---------------------------------------------------------------------------
