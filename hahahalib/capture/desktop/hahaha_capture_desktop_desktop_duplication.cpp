@@ -1,76 +1,9 @@
-#pragma hdrstop
-#include <cstring>
 #include "hahaha_capture_desktop_desktop_duplication.h"
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
-#pragma package(smart_init)
-
-namespace
-{
 //---------------------------------------------------------------------------
-struct hahahalib_monitor_context
-{
-    int TargetIndex;
-    int CurrentIndex;
-    HMONITOR Monitor;
-};
-//---------------------------------------------------------------------------
-BOOL CALLBACK MonitorEnumerateProc(HMONITOR monitor, HDC, LPRECT, LPARAM data)
-{
-    auto* context = reinterpret_cast<hahahalib_monitor_context*>(data);
-    if (context->CurrentIndex == context->TargetIndex)
-    {
-        context->Monitor = monitor;
-        return FALSE;
-    }
-
-    ++context->CurrentIndex;
-    return TRUE;
-}
-//---------------------------------------------------------------------------
-HMONITOR GetMonitorByIndex(int index)
-{
-    hahahalib_monitor_context context{ index, 0, nullptr };
-    EnumDisplayMonitors(nullptr, nullptr, MonitorEnumerateProc, reinterpret_cast<LPARAM>(&context));
-    if (!context.Monitor)
-    {
-        context.Monitor = MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY);
-    }
-
-    return context.Monitor;
-}
-//---------------------------------------------------------------------------
-RECT NormalizeRect(RECT rect) noexcept
-{
-    if (rect.left > rect.right)
-    {
-        std::swap(rect.left, rect.right);
-    }
-    if (rect.top > rect.bottom)
-    {
-        std::swap(rect.top, rect.bottom);
-    }
-    return rect;
-}
-//---------------------------------------------------------------------------
-bool IntersectRectsSafe(RECT& out, const RECT& a, const RECT& b) noexcept
-{
-    RECT result{};
-    if (!IntersectRect(&result, &a, &b))
-    {
-        out = RECT{};
-        return false;
-    }
-    out = result;
-    return true;
-}
-//---------------------------------------------------------------------------
-}
-
 namespace hahahalib
 {
-
-
 //---------------------------------------------------------------------------
 hahaha_capture_desktop_desktop_duplication::hahaha_capture_desktop_desktop_duplication()
 {
@@ -82,653 +15,396 @@ hahaha_capture_desktop_desktop_duplication::~hahaha_capture_desktop_desktop_dupl
     Reset();
 }
 //---------------------------------------------------------------------------
-hahaha_capture_desktop_desktop_duplication::hahaha_capture_desktop_desktop_duplication(hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept
+hahaha_capture_desktop_desktop_duplication::hahaha_capture_desktop_desktop_duplication(
+    hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept
 {
     Move(std::move(hcddd));
 }
 //---------------------------------------------------------------------------
-hahaha_capture_desktop_desktop_duplication& hahaha_capture_desktop_desktop_duplication::operator=(hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept
+hahaha_capture_desktop_desktop_duplication&
+hahaha_capture_desktop_desktop_duplication::operator=(
+    hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept
 {
     if (this != &hcddd)
     {
         Reset();
         Move(std::move(hcddd));
     }
-
     return *this;
 }
+
 //---------------------------------------------------------------------------
-void hahaha_capture_desktop_desktop_duplication::Move(hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept
+void hahaha_capture_desktop_desktop_duplication::Move(
+    hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept
 {
-    if (this != &hcddd)
-    {
-        Stop();
+    Width_   = hcddd.Width_;
+    Height_  = hcddd.Height_;
+	Is_Open_ = hcddd.Is_Open_;
+	Is_Cursor_Draw_ = hcddd.Is_Cursor_Draw_;
 
-        Device_ = std::move(hcddd.Device_);
-        Context_ = std::move(hcddd.Context_);
-        Duplication_ = std::move(hcddd.Duplication_);
-        Staging_Texture_ = std::move(hcddd.Staging_Texture_);
+	Output_Desc_ = hcddd.Output_Desc_;
+	Dup_Desc_    = hcddd.Dup_Desc_;
 
-        Staging_Width_ = hcddd.Staging_Width_;
-        Staging_Height_ = hcddd.Staging_Height_;
-        hcddd.Staging_Width_ = 0;
-        hcddd.Staging_Height_ = 0;
+	Device_        = std::move(hcddd.Device_);
+	Context_       = std::move(hcddd.Context_);
+	Output1_       = std::move(hcddd.Output1_);
+	Duplication_   = std::move(hcddd.Duplication_);
+	Staging_Tex_   = std::move(hcddd.Staging_Tex_);
+	Bitmap_        = std::move(hcddd.Bitmap_);
 
-        {
-            std::lock(Frame_Mutex_, hcddd.Frame_Mutex_);
-            std::lock_guard<std::mutex> lockSelf(Frame_Mutex_, std::adopt_lock);
-            std::lock_guard<std::mutex> lockOther(hcddd.Frame_Mutex_, std::adopt_lock);
-            Frame_Snapshot_ = std::move(hcddd.Frame_Snapshot_);
-        }
+	hcddd.Width_   = 0;
+	hcddd.Height_  = 0;
+	hcddd.Is_Open_ = false;
 
-        {
-            std::lock(State_Mutex_, hcddd.State_Mutex_);
-            std::lock_guard<std::mutex> lockSelf(State_Mutex_, std::adopt_lock);
-            std::lock_guard<std::mutex> lockOther(hcddd.State_Mutex_, std::adopt_lock);
-            Capturing_ = hcddd.Capturing_;
-            Options_ = hcddd.Options_;
 
-            hcddd.Capturing_ = false;
-            hcddd.Options_ = {};
-        }
-    }
+    std::memset(&hcddd.Output_Desc_, 0, sizeof(hcddd.Output_Desc_));
+    std::memset(&hcddd.Dup_Desc_,    0, sizeof(hcddd.Dup_Desc_));
 }
+
 //---------------------------------------------------------------------------
 int hahaha_capture_desktop_desktop_duplication::Reset()
 {
-    Stop();
+    Device_        = nullptr;
+    Context_       = nullptr;
+    Output1_       = nullptr;
+    Duplication_   = nullptr;
+    Staging_Tex_   = nullptr;
+    Bitmap_.reset();
+
+    Width_   = 0;
+    Height_  = 0;
+	Is_Open_ = false;
+	Is_Cursor_Draw_ = false;
+
+    std::memset(&Output_Desc_, 0, sizeof(Output_Desc_));
+    std::memset(&Dup_Desc_,    0, sizeof(Dup_Desc_));
+
     return 0;
 }
+
 //---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Initialize()
+int hahaha_capture_desktop_desktop_duplication::List_Monitors(std::vector<std::wstring>& list)
 {
-    return Ensure_Device();
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Start(const hahaha_capture_desktop_desktop_duplication_options& options)
-{
-    Options_ = options;
-    if (!Ensure_Device())
+    list.clear();
+
+    IDXGIFactory1* raw_factory_ = nullptr;
+    if (FAILED(CreateDXGIFactory1(IID_PPV_ARGS(&raw_factory_))))
     {
-        return false;
+        return -1;
     }
 
-    Stop();
+    halib_def::com_ptr<IDXGIFactory1> factory_;
+    factory_.reset(raw_factory_);
 
-    if (!Create_Duplication(options.Monitor_Index_))
-    {
-        return false;
-    }
+    UINT i_ = 0;
+    IDXGIAdapter1* raw_adapter_ = nullptr;
 
+    while (factory_->EnumAdapters1(i_, &raw_adapter_) != DXGI_ERROR_NOT_FOUND)
     {
-        std::lock_guard<std::mutex> lock(State_Mutex_);
-        Capturing_ = true;
-    }
-    return true;
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Start_By_Monitor(HMONITOR monitor, int timeout_ms)
-{
-    if (!monitor)
-    {
-        return false;
-    }
+        halib_def::com_ptr<IDXGIAdapter1> adapter_;
+        adapter_.reset(raw_adapter_);
+        raw_adapter_ = nullptr;
 
-    Options_ = {};
-    Options_.Timeout_Ms_ = timeout_ms;
-    Use_Monitor_Handle_ = true;
-    Monitor_ = monitor;
+        UINT j_ = 0;
+        IDXGIOutput* raw_output_ = nullptr;
 
-    if (!Ensure_Device())
-    {
-        return false;
-    }
-
-    Stop();
-
-    if (!Create_Duplication_By_Monitor(monitor))
-    {
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(State_Mutex_);
-        Capturing_ = true;
-    }
-    return true;
-}
-//---------------------------------------------------------------------------
-void hahaha_capture_desktop_desktop_duplication::Stop()
-{
-    Duplication_.reset();
-
-    {
-        std::lock_guard<std::mutex> lock(Frame_Mutex_);
-        Frame_Snapshot_ = {};
-        Staging_Texture_.reset();
-        Staging_Width_ = 0;
-        Staging_Height_ = 0;
-        Staging_Format_ = DXGI_FORMAT_UNKNOWN;
-    }
-    {
-        std::lock_guard<std::mutex> lock(State_Mutex_);
-        Capturing_ = false;
-    }
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Is_Capturing() const noexcept
-{
-    std::lock_guard<std::mutex> lock(State_Mutex_);
-    return Capturing_;
-}
-//---------------------------------------------------------------------------
-RECT hahaha_capture_desktop_desktop_duplication::Get_Output_Desktop_Rect() const noexcept
-{
-    return Output_Desktop_Rect_;
-}
-//---------------------------------------------------------------------------
-HMONITOR hahaha_capture_desktop_desktop_duplication::Get_Monitor() const noexcept
-{
-    return Monitor_;
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Capture_Frame(hahaha_capture_desktop_desktop_duplication_frame& frame)
-{
-    if (!Duplication_ || !Context_)
-    {
-        return false;
-    }
-
-    IDXGIResource* resource_raw_ = nullptr;
-    DXGI_OUTDUPL_FRAME_INFO frame_info_{};
-
-    auto hr = Duplication_->AcquireNextFrame(Options_.Timeout_Ms_, &frame_info_, &resource_raw_);
-    if (hr == DXGI_ERROR_WAIT_TIMEOUT)
-    {
-        return false;
-    }
-
-    if (FAILED(hr))
-    {
-        Stop();
-        if ((hr == DXGI_ERROR_ACCESS_LOST) || (hr == DXGI_ERROR_SESSION_DISCONNECTED))
+        while (adapter_->EnumOutputs(j_, &raw_output_) != DXGI_ERROR_NOT_FOUND)
         {
-            if (Use_Monitor_Handle_ && Monitor_)
-            {
-                Create_Duplication_By_Monitor(Monitor_);
-            }
-            else
-            {
-                Create_Duplication(Options_.Monitor_Index_);
-            }
+            halib_def::com_ptr<IDXGIOutput> output_;
+            output_.reset(raw_output_);
+            raw_output_ = nullptr;
+
+            DXGI_OUTPUT_DESC desc_{};
+            output_->GetDesc(&desc_);
+
+            wchar_t buf_[256];
+            swprintf(buf_, 256, L"%s (%ld,%ld) %ldx%ld",
+                desc_.DeviceName,
+                desc_.DesktopCoordinates.left,
+                desc_.DesktopCoordinates.top,
+                desc_.DesktopCoordinates.right - desc_.DesktopCoordinates.left,
+                desc_.DesktopCoordinates.bottom - desc_.DesktopCoordinates.top);
+
+            list.push_back(buf_);
+
+            j_++;
         }
 
-        return false;
+        i_++;
     }
 
-    com_unique_ptr<IDXGIResource> resource_(resource_raw_);
+    return (int)list.size();
+}
 
-    ID3D11Texture2D* frame_texture_raw_ = nullptr;
-    hr = resource_ ? resource_->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&frame_texture_raw_)) : E_POINTER;
-    com_unique_ptr<ID3D11Texture2D> frame_texture_(frame_texture_raw_);
-
-    if (SUCCEEDED(hr) && frame_texture_)
+//---------------------------------------------------------------------------
+int hahaha_capture_desktop_desktop_duplication::Open(int monitor_index)
+{
+    if (Is_Open_)
     {
-        if (Copy_Frame_To_Snapshot(frame_texture_.get()))
-        {
-            std::lock_guard<std::mutex> lock(Frame_Mutex_);
-            frame = Frame_Snapshot_;
-            Duplication_->ReleaseFrame();
-            return true;
-        }
+        return 0;
     }
 
+    // 建立 DXGI Factory
+    IDXGIFactory1* raw_factory_ = nullptr;
+    if (FAILED(CreateDXGIFactory1(IID_PPV_ARGS(&raw_factory_))))
+    {
+        return -1;
+    }
+
+    halib_def::com_ptr<IDXGIFactory1> factory_;
+    factory_.reset(raw_factory_);
+
+    // 找到指定 monitor
+    UINT i_ = 0, count_ = 0;
+    IDXGIAdapter1* raw_adapter_ = nullptr;
+
+    while (factory_->EnumAdapters1(i_, &raw_adapter_) != DXGI_ERROR_NOT_FOUND)
+    {
+        halib_def::com_ptr<IDXGIAdapter1> adapter_;
+        adapter_.reset(raw_adapter_);
+        raw_adapter_ = nullptr;
+
+        UINT j_ = 0;
+        IDXGIOutput* raw_output_ = nullptr;
+
+        while (adapter_->EnumOutputs(j_, &raw_output_) != DXGI_ERROR_NOT_FOUND)
+        {
+            halib_def::com_ptr<IDXGIOutput> output_;
+            output_.reset(raw_output_);
+            raw_output_ = nullptr;
+
+            if (count_ == (UINT)monitor_index)
+            {
+                output_->GetDesc(&Output_Desc_);
+
+                IDXGIOutput1* raw_output1_ = nullptr;
+                if (FAILED(output_->QueryInterface(IID_PPV_ARGS(&raw_output1_))))
+                {
+                    return -1;
+                }
+
+                Output1_.reset(raw_output1_);
+                goto FOUND;
+            }
+
+            j_++;
+            count_++;
+        }
+
+        i_++;
+    }
+
+    return -1;
+
+FOUND:
+
+    // 建立 D3D11 device
+    D3D_FEATURE_LEVEL fl_{};
+    ID3D11Device* raw_dev_ = nullptr;
+    ID3D11DeviceContext* raw_ctx_ = nullptr;
+
+    if (FAILED(D3D11CreateDevice(
+        nullptr,
+        D3D_DRIVER_TYPE_HARDWARE,
+        nullptr,
+        D3D11_CREATE_DEVICE_BGRA_SUPPORT,
+        nullptr, 0,
+        D3D11_SDK_VERSION,
+        &raw_dev_,
+        &fl_,
+        &raw_ctx_))
+    )
+    {
+        return -1;
+    }
+
+    Device_.reset(raw_dev_);
+    Context_.reset(raw_ctx_);
+
+    // 建立 duplication
+    IDXGIOutputDuplication* raw_dup_ = nullptr;
+    if (FAILED(Output1_->DuplicateOutput(Device_.get(), &raw_dup_)))
+    {
+        return -1;
+    }
+
+    Duplication_.reset(raw_dup_);
+    Duplication_->GetDesc(&Dup_Desc_);
+
+    Width_  = Dup_Desc_.ModeDesc.Width;
+    Height_ = Dup_Desc_.ModeDesc.Height;
+
+    // 建立 staging texture
+    D3D11_TEXTURE2D_DESC td_{};
+    td_.Width            = Width_;
+    td_.Height           = Height_;
+    td_.MipLevels        = 1;
+    td_.ArraySize        = 1;
+    td_.Format           = Dup_Desc_.ModeDesc.Format;  // ★ 使用來源格式
+    td_.SampleDesc.Count = 1;
+    td_.Usage            = D3D11_USAGE_STAGING;
+    td_.CPUAccessFlags   = D3D11_CPU_ACCESS_READ;
+    td_.BindFlags        = 0;
+    td_.MiscFlags        = 0;
+
+
+
+    ID3D11Texture2D* raw_tex_ = nullptr;
+    if (FAILED(Device_->CreateTexture2D(&td_, nullptr, &raw_tex_)))
+    {
+        return -1;
+    }
+
+    Staging_Tex_.reset(raw_tex_);
+
+    // 建立 bitmap
+    Bitmap_.reset(new halib::bitmap_alloc_argb());
+    Bitmap_->Resize(Width_, Height_);
+
+    Is_Open_ = true;
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+int hahaha_capture_desktop_desktop_duplication::Grab()
+{
+    if (!Is_Open_)
+    {
+        return -1;
+    }
+
+    DXGI_OUTDUPL_FRAME_INFO info_{};
+    IDXGIResource* raw_frame_ = nullptr;
+
+
+    HRESULT hr_ = Duplication_->AcquireNextFrame(16, &info_, &raw_frame_);
+    if (hr_ == DXGI_ERROR_WAIT_TIMEOUT)
+    {
+        return 1;
+    }
+    if (FAILED(hr_))
+    {
+        return -1;
+    }
+
+    if (info_.AccumulatedFrames == 0)
+    {
+        Duplication_->ReleaseFrame();
+        return 1; // 沒有新畫面
+    }
+
+    halib_def::com_ptr<IDXGIResource> frame_;
+    frame_.reset(raw_frame_);
+
+    ID3D11Texture2D* raw_tex_ = nullptr;
+    frame_->QueryInterface(IID_PPV_ARGS(&raw_tex_));
+
+    halib_def::com_ptr<ID3D11Texture2D> tex_;
+    tex_.reset(raw_tex_);
+
+    Context_->CopyResource(Staging_Tex_.get(), tex_.get());
+
+    D3D11_MAPPED_SUBRESOURCE map_{};
+    Context_->Map(Staging_Tex_.get(), 0, D3D11_MAP_READ, 0, &map_);
+
+    uint8_t* dst_ = (uint8_t*)Bitmap_->Image_Ptr_;
+    uint8_t* src_ = (uint8_t*)map_.pData;
+
+    size_t dst_pitch_ = Width_ * 4;   // BGRA
+    size_t src_pitch_ = map_.RowPitch; // DXGI padded pitch
+
+    for (int y = 0; y < Height_; y++)
+    {
+        memcpy(dst_ + y * dst_pitch_, src_ + y * src_pitch_, dst_pitch_);
+    }
+
+	// ★ 正確的滑鼠指標繪製（使用 GetDIBits 取得像素資料）
+	CURSORINFO ci_{};
+	ci_.cbSize = sizeof(ci_);
+
+	if (Is_Cursor_Draw_ && GetCursorInfo(&ci_) && (ci_.flags & CURSOR_SHOWING))
+	{
+		ICONINFO ii_{};
+		if (GetIconInfo(ci_.hCursor, &ii_))
+		{
+			int cursor_x_ = ci_.ptScreenPos.x - Output_Desc_.DesktopCoordinates.left - ii_.xHotspot;
+			int cursor_y_ = ci_.ptScreenPos.y - Output_Desc_.DesktopCoordinates.top  - ii_.yHotspot;
+
+			HBITMAP hbm_ = ii_.hbmColor ? ii_.hbmColor : ii_.hbmMask;
+
+			BITMAP bmp_{};
+			GetObject(hbm_, sizeof(bmp_), &bmp_);
+
+			int w_ = bmp_.bmWidth;
+			int h_ = bmp_.bmHeight;
+
+			// 建立 DIB buffer
+			BITMAPINFO bi_{};
+			bi_.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+			bi_.bmiHeader.biWidth       = w_;
+			bi_.bmiHeader.biHeight      = -h_;  // top-down
+			bi_.bmiHeader.biPlanes      = 1;
+			bi_.bmiHeader.biBitCount    = 32;
+			bi_.bmiHeader.biCompression = BI_RGB;
+
+			std::vector<uint32_t> pixels_(w_ * h_);
+
+			HDC hdc_ = GetDC(NULL);
+			GetDIBits(hdc_, hbm_, 0, h_, pixels_.data(), &bi_, DIB_RGB_COLORS);
+			ReleaseDC(NULL, hdc_);
+
+			// 畫到桌面影像上
+			for (int y = 0; y < h_; y++)
+			{
+				for (int x = 0; x < w_; x++)
+				{
+					int dst_x_ = cursor_x_ + x;
+					int dst_y_ = cursor_y_ + y;
+
+					if (dst_x_ < 0 || dst_y_ < 0 || dst_x_ >= Width_ || dst_y_ >= Height_)
+                    {
+                        continue;
+                    }
+
+					uint32_t src_ = pixels_[y * w_ + x];
+					uint8_t a_ = (src_ >> 24) & 0xFF;
+					if (a_ == 0)
+                    {
+                        continue;
+                    }
+
+					uint32_t* dst_ = (uint32_t*)Bitmap_->Image_Ptr_ + dst_y_ * Width_ + dst_x_;
+					*dst_ = src_;
+				}
+			}
+
+			DeleteObject(ii_.hbmColor);
+			DeleteObject(ii_.hbmMask);
+		}
+	}
+
+    Context_->Unmap(Staging_Tex_.get(), 0);
     Duplication_->ReleaseFrame();
-    return false;
+
+    return 0;
 }
+
 //---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Capture_Region(const RECT& desktop_rect, hahaha_capture_desktop_desktop_duplication_frame& frame)
+int hahaha_capture_desktop_desktop_duplication::Grab(const halib::roi& roi)
 {
-    if (!Duplication_ || !Context_)
+    if (!Is_Open_)
     {
-        return false;
+        return -1;
     }
 
-    IDXGIResource* resource_raw_ = nullptr;
-    DXGI_OUTDUPL_FRAME_INFO frame_info_{};
-
-    auto hr = Duplication_->AcquireNextFrame(Options_.Timeout_Ms_, &frame_info_, &resource_raw_);
-    if (hr == DXGI_ERROR_WAIT_TIMEOUT)
-    {
-        return false;
-    }
-
-    if (FAILED(hr))
-    {
-        Stop();
-        if ((hr == DXGI_ERROR_ACCESS_LOST) || (hr == DXGI_ERROR_SESSION_DISCONNECTED))
-        {
-            if (Use_Monitor_Handle_ && Monitor_)
-            {
-                Create_Duplication_By_Monitor(Monitor_);
-            }
-            else
-            {
-                Create_Duplication(Options_.Monitor_Index_);
-            }
-        }
-        return false;
-    }
-
-    com_unique_ptr<IDXGIResource> resource_(resource_raw_);
-
-    ID3D11Texture2D* frame_texture_raw_ = nullptr;
-    hr = resource_ ? resource_->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&frame_texture_raw_)) : E_POINTER;
-    com_unique_ptr<ID3D11Texture2D> frame_texture_(frame_texture_raw_);
-    if (FAILED(hr) || !frame_texture_)
-    {
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-
-    D3D11_TEXTURE2D_DESC desc_{};
-    frame_texture_->GetDesc(&desc_);
-    if (desc_.Width == 0 || desc_.Height == 0)
-    {
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-    if (desc_.Format != DXGI_FORMAT_B8G8R8A8_UNORM &&
-        desc_.Format != DXGI_FORMAT_B8G8R8A8_UNORM_SRGB &&
-        desc_.Format != DXGI_FORMAT_R8G8B8A8_UNORM &&
-        desc_.Format != DXGI_FORMAT_R8G8B8A8_UNORM_SRGB)
-    {
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-
-    if (!Ensure_Staging_Texture(desc_))
-    {
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-
-    Context_->CopyResource(Staging_Texture_.get(), frame_texture_.get());
-
-    D3D11_MAPPED_SUBRESOURCE mapped_{};
-    hr = Context_->Map(Staging_Texture_.get(), 0, D3D11_MAP_READ, 0, &mapped_);
-    if (FAILED(hr) || !mapped_.pData)
-    {
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-
-    const RECT output_rect_ = NormalizeRect(Output_Desktop_Rect_);
-    RECT requested_ = NormalizeRect(desktop_rect);
-    RECT intersect_{};
-    if (!IntersectRectsSafe(intersect_, requested_, output_rect_))
-    {
-        Context_->Unmap(Staging_Texture_.get(), 0);
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-
-    const int crop_width_ = static_cast<int>(intersect_.right - intersect_.left);
-    const int crop_height_ = static_cast<int>(intersect_.bottom - intersect_.top);
-    if (crop_width_ <= 0 || crop_height_ <= 0)
-    {
-        Context_->Unmap(Staging_Texture_.get(), 0);
-        Duplication_->ReleaseFrame();
-        return false;
-    }
-
-    const int offset_x_ = static_cast<int>(intersect_.left - output_rect_.left);
-    const int offset_y_ = static_cast<int>(intersect_.top - output_rect_.top);
-    const size_t src_row_pitch_ = mapped_.RowPitch;
-    const size_t bytes_per_pixel_ = 4;
-    const size_t dst_stride_ = static_cast<size_t>(crop_width_) * bytes_per_pixel_;
-
-    std::vector<uint8_t> data_(static_cast<size_t>(crop_height_) * dst_stride_);
-    for (int row = 0; row < crop_height_; ++row)
-    {
-        const size_t src_offset_ = (static_cast<size_t>(offset_y_ + row) * src_row_pitch_) + (static_cast<size_t>(offset_x_) * bytes_per_pixel_);
-        const uint8_t* src_ = static_cast<const uint8_t*>(mapped_.pData) + src_offset_;
-        std::memcpy(data_.data() + static_cast<size_t>(row) * dst_stride_, src_, dst_stride_);
-    }
-
-    Context_->Unmap(Staging_Texture_.get(), 0);
-    Duplication_->ReleaseFrame();
-
-    frame.Data_ = std::move(data_);
-    frame.Width_ = crop_width_;
-    frame.Height_ = crop_height_;
-    frame.Stride_ = static_cast<int>(dst_stride_);
-    return frame.Is_Valid();
+    return 0;
 }
+
 //---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Ensure_Device()
+void hahaha_capture_desktop_desktop_duplication::Close()
 {
-    if (Device_)
-    {
-        return true;
-    }
-
-    UINT creation_flags_ = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#ifdef _DEBUG
-    creation_flags_ |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
-    D3D_FEATURE_LEVEL feature_levels_[] =
-    {
-        D3D_FEATURE_LEVEL_11_1,
-        D3D_FEATURE_LEVEL_11_0,
-        D3D_FEATURE_LEVEL_10_1,
-        D3D_FEATURE_LEVEL_10_0
-    };
-    const UINT feature_level_count_ = static_cast<UINT>(sizeof(feature_levels_) / sizeof(feature_levels_[0]));
-
-    ID3D11Device* device_raw_ = nullptr;
-    ID3D11DeviceContext* context_raw_ = nullptr;
-    auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, creation_flags_,
-        feature_levels_, feature_level_count_, D3D11_SDK_VERSION, &device_raw_, nullptr, &context_raw_);
-
-    if (FAILED(hr))
-    {
-        return false;
-    }
-
-    Device_.reset(device_raw_);
-    Context_.reset(context_raw_);
-    return true;
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Create_Duplication(int monitor_index)
-{
-    if (!Device_)
-    {
-        return false;
-    }
-
-    Use_Monitor_Handle_ = false;
-    Monitor_ = GetMonitorByIndex(monitor_index);
-
-    IDXGIDevice* dxgi_device_raw_ = nullptr;
-    auto hr = Device_->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&dxgi_device_raw_));
-    com_unique_ptr<IDXGIDevice> dxgi_device_(dxgi_device_raw_);
-    if (FAILED(hr) || !dxgi_device_)
-    {
-        return false;
-    }
-
-    IDXGIAdapter* adapter_raw_ = nullptr;
-    hr = dxgi_device_->GetAdapter(&adapter_raw_);
-    com_unique_ptr<IDXGIAdapter> adapter_(adapter_raw_);
-    if (FAILED(hr) || !adapter_)
-    {
-        return false;
-    }
-
-    com_unique_ptr<IDXGIOutput> output_;
-    com_unique_ptr<IDXGIOutput> first_output_;
-    int current_ = 0;
-    for (UINT i = 0; ; ++i)
-    {
-        IDXGIOutput* candidate_raw_ = nullptr;
-        if (FAILED(adapter_->EnumOutputs(i, &candidate_raw_)) || !candidate_raw_)
-        {
-            break;
-        }
-
-        com_unique_ptr<IDXGIOutput> candidate_(candidate_raw_);
-
-        if (!first_output_)
-        {
-            first_output_ = std::move(candidate_);
-        }
-
-        if (current_ == monitor_index)
-        {
-            output_ = std::move(candidate_);
-            break;
-        }
-
-        ++current_;
-    }
-
-    if (!output_ && first_output_)
-    {
-        output_ = std::move(first_output_);
-    }
-    first_output_.reset();
-
-    if (output_)
-    {
-        DXGI_OUTPUT_DESC output_desc_{};
-        if (SUCCEEDED(output_->GetDesc(&output_desc_)))
-        {
-            Monitor_ = output_desc_.Monitor;
-            Output_Desktop_Rect_ = output_desc_.DesktopCoordinates;
-        }
-    }
-
-    IDXGIOutput1* output1_raw_ = nullptr;
-    hr = output_ ? output_->QueryInterface(__uuidof(IDXGIOutput1), reinterpret_cast<void**>(&output1_raw_)) : E_POINTER;
-    com_unique_ptr<IDXGIOutput1> output1_(output1_raw_);
-    if (FAILED(hr) || !output1_)
-    {
-        return false;
-    }
-
-    IDXGIOutputDuplication* duplication_raw_ = nullptr;
-    hr = output1_->DuplicateOutput(Device_.get(), &duplication_raw_);
-    com_unique_ptr<IDXGIOutputDuplication> duplication_(duplication_raw_);
-    if (FAILED(hr) || !duplication_)
-    {
-        return false;
-    }
-
-    Duplication_ = std::move(duplication_);
-    return true;
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Create_Duplication_By_Monitor(HMONITOR monitor)
-{
-    if (!Device_ || !monitor)
-    {
-        return false;
-    }
-
-    Use_Monitor_Handle_ = true;
-    Monitor_ = monitor;
-
-    IDXGIDevice* dxgi_device_raw_ = nullptr;
-    auto hr = Device_->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&dxgi_device_raw_));
-    com_unique_ptr<IDXGIDevice> dxgi_device_(dxgi_device_raw_);
-    if (FAILED(hr) || !dxgi_device_)
-    {
-        return false;
-    }
-
-    IDXGIAdapter* adapter_raw_ = nullptr;
-    hr = dxgi_device_->GetAdapter(&adapter_raw_);
-    com_unique_ptr<IDXGIAdapter> adapter_(adapter_raw_);
-    if (FAILED(hr) || !adapter_)
-    {
-        return false;
-    }
-
-    com_unique_ptr<IDXGIOutput> output_;
-    com_unique_ptr<IDXGIOutput> first_output_;
-    for (UINT i = 0; ; ++i)
-    {
-        IDXGIOutput* candidate_raw_ = nullptr;
-        if (FAILED(adapter_->EnumOutputs(i, &candidate_raw_)) || !candidate_raw_)
-        {
-            break;
-        }
-
-        com_unique_ptr<IDXGIOutput> candidate_(candidate_raw_);
-        if (!first_output_)
-        {
-            first_output_ = std::move(candidate_);
-            candidate_ = nullptr;
-        }
-
-        if (!candidate_)
-        {
-            continue;
-        }
-
-        DXGI_OUTPUT_DESC desc_{};
-        if (SUCCEEDED(candidate_->GetDesc(&desc_)) && desc_.Monitor == monitor)
-        {
-            output_ = std::move(candidate_);
-            Output_Desktop_Rect_ = desc_.DesktopCoordinates;
-            break;
-        }
-    }
-
-    if (!output_ && first_output_)
-    {
-        DXGI_OUTPUT_DESC desc_{};
-        if (SUCCEEDED(first_output_->GetDesc(&desc_)))
-        {
-            Monitor_ = desc_.Monitor;
-            Output_Desktop_Rect_ = desc_.DesktopCoordinates;
-        }
-        output_ = std::move(first_output_);
-    }
-    first_output_.reset();
-
-    IDXGIOutput1* output1_raw_ = nullptr;
-    hr = output_ ? output_->QueryInterface(__uuidof(IDXGIOutput1), reinterpret_cast<void**>(&output1_raw_)) : E_POINTER;
-    com_unique_ptr<IDXGIOutput1> output1_(output1_raw_);
-    if (FAILED(hr) || !output1_)
-    {
-        return false;
-    }
-
-    IDXGIOutputDuplication* duplication_raw_ = nullptr;
-    hr = output1_->DuplicateOutput(Device_.get(), &duplication_raw_);
-    com_unique_ptr<IDXGIOutputDuplication> duplication_(duplication_raw_);
-    if (FAILED(hr) || !duplication_)
-    {
-        return false;
-    }
-
-    Duplication_ = std::move(duplication_);
-    return true;
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Ensure_Staging_Texture(const D3D11_TEXTURE2D_DESC& desc)
-{
-    if (Staging_Texture_ &&
-        Staging_Width_ == static_cast<int>(desc.Width) &&
-        Staging_Height_ == static_cast<int>(desc.Height) &&
-        Staging_Format_ == desc.Format)
-    {
-        return true;
-    }
-
-    D3D11_TEXTURE2D_DESC staging_desc_ = desc;
-    staging_desc_.BindFlags = 0;
-    staging_desc_.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-    staging_desc_.Usage = D3D11_USAGE_STAGING;
-    staging_desc_.MiscFlags = 0;
-    staging_desc_.ArraySize = 1;
-    staging_desc_.MipLevels = 1;
-    staging_desc_.SampleDesc.Count = 1;
-    staging_desc_.SampleDesc.Quality = 0;
-
-    ID3D11Texture2D* staging_texture_raw_ = nullptr;
-    auto hr = Device_->CreateTexture2D(&staging_desc_, nullptr, &staging_texture_raw_);
-    if (FAILED(hr))
-    {
-        Staging_Texture_.reset();
-        Staging_Width_ = 0;
-        Staging_Height_ = 0;
-        return false;
-    }
-
-    Staging_Texture_.reset(staging_texture_raw_);
-    Staging_Width_ = static_cast<int>(staging_desc_.Width);
-    Staging_Height_ = static_cast<int>(staging_desc_.Height);
-    Staging_Format_ = staging_desc_.Format;
-    return true;
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Ensure_Staging_Texture(int width, int height, DXGI_FORMAT format)
-{
-    if (width <= 0 || height <= 0)
-    {
-        return false;
-    }
-
-    D3D11_TEXTURE2D_DESC desc_{};
-    desc_.Width = static_cast<UINT>(width);
-    desc_.Height = static_cast<UINT>(height);
-    desc_.Format = format;
-    desc_.ArraySize = 1;
-    desc_.MipLevels = 1;
-    desc_.SampleDesc.Count = 1;
-    desc_.SampleDesc.Quality = 0;
-    return Ensure_Staging_Texture(desc_);
-}
-//---------------------------------------------------------------------------
-bool hahaha_capture_desktop_desktop_duplication::Copy_Frame_To_Snapshot(ID3D11Texture2D* frame_texture)
-{
-    if (!frame_texture || !Context_)
-    {
-        return false;
-    }
-
-    D3D11_TEXTURE2D_DESC desc_{};
-    frame_texture->GetDesc(&desc_);
-    if (desc_.Width == 0 || desc_.Height == 0)
-    {
-        return false;
-    }
-    if (desc_.Format != DXGI_FORMAT_B8G8R8A8_UNORM &&
-        desc_.Format != DXGI_FORMAT_B8G8R8A8_UNORM_SRGB &&
-        desc_.Format != DXGI_FORMAT_R8G8B8A8_UNORM &&
-        desc_.Format != DXGI_FORMAT_R8G8B8A8_UNORM_SRGB)
-    {
-        return false;
-    }
-
-    if (!Ensure_Staging_Texture(desc_))
-    {
-        return false;
-    }
-
-    Context_->CopyResource(Staging_Texture_.get(), frame_texture);
-
-    D3D11_MAPPED_SUBRESOURCE mapped_{};
-    auto hr = Context_->Map(Staging_Texture_.get(), 0, D3D11_MAP_READ, 0, &mapped_);
-    if (FAILED(hr))
-    {
-        return false;
-    }
-
-    const size_t row_pitch_ = mapped_.RowPitch;
-    std::vector<uint8_t> data_(static_cast<size_t>(desc_.Height) * row_pitch_);
-    for (UINT row = 0; row < desc_.Height; ++row)
-    {
-        std::memcpy(data_.data() + row * row_pitch_,
-            static_cast<uint8_t*>(mapped_.pData) + row * row_pitch_,
-            row_pitch_);
-    }
-
-    Context_->Unmap(Staging_Texture_.get(), 0);
-
-    {
-        std::lock_guard<std::mutex> lock_(Frame_Mutex_);
-        Frame_Snapshot_.Data_ = std::move(data_);
-        Frame_Snapshot_.Width_ = static_cast<int>(desc_.Width);
-        Frame_Snapshot_.Height_ = static_cast<int>(desc_.Height);
-        Frame_Snapshot_.Stride_ = static_cast<int>(row_pitch_);
-    }
-    return true;
+    Reset();
 }
 //---------------------------------------------------------------------------
 } // namespace hahahalib
+//---------------------------------------------------------------------------

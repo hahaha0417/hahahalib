@@ -38,23 +38,23 @@ public:
 
 public:
     // 仿 DirectShow 版本的介面
-    int  Reset();
+    int Reset();
 
 	// camera_index / width / height / sub_type 介面與 DirectShow 版相同
 	// 相機有支援RGB24才能開啟，不能自動轉換
-	int  Open(int camera_index = 0,
+	int Open(int camera_index = 0,
               int width        = 1920,
               int height       = 1080,
 			  GUID sub_type    = MFVideoFormat_YUY2);
 
-
+    // 有空加另外grab roi(webcam) to roi(bitmap)，節省copy
     // 直接抓到 bitmap_rgb（會自動檢查大小是否正確）
-    int  Grab(hahahalib::bitmap_rgb& bitmap);
+    int Grab(hahahalib::bitmap_rgb& bitmap);
 
     void Close();
 
     // 列出裝置支援的格式（解析度 + subtype），字串格式類似 DirectShow 版
-    int  List_Format(std::vector<std::wstring>& list);
+    int List_Format(std::vector<std::wstring>& list);
 
 public:
     // Media Foundation 元件
