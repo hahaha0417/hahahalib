@@ -5,6 +5,8 @@
 #include "hahaha_capture_desktop_desktop_duplication.h"
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
+
+// desktop 有更新才會有畫面
 //---------------------------------------------------------------------------
 namespace hahahalib
 {

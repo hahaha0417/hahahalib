@@ -487,7 +487,55 @@ int hahaha_rs232::Read(std::wstring& data, std::size_t max_wchars, DWORD& bytes_
 	return 0;
 }
 //---------------------------------------------------------------------------
+int hahaha_rs232::Read_Line(std::string& line)
+{
+	if (!Is_Open())
+    {
+        return -1;
+    }
+
+    char ch_ = 0;
+    DWORD bytes_read_ = 0;
+
+    while (true)
+    {
+        int ret_ = Read(&ch_, 1, bytes_read_);
+        if (ret_ != 0)
+        {
+            return ret_;
+        }
+
+        if (bytes_read_ == 0)
+        {
+            continue; // 沒資料，繼續等
+        }
+
+        if (ch_ == '\n')
+        {
+            break; // 一行結束
+        }
+
+        if (ch_ != '\r') // 避免 CRLF 的 \r
+        {
+            line.push_back(ch_);
+        }
+    }
+
+    return 0;
+}
 //---------------------------------------------------------------------------
+int hahaha_rs232::Read_Line(std::wstring& line)
+{
+    std::string tmp_;
+    int ret_ = Read_Line(tmp_);
+    if (ret_ != 0)
+    {
+        return ret_;
+    }
+
+    line = hahahalib::s2ws(tmp_);
+    return 0;
+}
 
 //---------------------------------------------------------------------------
 } // hahahalib

@@ -54,6 +54,8 @@ public:
     int Read(void* buffer, std::size_t size, DWORD& bytes_read);
     int Read(std::vector<unsigned char>& data, std::size_t max_size, DWORD& bytes_read);
     int Read(std::wstring& data, std::size_t max_wchars, DWORD& bytes_read_bytes);
+    int Read_Line(std::string& line);
+    int Read_Line(std::wstring& line);
 public:
     HANDLE Handle_;
     std::wstring Port_Name_;
