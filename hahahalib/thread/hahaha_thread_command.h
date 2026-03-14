@@ -42,7 +42,8 @@ public:
 	static DWORD WINAPI Thread_Start(void* parameter);
 	virtual int Thread_Proc();
 public:
-	virtual int Handle(hahahalib::hahaha_thread_command_command* p);
+	virtual int Handle(std::unique_ptr<hahahalib::hahaha_thread_command_command>& command);
+
 public:
 	virtual int Create();
 	virtual int Close();
@@ -60,7 +61,7 @@ public:
     HANDLE Event_Wait_;
 	HANDLE Event_Exit_;
 public:
-	std::queue<std::unique_ptr<hahaha_thread_command_command>> Queue_Command_;
+	std::queue<std::unique_ptr<hahahalib::hahaha_thread_command_command>> Queue_Command_;
     std::unique_ptr<hahaha_mutex> Mutex_;
 public:
 public:

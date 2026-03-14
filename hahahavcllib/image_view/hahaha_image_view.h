@@ -34,7 +34,8 @@
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
-
+class hahaha_mutex;
+//---------------------------------------------------------------------------
 class hahaha_image_view :
     public hahaha_image_view_action,
     public hahaha_image_view_event,
@@ -123,12 +124,14 @@ public:
     bool Is_Update_Ui_;
 
 public:
+
     // 加速，避免存取控件屬性
     int View_Width_;
     int View_Height_;
 public:
     std::unique_ptr<halib::bitmap_alloc_argb> Bitmap_Thumbnail_;
 public:
+
     std::unique_ptr<halib::bitmap_alloc_argb> Background_Color_Buffer_;
 	TColor Background_Color_Old_;
     double View_Ratio_Old_;

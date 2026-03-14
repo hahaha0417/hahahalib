@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------
 #include <utility>
 //---------------------------------------------------------------------------
-#include "hahaha_ui_messenge.h"
+#include "hahaha_ui_message.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
@@ -13,35 +13,35 @@
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
-hahaha_ui_messenge::hahaha_ui_messenge()
+hahaha_ui_message::hahaha_ui_message()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
-hahaha_ui_messenge::~hahaha_ui_messenge()
+hahaha_ui_message::~hahaha_ui_message()
 {
 
 }
 //---------------------------------------------------------------------------
-hahaha_ui_messenge::hahaha_ui_messenge(const hahaha_ui_messenge& hum)
+hahaha_ui_message::hahaha_ui_message(const hahaha_ui_message& hum)
 {
     Reset();
 	Copy(hum);
 }
 //---------------------------------------------------------------------------
-hahaha_ui_messenge::hahaha_ui_messenge(hahaha_ui_messenge&& hum) noexcept
+hahaha_ui_message::hahaha_ui_message(hahaha_ui_message&& hum) noexcept
 {
     Move(std::move(hum));
 }
 //---------------------------------------------------------------------------
-hahaha_ui_messenge& hahaha_ui_messenge::operator=(const hahaha_ui_messenge& hum)
+hahaha_ui_message& hahaha_ui_message::operator=(const hahaha_ui_message& hum)
 {
     Copy(hum);
 
 	return *this;
 }
 //---------------------------------------------------------------------------
-hahaha_ui_messenge& hahaha_ui_messenge::operator=(hahaha_ui_messenge&& hum) noexcept
+hahaha_ui_message& hahaha_ui_message::operator=(hahaha_ui_message&& hum) noexcept
 {
     if (this != &hum)
     {
@@ -51,26 +51,26 @@ hahaha_ui_messenge& hahaha_ui_messenge::operator=(hahaha_ui_messenge&& hum) noex
 	return *this;
 }
 //---------------------------------------------------------------------------
-void hahaha_ui_messenge::Copy(const hahaha_ui_messenge& hum)
+void hahaha_ui_message::Copy(const hahaha_ui_message& hum)
 {
     Handle_ = hum.Handle_;
 }
 //---------------------------------------------------------------------------
-void hahaha_ui_messenge::Move(hahaha_ui_messenge&& hum) noexcept
+void hahaha_ui_message::Move(hahaha_ui_message&& hum) noexcept
 {
     Handle_ = hum.Handle_;
 
     hum.Reset();
 }
 //---------------------------------------------------------------------------
-int hahaha_ui_messenge::Reset()
+int hahaha_ui_message::Reset()
 {
     Handle_ = NULL;
 
     return 0;
 }
 //---------------------------------------------------------------------------
-int hahaha_ui_messenge::Send_Message(
+int hahaha_ui_message::Send_Message(
     unsigned int message,
     int command,
     void* parameter
@@ -81,7 +81,7 @@ int hahaha_ui_messenge::Send_Message(
     return 0;
 }
 //---------------------------------------------------------------------------
-int hahaha_ui_messenge::Post_Message(
+int hahaha_ui_message::Post_Message(
     unsigned int message,
     int command,
     void* parameter

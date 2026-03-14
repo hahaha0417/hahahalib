@@ -47,7 +47,7 @@ object hahaha_image_view_form: Thahaha_image_view_form
       Top = 16
       Width = 1041
       Height = 540
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = #20027#35201

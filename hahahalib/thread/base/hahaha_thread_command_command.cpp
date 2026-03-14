@@ -31,41 +31,44 @@ hahaha_thread_command_command::~hahaha_thread_command_command()
 hahaha_thread_command_command::hahaha_thread_command_command(const hahaha_thread_command_command& htcc)
 {
     Reset();
-
-	Copy(htcc);
+    Copy(htcc);
 }
 //---------------------------------------------------------------------------
 hahaha_thread_command_command::hahaha_thread_command_command(hahaha_thread_command_command&& htcc) noexcept
 {
+    Reset();
     Move(std::move(htcc));
 }
 
 //---------------------------------------------------------------------------
 hahaha_thread_command_command& hahaha_thread_command_command::operator=(const hahaha_thread_command_command& htcc)
 {
-    Copy(htcc);
-
-	return *this;
+    if (this != &htcc)
+    {
+        Copy(htcc);
+    }
+    return *this;
 }
 //---------------------------------------------------------------------------
 hahaha_thread_command_command& hahaha_thread_command_command::operator=(hahaha_thread_command_command&& htcc) noexcept
 {
     if (this != &htcc)
     {
+        Reset();
         Move(std::move(htcc));
     }
-
-	return *this;
+    return *this;
 }
 //---------------------------------------------------------------------------
 void hahaha_thread_command_command::Copy(const hahaha_thread_command_command& htcc)
 {
-
+    Command_   = htcc.Command_;
+    Parameter_ = htcc.Parameter_;   // shallow copy（與原本一致）
 }
 //---------------------------------------------------------------------------
 void hahaha_thread_command_command::Move(hahaha_thread_command_command&& htcc) noexcept
 {
-    Command_ = htcc.Command_;
+    Command_   = htcc.Command_;
     Parameter_ = htcc.Parameter_;
 
     htcc.Reset();
@@ -73,10 +76,9 @@ void hahaha_thread_command_command::Move(hahaha_thread_command_command&& htcc) n
 //---------------------------------------------------------------------------
 int hahaha_thread_command_command::Reset()
 {
-    Command_ = -999999;
+    Command_   = -999999;
     Parameter_ = nullptr;
-
-
+    return 0;
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

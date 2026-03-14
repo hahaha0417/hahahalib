@@ -1,7 +1,7 @@
 ﻿//---------------------------------------------------------------------------
 
-#ifndef hahaha_ui_messengeH
-#define hahaha_ui_messengeH
+#ifndef hahaha_ui_messageH
+#define hahaha_ui_messageH
 //---------------------------------------------------------------------------
 #pragma once
 //---------------------------------------------------------------------------
@@ -12,18 +12,18 @@ namespace hahahalib
 {
 //---------------------------------------------------------------------------
 
-class hahaha_ui_messenge
+class hahaha_ui_message
 {
 public:
-	hahaha_ui_messenge();
-	~hahaha_ui_messenge();
+	hahaha_ui_message();
+	~hahaha_ui_message();
 
-	hahaha_ui_messenge(const hahaha_ui_messenge& hum);
-    hahaha_ui_messenge(hahaha_ui_messenge&& hum) noexcept;
-	hahaha_ui_messenge& operator=(const hahaha_ui_messenge& hum);
-	hahaha_ui_messenge& operator=(hahaha_ui_messenge&& hum) noexcept;
-	void Copy(const hahaha_ui_messenge& hum);
-    void Move(hahaha_ui_messenge&& hum) noexcept;
+	hahaha_ui_message(const hahaha_ui_message& hum);
+    hahaha_ui_message(hahaha_ui_message&& hum) noexcept;
+	hahaha_ui_message& operator=(const hahaha_ui_message& hum);
+	hahaha_ui_message& operator=(hahaha_ui_message&& hum) noexcept;
+	void Copy(const hahaha_ui_message& hum);
+    void Move(hahaha_ui_message&& hum) noexcept;
 
 
 public:
@@ -64,7 +64,7 @@ namespace halib
 namespace ui
 {
 //---------------------------------------------------------------------------
-typedef hahahalib::hahaha_ui_messenge message;
+typedef hahahalib::hahaha_ui_message message;
 
 
 

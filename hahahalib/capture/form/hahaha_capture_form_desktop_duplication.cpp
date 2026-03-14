@@ -1,7 +1,16 @@
 ﻿#pragma hdrstop
 #include "hahaha_capture_form_desktop_duplication.h"
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
+
+#if defined(__WIN32)
+    #pragma comment(lib, "d3d11.lib")
+	#pragma comment(lib, "dxgi.lib")
+#elif defined(__WIN64)
+    #pragma comment(lib, "d3d11.a")
+	#pragma comment(lib, "dxgi.a")
+#elif defined(__WIN64_MODERN)
+    #pragma comment(lib, "d3d11.lib")
+	#pragma comment(lib, "dxgi.lib")
+#endif
 #include <dwmapi.h>
 #ifndef DWMWA_EXTENDED_FRAME_BOUNDS
 #define DWMWA_EXTENDED_FRAME_BOUNDS 9

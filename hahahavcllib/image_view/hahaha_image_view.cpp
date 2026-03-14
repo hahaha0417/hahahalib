@@ -14,11 +14,15 @@
 #include <image_process\copy\hahaha_image_process_copy.h>
 #include <image_process\color\hahaha_image_process_color.h>
 #include <image_process\resize\hahaha_image_process_resize.h>
+#include <lock\hahaha_mutex.h>
 //---------------------------------------------------------------------------
 #include "hahaha_image_view.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+//---------------------------------------------------------------------------
+// 目前沒什麼錯
+// 水波紋或撕裂要找鋼體來測，不能用頭(有頭髮)
 //---------------------------------------------------------------------------
 //ha::Form_Image_View_->Set_Image_View(ha::Image_View_.get());
 //
@@ -200,6 +204,7 @@ int hahaha_image_view::Reset()
     }
     Background_Color_Buffer_->Resize(10, 10);
     Background_Color_Buffer_->Clear();
+
     // 第一次寬會不一樣，可以一樣顏色
 	Background_Color_Old_ = TColor(RGB(0, 0, 0));
 	//
@@ -335,7 +340,7 @@ int hahaha_image_view::Repaint()
 
 		if(h_ > 0)
 		{
-
+            // 會有水波紋，待查
             for(int j = 0; j < form_->view_image->Picture->Bitmap->Height; j++)
             {
                 unsigned char* ptr_src_ = (*Background_Color_Buffer_)[0];
@@ -343,6 +348,7 @@ int hahaha_image_view::Repaint()
 
                 memcpy(ptr_dst_, ptr_src_, Background_Color_Buffer_->Stride_);
             }
+
 
 
 		}
@@ -446,6 +452,7 @@ int hahaha_image_view::Repaint()
             //---------------------------------------------------------------------------
             if(!Is_View_Thumbnail_)
             {
+
                 if(Bitmap_->Bits_ == 8)
                 {
                     std::unique_ptr<halib::bitmap_alloc_gray> bitmap_gray_;
@@ -464,8 +471,10 @@ int hahaha_image_view::Repaint()
                             bitmap_gray_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
 
+
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
+
                             // 擷取區塊
                             halib_image::resize::Resize_Nearest(
                                 *(halib::bitmap_gray*)Bitmap_,
@@ -495,16 +504,17 @@ int hahaha_image_view::Repaint()
 //                            );
                         }
 
-
                     }
                     else if(View_Direction_ == halib_def::image_view_view_direction::ROTATE_90)
                     {
+
                         if(bitmap_gray_->Width_ != view_roi_.Width() ||
                             bitmap_gray_->Height_ != view_roi_.Height()
                         )
                         {
                             bitmap_gray_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
+
 
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
@@ -533,15 +543,18 @@ int hahaha_image_view::Repaint()
                                 halib::roi(0, 0, view_roi_.Width() - 1, view_roi_.Height() - 1)
                         	);
                         }
+
                     }
                     else if(View_Direction_ == halib_def::image_view_view_direction::ROTATE_180)
                     {
+
                         if(bitmap_gray_->Width_ != view_roi_.Width() ||
                             bitmap_gray_->Height_ != view_roi_.Height()
                         )
                         {
                             bitmap_gray_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
+
 
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
@@ -570,6 +583,7 @@ int hahaha_image_view::Repaint()
                                 halib::roi(0, 0, view_roi_.Width() - 1, view_roi_.Height() - 1)
                         	);
                         }
+
                     }
                     else if(View_Direction_ == halib_def::image_view_view_direction::ROTATE_270)
                     {
@@ -579,6 +593,7 @@ int hahaha_image_view::Repaint()
                         {
                             bitmap_gray_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
+
 
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
@@ -607,6 +622,7 @@ int hahaha_image_view::Repaint()
                                 halib::roi(0, 0, view_roi_.Width() - 1, view_roi_.Height() - 1)
                         	);
                         }
+
                     }
                     else if(View_Direction_ == halib_def::image_view_view_direction::HORIZONTAL_FLIP)
                     {
@@ -616,6 +632,7 @@ int hahaha_image_view::Repaint()
                         {
                             bitmap_gray_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
+
 
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
@@ -644,6 +661,7 @@ int hahaha_image_view::Repaint()
                                 halib::roi(0, 0, view_roi_.Width() - 1, view_roi_.Height() - 1)
                         	);
                         }
+
                     }
                     else if(View_Direction_ == halib_def::image_view_view_direction::VERTICAL_FLIP)
                     {
@@ -653,6 +671,7 @@ int hahaha_image_view::Repaint()
                         {
                             bitmap_gray_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
+
 
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
@@ -681,6 +700,7 @@ int hahaha_image_view::Repaint()
                                 halib::roi(0, 0, view_roi_.Width() - 1, view_roi_.Height() - 1)
                         	);
                         }
+
 					}
 
 					Bitmap_Thumbnail_->Resize(view_roi_.Width(), view_roi_.Height());
@@ -701,6 +721,7 @@ int hahaha_image_view::Repaint()
                     {
                         bitmap_rgb_.reset(new halib::bitmap_alloc_rgb);
                     }
+
 
                     // 由於定義不一樣，這裡直接寫，只有nearest，linear，cubic
                     if(View_Direction_ == halib_def::image_view_view_direction::NORMAL)
@@ -753,6 +774,7 @@ int hahaha_image_view::Repaint()
                         {
                             bitmap_rgb_->Resize(view_roi_.Width(), view_roi_.Height());
                         }
+
 
                         if(View_Thumbnail_Interpolation_ == halib_def::image_view_view_thumbnail_interpolation::NEAREST)
                         {
@@ -1200,6 +1222,7 @@ int hahaha_image_view::Repaint()
 	//---------------------------------------------------------------------------
 	if(Is_Repaint_)
 	{
+
         //---------------------------------------------------------------------------
 		{
 			int w_ = form_->view_image->Picture->Bitmap->Width;
@@ -1212,14 +1235,12 @@ int hahaha_image_view::Repaint()
 
 				temp_.Resize(w_, h_);
 
-
 				halib_image::copy::Copy(
 					*Bitmap_Thumbnail_,
 					halib::roi(0, 0, view_roi_.Width() - 1, view_roi_.Height() - 1),
 					temp_,
 					view_roi_
 				);
-
 				//---------------------------------------------------------------------------
 				//
 				//---------------------------------------------------------------------------
@@ -1231,16 +1252,20 @@ int hahaha_image_view::Repaint()
 
 	if(Is_Repaint_View_Image_)
 	{
+
 		//---------------------------------------------------------------------------
         // 不能在執行緒跑
 		form_->view_image->Repaint();
 
+
 	}
     if(Is_Invalidate_View_Image_)
 	{
+
 		//---------------------------------------------------------------------------
         // 不能在執行緒跑
 		form_->view_image->Invalidate();
+
 
 	}
 

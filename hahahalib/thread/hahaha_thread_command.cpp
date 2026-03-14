@@ -25,71 +25,7 @@ namespace hahahalib
 //}
 //thread_command_ha_.Close();
 //---------------------------------------------------------------------------
-hahaha_thread_command_command::hahaha_thread_command_command()
-{
-    Reset();
 
-}
-
-//---------------------------------------------------------------------------
-hahaha_thread_command_command::~hahaha_thread_command_command()
-{
-
-}
-
-//---------------------------------------------------------------------------
-
-hahaha_thread_command_command::hahaha_thread_command_command(const hahaha_thread_command_command& htcc)
-{
-    Reset();
-
-	Copy(htcc);
-}
-//---------------------------------------------------------------------------
-hahaha_thread_command_command::hahaha_thread_command_command(hahaha_thread_command_command&& htcc) noexcept
-{
-    Move(std::move(htcc));
-}
-
-//---------------------------------------------------------------------------
-hahaha_thread_command_command& hahaha_thread_command_command::operator=(const hahaha_thread_command_command& htcc)
-{
-    Copy(htcc);
-
-	return *this;
-}
-//---------------------------------------------------------------------------
-hahaha_thread_command_command& hahaha_thread_command_command::operator=(hahaha_thread_command_command&& htcc) noexcept
-{
-    if (this != &htcc)
-    {
-        Move(std::move(htcc));
-    }
-
-	return *this;
-}
-//---------------------------------------------------------------------------
-void hahaha_thread_command_command::Copy(const hahaha_thread_command_command& htcc)
-{
-
-}
-//---------------------------------------------------------------------------
-void hahaha_thread_command_command::Move(hahaha_thread_command_command&& htcc) noexcept
-{
-    Command_ = htcc.Command_;
-    Parameter_ = htcc.Parameter_;
-
-    htcc.Reset();
-}
-//---------------------------------------------------------------------------
-int hahaha_thread_command_command::Reset()
-{
-    Command_ = -999999;
-    Parameter_ = nullptr;
-
-
-}
-//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -113,21 +49,25 @@ hahaha_thread_command::hahaha_thread_command(const hahaha_thread_command& htc)
 //---------------------------------------------------------------------------
 hahaha_thread_command::hahaha_thread_command(hahaha_thread_command&& htc) noexcept
 {
-	Move(std::move(htc));
+	Reset();
+    Move(std::move(htc));
 
 }
 //---------------------------------------------------------------------------
 hahaha_thread_command& hahaha_thread_command::operator=(const hahaha_thread_command& htc)
 {
-	Copy(htc);
-
-	return *this;
+	if (this != &htc)
+    {
+        Copy(htc);
+    }
+    return *this;
 }
 //---------------------------------------------------------------------------
 hahaha_thread_command& hahaha_thread_command::operator=(hahaha_thread_command&& htc) noexcept
 {
 	if (this != &htc)
     {
+        Reset();
         Move(std::move(htc));
     }
 
@@ -136,22 +76,28 @@ hahaha_thread_command& hahaha_thread_command::operator=(hahaha_thread_command&& 
 //---------------------------------------------------------------------------
 void hahaha_thread_command::Copy(const hahaha_thread_command& htc)
 {
-
+    Thread_Id_   = htc.Thread_Id_;
+    Thread_      = htc.Thread_;
+    Event_Run_   = htc.Event_Run_;
+    Event_Wait_  = htc.Event_Wait_;
+    Event_Exit_  = htc.Event_Exit_;
+    Is_Close_    = htc.Is_Close_;
 }
 //---------------------------------------------------------------------------
 void hahaha_thread_command::Move(hahaha_thread_command&& htc) noexcept
 {
-    Thread_Id_ = htc.Thread_Id_;
-	Thread_ = htc.Thread_;
-    Event_Run_ = htc.Event_Run_;
-    Event_Wait_ = htc.Event_Wait_;
-	Event_Exit_ = htc.Event_Exit_;
-    Mutex_ = std::move(htc.Mutex_);
+    Thread_Id_   = htc.Thread_Id_;
+    Thread_      = htc.Thread_;
+    Event_Run_   = htc.Event_Run_;
+    Event_Wait_  = htc.Event_Wait_;
+    Event_Exit_  = htc.Event_Exit_;
+
+    Mutex_        = std::move(htc.Mutex_);
     Queue_Command_ = std::move(htc.Queue_Command_);
+
     Is_Close_ = htc.Is_Close_;
 
     htc.Reset();
-
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_command::Reset()
@@ -204,11 +150,12 @@ int hahaha_thread_command::Thread_Proc()
                 while(!Is_Close_ && !Queue_Command_.empty())
                 {
                     Mutex_->Lock();
-                    hahaha_thread_command_command* p = Queue_Command_.front().get();
+                    std::unique_ptr<hahaha_thread_command_command> command_ = std::move(Queue_Command_.front());
                     Queue_Command_.pop();
                     Mutex_->Un_Lock();
-                    Handle(p);
-                  
+
+                    Handle(command_);
+
                 }
 
 				ResetEvent(Event_Run_);
@@ -231,7 +178,8 @@ int hahaha_thread_command::Thread_Proc()
 
 }
 //---------------------------------------------------------------------------
-int hahaha_thread_command::Handle(hahahalib::hahaha_thread_command_command* p)
+int hahaha_thread_command::Handle(std::unique_ptr<hahahalib::hahaha_thread_command_command>& command)
+
 {
 	int eee = 0;
 

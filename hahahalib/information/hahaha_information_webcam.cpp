@@ -19,11 +19,23 @@
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 #include "hahaha_information_webcam.h"
+#if defined(__WIN32)
+    #pragma comment(lib, "mfplat.lib")
+    #pragma comment(lib, "mf.lib")
+    #pragma comment(lib, "mfreadwrite.lib")
+    #pragma comment(lib, "mfuuid.lib")
+#elif defined(__WIN64)
+    #pragma comment(lib, "mfplat.a")
+    #pragma comment(lib, "mf.a")
+    #pragma comment(lib, "mfreadwrite.a")
+    #pragma comment(lib, "mfuuid.a")
+#elif defined(__WIN64_MODERN)
+    #pragma comment(lib, "mfplat.lib")
+    #pragma comment(lib, "mf.lib")
+    #pragma comment(lib, "mfreadwrite.lib")
+    #pragma comment(lib, "mfuuid.lib")
+#endif
 
-#pragma comment(lib, "mfplat.lib")
-#pragma comment(lib, "mf.lib")
-#pragma comment(lib, "mfreadwrite.lib")
-#pragma comment(lib, "mfuuid.lib")
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 

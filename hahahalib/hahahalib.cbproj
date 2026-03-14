@@ -4,12 +4,11 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <TargetedPlatforms>1048579</TargetedPlatforms>
         <AppType>StaticLibrary</AppType>
         <ProjectName Condition="'$(ProjectName)'==''">hahahalib</ProjectName>
-        <CC_Suffix Condition="'$(CC_Suffix)'==''">c</CC_Suffix>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -54,7 +53,7 @@
         <_TCHARMapping>char</_TCHARMapping>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <BCC_EnableBatchCompilation>true</BCC_EnableBatchCompilation>
-        <IncludePath>image_process_composite\color\;define\dshow\;gps\;camera\webcam\;rs232\;capture\webcam\;capture\form\;capture\desktop\;information\webcam\;information\process\;information\form\;information\monitor\;information\;ui\;thread_pool\base\;thread\base\;thread\box\;queue_timer\;define\shape\;bitmap\function\base\;bitmap\function\;shape\function\;function\shape\;image_process\alpha\;define\image_process\alpha\;function\bitmap\;bitmap\base\;bitmap\;function\image\;image_process\copy\;image_process\set\;define\image_process\warp_affine\;image_process\wrap_affine\;define\image_process\rotate\;image_process\rotate\;shape\;define\image_process\resize\;image_process\resize\;image_process\color\;image_process\;define\bitmap\;image\base\;image\pixel\;image\image\;image\;define\xml\;process\;thread\;thread_pool\;file\;empty\;xml\;parameter_deal\ini\;parameter_deal\xml\;parameter_deal\;ini\;function\;token\;convert\;define\;lock\;sync\;timer\;$(hahahalib)\hahahalib;$(hahahalib)\hahahatestlib;$(hahahalib)\hahahavcllib;$(hahahalib)\hahahadumplib;$(hahahalib)\hahahagarbagelib;$(hahahalib)\hahaharecyclelib;$(hahaha)\include;$(hahaha)\include\iconv;$(hahaha)\include\ipp;$(hahaha)\include\ipp\ipp;$(IncludePath)</IncludePath>
+        <IncludePath>capture\webcam\direct_show\;image_process_composite\color\;define\dshow\;gps\;camera\webcam\;rs232\;capture\webcam\;capture\form\;capture\desktop\;information\webcam\;information\process\;information\form\;information\monitor\;information\;ui\;thread_pool\base\;thread\base\;thread\box\;queue_timer\;define\shape\;bitmap\function\base\;bitmap\function\;shape\function\;function\shape\;image_process\alpha\;define\image_process\alpha\;function\bitmap\;bitmap\base\;bitmap\;function\image\;image_process\copy\;image_process\set\;define\image_process\warp_affine\;image_process\wrap_affine\;define\image_process\rotate\;image_process\rotate\;shape\;define\image_process\resize\;image_process\resize\;image_process\color\;image_process\;define\bitmap\;image\base\;image\pixel\;image\image\;image\;define\xml\;process\;thread\;thread_pool\;file\;empty\;xml\;parameter_deal\ini\;parameter_deal\xml\;parameter_deal\;ini\;function\;token\;convert\;define\;lock\;sync\;timer\;$(hahahalib)\hahahalib;$(hahahalib)\hahahatestlib;$(hahahalib)\hahahavcllib;$(hahahalib)\hahahadumplib;$(hahahalib)\hahahagarbagelib;$(hahahalib)\hahaharecyclelib;$(hahaha)\include;$(hahaha)\include\iconv;$(hahaha)\include\ipp;$(hahaha)\include\ipp\ipp;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>$(hahaha)\lib\$(Platform);$(hahaha)\lib\$(Platform)\ipp;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <VerInfo_Locale>1028</VerInfo_Locale>
         <RunBCCOutOfProcess>true</RunBCCOutOfProcess>
@@ -139,6 +138,10 @@
         <CppCompile Include="capture\form\hahaha_capture_form_gdi.cpp">
             <DependentOn>capture\form\hahaha_capture_form_gdi.h</DependentOn>
             <BuildOrder>78</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="capture\webcam\direct_show\hahaha_capture_webcam_direct_show_item.cpp">
+            <DependentOn>capture\webcam\direct_show\hahaha_capture_webcam_direct_show_item.h</DependentOn>
+            <BuildOrder>87</BuildOrder>
         </CppCompile>
         <CppCompile Include="capture\webcam\hahaha_capture_webcam_direct_show.cpp">
             <DependentOn>capture\webcam\hahaha_capture_webcam_direct_show.h</DependentOn>
@@ -419,6 +422,10 @@
         </CppCompile>
         <CppCompile Include="thread_pool\hahaha_thread_pool_queue_timer.cpp">
             <DependentOn>thread_pool\hahaha_thread_pool_queue_timer.h</DependentOn>
+            <BuildOrder>88</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="thread_pool\hahaha_thread_pool_time_set_event_timer.cpp">
+            <DependentOn>thread_pool\hahaha_thread_pool_time_set_event_timer.h</DependentOn>
             <BuildOrder>65</BuildOrder>
         </CppCompile>
         <CppCompile Include="timer\hahaha_timer.cpp">
@@ -441,8 +448,8 @@
             <DependentOn>token\hahaha_token_wstring.h</DependentOn>
             <BuildOrder>10</BuildOrder>
         </CppCompile>
-        <CppCompile Include="ui\hahaha_ui_messenge.cpp">
-            <DependentOn>ui\hahaha_ui_messenge.h</DependentOn>
+        <CppCompile Include="ui\hahaha_ui_message.cpp">
+            <DependentOn>ui\hahaha_ui_message.h</DependentOn>
             <BuildOrder>67</BuildOrder>
         </CppCompile>
         <CppCompile Include="xml\hahaha_xml.cpp">
@@ -576,16 +583,22 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\work\hahahalib\Win32\Debug\hahahalib.tds" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="Win32">
-                        <RemoteName>hahahalib.tds</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="..\..\..\work\hahahalib\Win64\Debug\hahahalib.a" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="..\..\..\work\hahahalib\Win64\Debug\hahahalib.a" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
                         <RemoteName>hahahalib.a</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\work\hahahalib\Win64x\Debug\hahahalib.lib" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64x">
+                        <RemoteName>hahahalib.lib</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\work\hahahalib\Win64x\Release\hahahalib.lib" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64x">
+                        <RemoteName>hahahalib.lib</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -597,6 +610,18 @@
                 </DeployFile>
                 <DeployFile LocalName="hahahalib.html" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="hahahalib.html" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64x">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="hahahalib.html" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win64x">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>

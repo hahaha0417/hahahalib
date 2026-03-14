@@ -3,9 +3,17 @@
 #pragma hdrstop
 //---------------------------------------------------------------------------
 #include "hahaha_capture_desktop_desktop_duplication.h"
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
 
+#if defined(__WIN32)
+    #pragma comment(lib, "d3d11.lib")
+	#pragma comment(lib, "dxgi.lib")
+#elif defined(__WIN64)
+    #pragma comment(lib, "d3d11.a")
+	#pragma comment(lib, "dxgi.a")
+#elif defined(__WIN64_MODERN)
+    #pragma comment(lib, "d3d11.lib")
+	#pragma comment(lib, "dxgi.lib")
+#endif
 // desktop 有更新才會有畫面
 //---------------------------------------------------------------------------
 namespace hahahalib

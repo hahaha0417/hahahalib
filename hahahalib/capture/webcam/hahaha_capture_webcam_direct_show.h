@@ -25,6 +25,8 @@
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
+class hahaha_capture_webcam_direct_show_item;
+//---------------------------------------------------------------------------
 
 class hahaha_capture_webcam_direct_show
 {
@@ -48,8 +50,10 @@ public:
 	int Start();
     void Stop();
 	int Grab(hahahalib::bitmap_rgb& bitmap);
+    int Grab(hahahalib::bitmap_argb& bitmap);
     void Close();
 	int List_Format(std::vector<std::wstring>& list);
+    int List_Format(std::vector<hahahalib::hahaha_capture_webcam_direct_show_item>& list);
 	// 圓剛那隻只有MJPG
 	//MEDIASUBTYPE_MJPG
 	////MEDIASUBTYPE_RGB24
@@ -71,6 +75,7 @@ public:
     int Height_;
     int Camera_Index_;
     GUID Sub_Type_;
+
 public:
     // 上下翻轉
     bool Flip_;
