@@ -81,8 +81,8 @@ void CALLBACK hahaha_thread_pool_time_set_event_timer::Timer_Callback(
     DWORD_PTR dw2
 )
 {
-    hahaha_thread_pool_time_set_event_timer* timer_ =
-        reinterpret_cast<hahaha_thread_pool_time_set_event_timer*>(user);
+	hahaha_thread_pool_time_set_event_timer* timer_ =
+		reinterpret_cast<hahaha_thread_pool_time_set_event_timer*>(user);
 
     if (timer_)
     {
@@ -100,7 +100,7 @@ int hahaha_thread_pool_time_set_event_timer::Create(DWORD due_timer, DWORD perio
 {
     Period_ = period;
 
-    Timer_ID_ = timeSetEvent(
+	Timer_ID_ = timeSetEvent(
         period,                 // 週期
         1,                      // 最小解析度
         Timer_Callback,         // callback
@@ -108,7 +108,7 @@ int hahaha_thread_pool_time_set_event_timer::Create(DWORD due_timer, DWORD perio
         TIME_PERIODIC | TIME_CALLBACK_FUNCTION
     );
 
-    return (Timer_ID_ != 0) ? 0 : -1;;
+	return (Timer_ID_ != 0) ? 0 : -1;;
 }
 //---------------------------------------------------------------------------
 int hahaha_thread_pool_time_set_event_timer::Change_Timer(DWORD due_timer, DWORD period)
@@ -119,12 +119,12 @@ int hahaha_thread_pool_time_set_event_timer::Change_Timer(DWORD due_timer, DWORD
 //---------------------------------------------------------------------------
 int hahaha_thread_pool_time_set_event_timer::Close()
 {
-    if (Timer_ID_ != 0)
+	if (Timer_ID_ != 0)
     {
         timeKillEvent(Timer_ID_);
         Timer_ID_ = 0;
     }
-    return 0;
+	return 0;
 }
 //---------------------------------------------------------------------------
 
