@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <image_process\copy\hahaha_image_process_copy.h>
 #include <image_process\color\hahaha_image_process_color.h>
-
+#include <bitmap\hahaha_c_bitmap_alloc.h>
 #include "hahaha_image_process_composite_color.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -88,7 +88,7 @@ halib_def::result hahaha_image_process_composite_color::YUV422_To_ARGB(const hal
 #endif
     halib_def::result result_ = halib_def::result::SUCCESS;
 
-    halib::bitmap_rgb temp_;
+    halib::bitmap_alloc_rgb temp_;
     temp_.Resize(roi_src.Width(), roi_src.Height());
 
     result_ = halib_image::color::YUV422_To_RGB(src,

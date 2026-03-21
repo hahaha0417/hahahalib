@@ -382,7 +382,7 @@ int hahaha_rs232::Write(const std::wstring& data, DWORD& bytes_written)
 		return 0;
 	}
 
-	std::string s_ = hahahalib::ws2s(data);
+	std::string s_ = hahahalib::wstring_to_utf8(data);
 	if (s_.empty())
 	{
 		bytes_written = 0;
@@ -489,7 +489,20 @@ int hahaha_rs232::Read(std::wstring& data, std::size_t max_wchars, DWORD& bytes_
 //---------------------------------------------------------------------------
 int hahaha_rs232::Read_Line(std::string& line)
 {
-	if (!Is_Open())
+    if (!Is_Open())
+    {
+        return -1;
+    }
+
+    DWORD mask_ = 0;
+
+    // 等待 RS232 有資料可讀
+    if (!WaitCommEvent(Handle_, &mask_, nullptr))
+    {
+        return -1;
+    }
+
+    if (!(mask_ & EV_RXCHAR))
     {
         return -1;
     }
@@ -499,23 +512,35 @@ int hahaha_rs232::Read_Line(std::string& line)
 
     while (true)
     {
-        int ret_ = Read(&ch_, 1, bytes_read_);
-        if (ret_ != 0)
+        // 等待資料可讀
+        DWORD wait_ = WaitForSingleObject(Handle_, INFINITE);
+        if (wait_ != WAIT_OBJECT_0)
+            return -1;
+
+        BOOL ok_ = ReadFile(
+            Handle_,
+            &ch_,
+            1,
+            &bytes_read_,
+            nullptr
+        );
+
+        if (!ok_)
         {
-            return ret_;
+            return -1;
         }
 
         if (bytes_read_ == 0)
         {
-            continue; // 沒資料，繼續等
+            continue;
         }
 
         if (ch_ == '\n')
         {
-            break; // 一行結束
+            break;
         }
 
-        if (ch_ != '\r') // 避免 CRLF 的 \r
+        if (ch_ != '\r')
         {
             line.push_back(ch_);
         }
@@ -523,6 +548,7 @@ int hahaha_rs232::Read_Line(std::string& line)
 
     return 0;
 }
+
 //---------------------------------------------------------------------------
 int hahaha_rs232::Read_Line(std::wstring& line)
 {
@@ -533,7 +559,7 @@ int hahaha_rs232::Read_Line(std::wstring& line)
         return ret_;
     }
 
-    line = hahahalib::s2ws(tmp_);
+    line = hahahalib::utf8_to_wstring(tmp_);
     return 0;
 }
 

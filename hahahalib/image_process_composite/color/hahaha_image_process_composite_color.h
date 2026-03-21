@@ -29,14 +29,14 @@ public:
     //---------------------------------------------------------------------------
 
     //---------------------------------------------------------------------------
-    halib_def::result ARGB_To_YUV422(const halib::bitmap_argb& src,
+    static halib_def::result ARGB_To_YUV422(const halib::bitmap_argb& src,
         const halib::roi& roi_src,
         halib::bitmap_yuy2& dst,
         const halib::roi& roi_dst
     );
 
     //---------------------------------------------------------------------------
-    halib_def::result YUV422_To_ARGB(const halib::bitmap_yuy2& src,
+    static halib_def::result YUV422_To_ARGB(const halib::bitmap_yuy2& src,
         const halib::roi& roi_src,
         halib::bitmap_argb& dst,
         const halib::roi& roi_dst

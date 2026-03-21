@@ -7,7 +7,7 @@
 #include <image_process\copy\hahaha_image_process_copy.h>
 #include <capture\webcam\direct_show\hahaha_capture_webcam_direct_show_item.h>
 //---------------------------------------------------------------------------
-#include "hahaha_capture_webcam_direct_show.h"
+#include "hahaha_capture_webcam_direct_show_origin.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
@@ -43,77 +43,79 @@
 //capture_webcam_direct_show_.Close();
 //CoUninitialize();
 //---------------------------------------------------------------------------
+// 直接取yuy2，用執行緒跑
+//---------------------------------------------------------------------------
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
 
 
 //---------------------------------------------------------------------------
-hahaha_capture_webcam_direct_show::hahaha_capture_webcam_direct_show()
+hahaha_capture_webcam_direct_show_origin::hahaha_capture_webcam_direct_show_origin()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
-hahaha_capture_webcam_direct_show::~hahaha_capture_webcam_direct_show()
+hahaha_capture_webcam_direct_show_origin::~hahaha_capture_webcam_direct_show_origin()
 {
 
 }
 //---------------------------------------------------------------------------
-hahaha_capture_webcam_direct_show::hahaha_capture_webcam_direct_show(const hahaha_capture_webcam_direct_show& hcwds)
+hahaha_capture_webcam_direct_show_origin::hahaha_capture_webcam_direct_show_origin(const hahaha_capture_webcam_direct_show_origin& hcwdso)
 {
     Reset();
-    Copy(hcwds);
+    Copy(hcwdso);
 }
 //---------------------------------------------------------------------------
-hahaha_capture_webcam_direct_show::hahaha_capture_webcam_direct_show(hahaha_capture_webcam_direct_show&& hcwds) noexcept
+hahaha_capture_webcam_direct_show_origin::hahaha_capture_webcam_direct_show_origin(hahaha_capture_webcam_direct_show_origin&& hcwdso) noexcept
 {
-    Move(std::move(hcwds));
+    Move(std::move(hcwdso));
 }
 //---------------------------------------------------------------------------
-hahaha_capture_webcam_direct_show& hahaha_capture_webcam_direct_show::operator=(const hahaha_capture_webcam_direct_show& hcwds)
+hahaha_capture_webcam_direct_show_origin& hahaha_capture_webcam_direct_show_origin::operator=(const hahaha_capture_webcam_direct_show_origin& hcwdso)
 {
-    Copy(hcwds);
+    Copy(hcwdso);
     return *this;
 }
 //---------------------------------------------------------------------------
-hahaha_capture_webcam_direct_show& hahaha_capture_webcam_direct_show::operator=(hahaha_capture_webcam_direct_show&& hcwds) noexcept
+hahaha_capture_webcam_direct_show_origin& hahaha_capture_webcam_direct_show_origin::operator=(hahaha_capture_webcam_direct_show_origin&& hcwdso) noexcept
 {
-    if (this != &hcwds)
+    if (this != &hcwdso)
     {
-        Move(std::move(hcwds));
+        Move(std::move(hcwdso));
     }
 
     return *this;
 }
 //---------------------------------------------------------------------------
-void hahaha_capture_webcam_direct_show::Copy(const hahaha_capture_webcam_direct_show& hcwds)
+void hahaha_capture_webcam_direct_show_origin::Copy(const hahaha_capture_webcam_direct_show_origin& hcwdso)
 {
     // 不複製 DirectShow 狀態
 }
 //---------------------------------------------------------------------------
-void hahaha_capture_webcam_direct_show::Move(hahaha_capture_webcam_direct_show&& hcwds) noexcept
+void hahaha_capture_webcam_direct_show_origin::Move(hahaha_capture_webcam_direct_show_origin&& hcwdso) noexcept
 {
-    Graph_ = std::move(hcwds.Graph_);
-    Builder_ = std::move(hcwds.Builder_);
-    Media_Control_ = std::move(hcwds.Media_Control_);
-    Camera_Filter_ = std::move(hcwds.Camera_Filter_);
-    Sample_Grabber_Filter_ = std::move(hcwds.Sample_Grabber_Filter_);
-    Sample_Grabber_ = std::move(hcwds.Sample_Grabber_);
+    Graph_ = std::move(hcwdso.Graph_);
+    Builder_ = std::move(hcwdso.Builder_);
+    Media_Control_ = std::move(hcwdso.Media_Control_);
+    Camera_Filter_ = std::move(hcwdso.Camera_Filter_);
+    Sample_Grabber_Filter_ = std::move(hcwdso.Sample_Grabber_Filter_);
+    Sample_Grabber_ = std::move(hcwdso.Sample_Grabber_);
 
-    Buffer_Size_ = hcwds.Buffer_Size_;
+    Buffer_Size_ = hcwdso.Buffer_Size_;
 
-    Width_ = hcwds.Width_;
-    Height_ = hcwds.Height_;
-    Camera_Index_ = hcwds.Camera_Index_;
+    Width_ = hcwdso.Width_;
+    Height_ = hcwdso.Height_;
+    Camera_Index_ = hcwdso.Camera_Index_;
 
-    Flip_ = hcwds.Flip_;
-    Is_Open_ = hcwds.Is_Open_;
-    Sub_Type_ = hcwds.Sub_Type_;
+    Flip_ = hcwdso.Flip_;
+    Is_Open_ = hcwdso.Is_Open_;
+    Sub_Type_ = hcwdso.Sub_Type_;
 
-    hcwds.Buffer_Size_ = 0;
+    hcwdso.Buffer_Size_ = 0;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Reset()
+int hahaha_capture_webcam_direct_show_origin::Reset()
 {
     Graph_.reset();
     Builder_.reset();
@@ -135,7 +137,7 @@ int hahaha_capture_webcam_direct_show::Reset()
     return 0;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int height, GUID sub_type)
+int hahaha_capture_webcam_direct_show_origin::Open(int camera_index, int width, int height)
 {
     if(Is_Open_)
     {
@@ -235,10 +237,9 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     Graph_->AddFilter(Camera_Filter_.get(), L"Video Capture");
 
     // 4) 設定攝影機格式（必須在加入 SampleGrabber 之前）
-    if (!Set_Format(width, height, sub_type))
+    if (!Set_Format(width, height))
     {
-        // 若失敗，可考慮 fallback MJPEG
-        // Set_Format(width_, height_, MEDIASUBTYPE_MJPG);
+        return -1;
     }
 
     // 5) 建立 SampleGrabber Filter
@@ -267,13 +268,28 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     	(void**)&samble_grabber_
     );
 
+
     Sample_Grabber_.reset(samble_grabber_);
 
-    // 7) SampleGrabber 設成 MEDIASUBTYPE_RGB24
+    // ----------------------
+    // ★ 在這裡加入 Callback
+    // ----------------------
+    Callback_ = std::make_shared<hahaha_capture_webcam_direct_show_origin_callback_grabber>();
+    Sample_Grabber_->SetCallback(Callback_.get(), 1); // 1 = BufferCB
+    Callback_->On_Frame = [&](double time, BYTE* buffer, long len)
+    {
+        // buffer = YUY2 frame
+        // len = Width_ * Height_ * 2
+
+        this->Callback_Grabber(time, buffer, len);
+    };
+
+
+    // 7) SampleGrabber 設成 MEDIASUBTYPE_YUY2
     AM_MEDIA_TYPE mt_ = {};
     ZeroMemory(&mt_, sizeof(mt_));
     mt_.majortype = MEDIATYPE_Video;
-    mt_.subtype = MEDIASUBTYPE_RGB24;
+    mt_.subtype = MEDIASUBTYPE_YUY2;
     Sample_Grabber_->SetMediaType(&mt_);
 
     // 8) RenderStream（建立整個 Graph）
@@ -313,13 +329,18 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     Camera_Index_ = camera_index;
     Width_ = width;
     Height_ = height;
-    Sub_Type_ = sub_type;
+    Sub_Type_ = MEDIASUBTYPE_YUY2;
 
     return hr_;
 }
+//---------------------------------------------------------------------------
+void hahaha_capture_webcam_direct_show_origin::Callback_Grabber(double time, BYTE* buffer, long len)
+{
+
+}
 
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Start()
+int hahaha_capture_webcam_direct_show_origin::Start()
 {
 	HRESULT hr_ = Media_Control_->Run();
     if (hr_ == S_OK || hr_ == S_FALSE)
@@ -335,12 +356,14 @@ int hahaha_capture_webcam_direct_show::Start()
     return hr_;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
+int hahaha_capture_webcam_direct_show_origin::Grab(hahahalib::bitmap_yuy2& bitmap)
 {
     if(!Is_Open_)
     {
         return -1;
     }
+
+
 
     if(bitmap.Size_ != Buffer_Size_)
     {
@@ -349,84 +372,14 @@ int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
 
 
 
-    if(Flip_)
-    {
-    	hahahalib::bitmap_alloc_rgb bitmap_temp_;
-        bitmap_temp_.Resize(bitmap.Width_, bitmap.Height_);
-        Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, (long*)bitmap_temp_.Image_Ptr_);
-
-        halib_image::warp_affine_rotate::Rotate_Nearest_Vertical_Flip(
-            bitmap_temp_,
-			halib::roi(0, 0, bitmap_temp_.Width_ - 1, bitmap_temp_.Height_ - 1),
-            bitmap,
-            halib::roi(0, 0, bitmap.Width_ - 1, bitmap.Height_ - 1)
-        );
-    }
-    else
-    {
-        Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, (long*)bitmap.Image_Ptr_);
-    }
+    Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, (long*)bitmap.Image_Ptr_);
 
     return 0;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_argb& bitmap)
-{
-    if(!Is_Open_)
-    {
-        return -1;
-    }
 
-    HRESULT hr_ = Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, NULL);
-
-    if(bitmap.Size_ != Buffer_Size_ / 3 * 4)
-    {
-        return -1;
-    }
-
-
-
-    if(Flip_)
-    {
-    	hahahalib::bitmap_alloc_rgb bitmap_temp_;
-        bitmap_temp_.Resize(bitmap.Width_, bitmap.Height_);
-        HRESULT hr_ = Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, (long*)bitmap_temp_.Image_Ptr_);
-
-        hahahalib::bitmap_alloc_rgb bitmap_temp2_;
-        bitmap_temp2_.Resize(bitmap.Width_, bitmap.Height_);
-
-        halib_image::warp_affine_rotate::Rotate_Nearest_Vertical_Flip(
-            bitmap_temp_,
-			halib::roi(0, 0, bitmap_temp_.Width_ - 1, bitmap_temp_.Height_ - 1),
-            bitmap_temp2_,
-            halib::roi(0, 0, bitmap_temp2_.Width_ - 1, bitmap_temp2_.Height_ - 1)
-        );
-
-        halib_image::copy::Copy(
-            bitmap_temp2_,
-			halib::roi(0, 0, bitmap_temp2_.Width_ - 1, bitmap_temp2_.Height_ - 1),
-            bitmap,
-            halib::roi(0, 0, bitmap.Width_ - 1, bitmap.Height_ - 1)
-        );
-    }
-    else
-    {
-        hahahalib::bitmap_alloc_rgb bitmap_temp_;
-        bitmap_temp_.Resize(bitmap.Width_, bitmap.Height_);
-        HRESULT hr_ = Sample_Grabber_->GetCurrentBuffer(&Buffer_Size_, (long*)bitmap_temp_.Image_Ptr_);
-
-        halib_image::copy::Copy(
-            bitmap_temp_,
-			halib::roi(0, 0, bitmap_temp_.Width_ - 1, bitmap_temp_.Height_ - 1),
-            bitmap,
-            halib::roi(0, 0, bitmap.Width_ - 1, bitmap.Height_ - 1)
-        );
-    }
-
-    return 0;
-}
 //---------------------------------------------------------------------------
-void hahaha_capture_webcam_direct_show::Stop()
+void hahaha_capture_webcam_direct_show_origin::Stop()
 {
     if (Media_Control_)
     {
@@ -436,7 +389,7 @@ void hahaha_capture_webcam_direct_show::Stop()
 
 }
 //---------------------------------------------------------------------------
-void hahaha_capture_webcam_direct_show::Close()
+void hahaha_capture_webcam_direct_show_origin::Close()
 {
     Sample_Grabber_.reset();
     Sample_Grabber_Filter_.reset();
@@ -450,7 +403,7 @@ void hahaha_capture_webcam_direct_show::Close()
 
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::List_Format(std::vector<std::wstring>& list)
+int hahaha_capture_webcam_direct_show_origin::List_Format(std::vector<std::wstring>& list)
 {
 	if (!Camera_Filter_)
     {
@@ -496,26 +449,11 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<std::wstring>& li
 
                 std::wstring fmt_;
 
-                if (sub_type_ == MEDIASUBTYPE_RGB24)
-                {
-                    fmt_ = L"RGB24";
-                }
-                else if (sub_type_ == MEDIASUBTYPE_YUY2)
+                if (sub_type_ == MEDIASUBTYPE_YUY2)
                 {
                     fmt_ = L"YUY2";
                 }
-                else if (sub_type_ == MEDIASUBTYPE_MJPG)
-                {
-                    fmt_ = L"MJPEG";
-                }
-                else if (sub_type_ == MEDIASUBTYPE_NV12)
-                {
-                    fmt_ = L"NV12";
-                }
-                else
-                {
-                    fmt_ = L"OTHER";
-                }
+                
 
                 wchar_t buf_[128];
                 swprintf(buf_, 128, L"%dx%d %s %d-bit", width_, height_, fmt_.c_str(), bit_);
@@ -545,7 +483,7 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<std::wstring>& li
     return hr_;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha_capture_webcam_direct_show_item>& list)
+int hahaha_capture_webcam_direct_show_origin::List_Format(std::vector<hahahalib::hahaha_capture_webcam_direct_show_item>& list)
 {
     if (!Camera_Filter_)
     {
@@ -595,25 +533,9 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha
 
                 std::wstring fmt_;
 
-                if (sub_type_ == MEDIASUBTYPE_RGB24)
-                {
-                    fmt_ = L"RGB24";
-                }
-                else if (sub_type_ == MEDIASUBTYPE_YUY2)
+                if (sub_type_ == MEDIASUBTYPE_YUY2)
                 {
                     fmt_ = L"YUY2";
-                }
-                else if (sub_type_ == MEDIASUBTYPE_MJPG)
-                {
-                    fmt_ = L"MJPEG";
-                }
-                else if (sub_type_ == MEDIASUBTYPE_NV12)
-                {
-                    fmt_ = L"NV12";
-                }
-                else
-                {
-                    fmt_ = L"OTHER";
                 }
 
                 wchar_t description_[128];
@@ -655,7 +577,7 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha
     return hr_;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID sub_type)
+int hahaha_capture_webcam_direct_show_origin::Set_Format(int width, int height)
 {
     if (!Camera_Filter_ || !Builder_)
     {
@@ -695,11 +617,8 @@ int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID su
 
         // 如果你真的一定要指定 subtype，可以試著改這裡
         // 但有些驅動不喜歡被改 subtype，會直接失敗
-        if (IsEqualGUID(sub_type, MEDIASUBTYPE_YUY2) ||
-            IsEqualGUID(sub_type, MEDIASUBTYPE_MJPG))
-        {
-            mt_->subtype = sub_type;
-        }
+        mt_->subtype = MEDIASUBTYPE_YUY2;
+
     }
 
     hr_ = config_->SetFormat(mt_);
@@ -720,7 +639,7 @@ int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID su
 
     Width_ = width;
     Height_ = height;
-    Sub_Type_ = sub_type;
+    Sub_Type_ = MEDIASUBTYPE_YUY2;
 
     return SUCCEEDED(hr_);
 }
