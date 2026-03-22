@@ -5,12 +5,16 @@
 //---------------------------------------------------------------------------
 
 #if defined(__WIN32)
+    //----------------------------------------------
 	#pragma comment(lib, "hahahalib.lib")
 	#pragma comment(lib, "hahahatestlib.lib")
 	#pragma comment(lib, "hahahavcllib.lib")
 	#pragma comment(lib, "hahahadumplib.lib")
 	#pragma comment(lib, "hahahagarbagelib.lib")
 	#pragma comment(lib, "hahaharecyclelib.lib")
+    //----------------------------------------------
+    // 指令集包
+    #pragma comment(lib, "hahahaISAlib.lib")
     //----------------------------------------------
     // ipp
     //----------------------------------------------
@@ -37,6 +41,9 @@
 	#pragma comment(lib, "hahahagarbagelib.a")
 	#pragma comment(lib, "hahaharecyclelib.a")
     //----------------------------------------------
+    // 指令集包
+    #pragma comment(lib, "hahahaISAlib.a")
+    //----------------------------------------------
     // ipp
     //----------------------------------------------
     #pragma comment(lib, "ippcore.a")
@@ -61,6 +68,9 @@
 	#pragma comment(lib, "hahahadumplib.lib")
 	#pragma comment(lib, "hahahagarbagelib.lib")
 	#pragma comment(lib, "hahaharecyclelib.lib")
+    //----------------------------------------------
+    // 指令集包
+    #pragma comment(lib, "hahahaISAlib.lib")
     //----------------------------------------------
     // ipp
     //----------------------------------------------

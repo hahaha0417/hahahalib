@@ -5,7 +5,7 @@
 #include <ippcc.h>
 #include <ippi.h>
 
-
+#include <image_process\color\hahaha_isa_image_process_color.h>
 #include "hahaha_image_process_color.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -476,6 +476,84 @@ halib_def::result hahaha_image_process_color::YVYU_To_YUY2(const halib::bitmap_u
     return halib_def::result::SUCCESS;
 }
 //---------------------------------------------------------------------------
+halib_def::result hahaha_image_process_color::ARGB_To_YUV422(const halib::bitmap_argb& src,
+    const halib::roi& roi_src,
+    halib::bitmap_yuv422& dst,
+    const halib::roi& roi_dst
+)
+{
+#if defined(_DEBUG)
+    assert(roi_src.X1_ >= 0 && roi_src.Y1_ >= 0 &&
+        roi_src.X2_ < src.Width_ && roi_src.Y2_ < src.Height_
+    );
+    assert(roi_dst.X1_ >= 0 && roi_dst.Y1_ >= 0 &&
+        roi_dst.X2_ < dst.Width_ && roi_dst.Y2_ < dst.Height_
+    );
+    assert(roi_src.Width() == roi_dst.Width() &&
+    	roi_src.Height() == roi_dst.Height()
+    );
+    assert((roi_src.Width() & 1) == 0);
+    assert((roi_dst.Width() & 1) == 0);
+#endif
+    halib_def::result result_ = halib_def::result::SUCCESS;
+//
+//
+//
+//    result_ = haISAlib_image::color::RGB_To_YUV422(temp_,
+//        halib::roi(0, 0, roi_src.Width() - 1, roi_src.Height() - 1),
+//        dst,
+//        roi_dst
+//    );
+
+    return result_;
+}
+//---------------------------------------------------------------------------
+halib_def::result hahaha_image_process_color::YUV422_To_ARGB(const halib::bitmap_yuv422& src,
+    const halib::roi& roi_src,
+    halib::bitmap_argb& dst,
+    const halib::roi& roi_dst
+)
+{
+#if defined(_DEBUG)
+    assert(roi_src.X1_ >= 0 && roi_src.Y1_ >= 0 &&
+        roi_src.X2_ < src.Width_ && roi_src.Y2_ < src.Height_
+    );
+    assert(roi_dst.X1_ >= 0 && roi_dst.Y1_ >= 0 &&
+        roi_dst.X2_ < dst.Width_ && roi_dst.Y2_ < dst.Height_
+    );
+    assert(roi_src.Width() == roi_dst.Width() &&
+    	roi_src.Height() == roi_dst.Height()
+    );
+    assert((roi_src.Width() & 1) == 0);
+    assert((roi_dst.Width() & 1) == 0);
+#endif
+	Ipp8u number_channels_src_ = 2;
+    Ipp8u number_channels_dst_ = 4;
+
+    // Allocate memory for the source RGB image and destination grayscale image
+    Ipp8u* ptr_src_ = &src[roi_src.Y1_][roi_src.X1_ * number_channels_src_]; // RGB image has 1 channels
+	Ipp8u* ptr_dst_ = &dst[roi_dst.Y1_][roi_dst.X1_ * number_channels_dst_]; // Grayscale image has 1 channel
+
+    // Initialize your source image data here...
+
+	// Define the size of the region of interest
+    IppiSize roi_size_ = { roi_src.Width(), roi_src.Height() };
+
+    halib_def::result result_ = halib_def::result::SUCCESS;
+
+    haISAlib_image::color::Convert(
+        ptr_src_,
+        src.Stride_,
+        ptr_dst_,
+        dst.Stride_,
+        roi_src.Width(),
+        roi_src.Height()
+	);
+
+
+    return result_;
+}
+
 //---------------------------------------------------------------------------
 
 

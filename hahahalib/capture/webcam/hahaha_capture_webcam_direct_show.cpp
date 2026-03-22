@@ -115,27 +115,48 @@ void hahaha_capture_webcam_direct_show::Move(hahaha_capture_webcam_direct_show&&
 //---------------------------------------------------------------------------
 int hahaha_capture_webcam_direct_show::Reset()
 {
-    Graph_.reset();
-    Builder_.reset();
+    // 1) 停止 Graph（一定要最先做）
+//    if (Media_Control_)
+//    {
+//        Media_Control_->Stop();
+//    }
+    // 2) 停止 callback（避免 DirectShow 再呼叫它）
+    if (Sample_Grabber_)
+    {
+        Sample_Grabber_->SetCallback(NULL, 1);
+    }
+
+//    Callback_.reset();
+
+    // 3) 釋放 MediaControl
     Media_Control_.reset();
-    Camera_Filter_.reset();
-    Sample_Grabber_Filter_.reset();
+
+    // 4) 釋放 SampleGrabber
     Sample_Grabber_.reset();
+    Sample_Grabber_Filter_.reset();
 
+    // 5) 釋放 Camera Filter
+    Camera_Filter_.reset();
+
+    // 6) 釋放 Builder
+    Builder_.reset();
+
+    // 7) 最後釋放 Graph（必須最後）
+    Graph_.reset();
+
+    // 8) 重設狀態
     Buffer_Size_ = 0;
-
     Width_ = 640;
     Height_ = 480;
     Camera_Index_ = 0;
     Sub_Type_ = MEDIASUBTYPE_None;
-
     Flip_ = false;
     Is_Open_ = false;
 
     return 0;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int height, GUID sub_type)
+int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int height, int fps, GUID sub_type)
 {
     if(Is_Open_)
     {
@@ -235,7 +256,7 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     Graph_->AddFilter(Camera_Filter_.get(), L"Video Capture");
 
     // 4) 設定攝影機格式（必須在加入 SampleGrabber 之前）
-    if (!Set_Format(width, height, sub_type))
+    if (!Set_Format(width, height, fps, sub_type))
     {
         // 若失敗，可考慮 fallback MJPEG
         // Set_Format(width_, height_, MEDIASUBTYPE_MJPG);
@@ -313,6 +334,7 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     Camera_Index_ = camera_index;
     Width_ = width;
     Height_ = height;
+    Fps_ = fps;
     Sub_Type_ = sub_type;
 
     return hr_;
@@ -322,17 +344,30 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
 int hahaha_capture_webcam_direct_show::Start()
 {
 	HRESULT hr_ = Media_Control_->Run();
-    if (hr_ == S_OK || hr_ == S_FALSE)
+    if (FAILED(hr_))
     {
-        // 等一點點時間讓第一個 frame 進來
-        // 或在外面 Sleep(100~200ms) 再呼叫這段
-        long size_ = 0;
-        if (SUCCEEDED(Sample_Grabber_->GetCurrentBuffer(&size_, NULL)))
+        return hr_;
+    }
+
+    // 等待第一個 frame
+    long size_ = 0;
+    const int max_wait_ms_ = 200;
+    int waited_ = 0;
+
+    while (waited_ < max_wait_ms_)
+    {
+        if (SUCCEEDED(Sample_Grabber_->GetCurrentBuffer(&size_, NULL)) && size_ > 0)
         {
             Buffer_Size_ = size_;
+            return S_OK;
         }
+
+        Sleep(10);
+        waited_ += 10;
     }
-    return hr_;
+
+    // 超時
+    return E_FAIL;
 }
 //---------------------------------------------------------------------------
 int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
@@ -438,14 +473,42 @@ void hahaha_capture_webcam_direct_show::Stop()
 //---------------------------------------------------------------------------
 void hahaha_capture_webcam_direct_show::Close()
 {
+    // 1) 停止 Graph（一定要最先做）
+//    if (Media_Control_)
+//    {
+//        Media_Control_->Stop();
+//    }
+    // 2) 停止 callback（避免 DirectShow 再呼叫它）
+    if (Sample_Grabber_)
+    {
+        Sample_Grabber_->SetCallback(NULL, 1);
+    }
+
+//    Callback_.reset();
+
+    // 3) 釋放 MediaControl
+    Media_Control_.reset();
+
+    // 4) 釋放 SampleGrabber
     Sample_Grabber_.reset();
     Sample_Grabber_Filter_.reset();
+
+    // 5) 釋放 Camera Filter
     Camera_Filter_.reset();
+
+    // 6) 釋放 Builder
     Builder_.reset();
+
+    // 7) 最後釋放 Graph（必須最後）
     Graph_.reset();
 
+    // 8) 重設狀態
     Buffer_Size_ = 0;
-
+    Width_ = 640;
+    Height_ = 480;
+    Camera_Index_ = 0;
+    Sub_Type_ = MEDIASUBTYPE_None;
+    Flip_ = false;
     Is_Open_ = false;
 
 }
@@ -571,6 +634,7 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha
     int count_ = 0, size_ = 0;
     config_->GetNumberOfCapabilities(&count_, &size_);
 
+
     BYTE* caps_ = new BYTE[size_];
 
     for (int i = 0; i < count_; i++)
@@ -583,7 +647,13 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha
             {
                 VIDEOINFOHEADER* vih_ = (VIDEOINFOHEADER*)mt_->pbFormat;
 
-                double fps_ = (int)(10000000.0 / vih_->AvgTimePerFrame);
+                VIDEO_STREAM_CONFIG_CAPS* c_ = (VIDEO_STREAM_CONFIG_CAPS*)caps_;
+
+                double fps_ = 0.0;
+                if (c_->MinFrameInterval > 0)
+                {
+                    fps_ = 10000000.0 / (double)c_->MinFrameInterval;
+                }
 
                 int width_ = vih_->bmiHeader.biWidth;
                 int height_ = vih_->bmiHeader.biHeight;
@@ -655,7 +725,7 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha
     return hr_;
 }
 //---------------------------------------------------------------------------
-int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID sub_type)
+int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, int fps, GUID sub_type)
 {
     if (!Camera_Filter_ || !Builder_)
     {
@@ -691,6 +761,7 @@ int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID su
         // 改解析度
         vih_->bmiHeader.biWidth  = width;
         vih_->bmiHeader.biHeight = height;   // 如果畫面倒立，再改成 -h 試試
+        vih_->AvgTimePerFrame = (int)(10000000.0 / fps);
         // 我的相機不能設反的
 
         // 如果你真的一定要指定 subtype，可以試著改這裡
@@ -720,6 +791,7 @@ int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, GUID su
 
     Width_ = width;
     Height_ = height;
+    Fps_ = fps;
     Sub_Type_ = sub_type;
 
     return SUCCEEDED(hr_);

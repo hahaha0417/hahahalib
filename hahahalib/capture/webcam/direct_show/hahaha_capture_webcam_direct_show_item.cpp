@@ -75,7 +75,8 @@ void hahaha_capture_webcam_direct_show_item::Move(hahaha_capture_webcam_direct_s
     Format_ = hcwdsi.Format_;
     Description_ = hcwdsi.Description_;
 
-    hcwdsi.Reset();
+    // 這不能設，sort會出問題
+    //hcwdsi.Reset();
 }
 //---------------------------------------------------------------------------
 int hahaha_capture_webcam_direct_show_item::Reset()
