@@ -15,16 +15,25 @@ namespace hahahalib
 class hahaha_empty
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_empty();
+	// 解構物件並釋放相關資源。
 	~hahaha_empty();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_empty(const hahaha_empty& he);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_empty(hahaha_empty&& he) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_empty& operator=(const hahaha_empty& he);
+	// 移動指派目前物件內容。
 	hahaha_empty& operator=(hahaha_empty&& he) noexcept;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_empty& he);
+    // 接手來源物件的內部資源。
     void Move(hahaha_empty&& he) noexcept;
 public:
+	// 重設內部狀態。
 	int Reset();
 
 public:

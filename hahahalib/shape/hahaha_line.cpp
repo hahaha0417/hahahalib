@@ -15,6 +15,7 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_line<T>::hahaha_line(const hahahalib::hahaha_point<T>& p1,
     const hahahalib::hahaha_point<T>& p2
 )
@@ -34,12 +35,14 @@ hahaha_line<T>::hahaha_line(const hahahalib::hahaha_point<T>& p1,
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 解構物件並釋放相關資源。
 hahaha_line<T>::~hahaha_line()
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_line<T>::hahaha_line(const hahaha_line<T>& hl)
 {
     Reset();
@@ -47,6 +50,7 @@ hahaha_line<T>::hahaha_line(const hahaha_line<T>& hl)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以移動方式建構物件並接手既有資源。
 hahaha_line<T>::hahaha_line(hahaha_line<T>&& hl) noexcept
 {
     Move(std::move(hl));
@@ -62,6 +66,7 @@ hahaha_line<T>& hahaha_line<T>::operator=(const hahaha_line<T>& hl)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 移動指派目前物件內容。
 hahaha_line<T>& hahaha_line<T>::operator=(hahaha_line<T>&& hl) noexcept
 {
 	if (this != &hl)
@@ -73,6 +78,7 @@ hahaha_line<T>& hahaha_line<T>::operator=(hahaha_line<T>&& hl) noexcept
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 複製來源物件的內部狀態。
 void hahaha_line<T>::Copy(const hahaha_line& hl)
 {
     A_ = hl.A_;
@@ -82,6 +88,7 @@ void hahaha_line<T>::Copy(const hahaha_line& hl)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 接手來源物件的內部資源。
 void hahaha_line<T>::Move(hahaha_line&& hl) noexcept
 {
     A_ = hl.A_;
@@ -93,6 +100,7 @@ void hahaha_line<T>::Move(hahaha_line&& hl) noexcept
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 重設內部狀態。
 int hahaha_line<T>::Reset()
 {
     A_ = 0;

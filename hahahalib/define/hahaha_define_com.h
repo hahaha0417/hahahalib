@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #ifndef hahaha_define_comH
 #define hahaha_define_comH
@@ -15,18 +15,16 @@
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
-// Simple COM releaser for use with std::unique_ptr
+// 提供給 std::unique_ptr 使用的 COM 釋放器。
+// 讓 COM 介面可以用 RAII 自動呼叫 Release，減少手動管理生命週期的負擔。
 template<typename T>
 struct hahaha_define_com_releaser {
+    // 負責釋放 COM 物件並呼叫 Release。
     void operator()(T* p) const noexcept;
 };
 
-// List available video capture devices (names)
-// (declared as a static class method)
-
-
-
-
+// 專案內通用的 COM 智慧指標別名。
+// 使用方式與 std::unique_ptr 類似，但銷毀時會改成呼叫 COM 的 Release。
 template<typename T>
 using hahaha_define_com_ptr = std::unique_ptr<T, hahaha_define_com_releaser<T>>;
 

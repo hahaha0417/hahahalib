@@ -16,22 +16,34 @@ namespace hahahalib
 {
 //---------------------------------------------------------------------------
 
+// 所有 bitmap 類別共用的基底型別。
+// 這裡只保存影像描述資訊，不直接負責像素記憶體的配置與釋放。
 class hahaha_bitmap
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_bitmap();
+	// 解構物件並釋放相關資源。
 	~hahaha_bitmap();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_bitmap(const hahaha_bitmap& hb);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_bitmap(hahaha_bitmap&& hb) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_bitmap& operator=(const hahaha_bitmap& hb);
+	// 移動指派目前物件內容。
 	hahaha_bitmap& operator=(hahaha_bitmap&& hb) noexcept;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_bitmap& hb);
+	// 接手來源物件的內部資源。
 	void Move(hahaha_bitmap&& hb) noexcept;
 public:
+	// 重設內部狀態。
 	virtual int Reset();
 
 public:
+	// 基本識別資訊與像素格式描述。
 	std::wstring Name_;
 	std::wstring Type_;
 	int Channel_;
@@ -42,6 +54,7 @@ public:
 	int Stride_;
 	size_t Size_;
 public:
+	// 提供 Windows / GDI 相容的 BITMAPINFOHEADER 描述。
 	std::unique_ptr<BITMAPINFOHEADER> Bmp_Info_Header_;
 public:
 

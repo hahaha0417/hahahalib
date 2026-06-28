@@ -15,6 +15,7 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_line_segment<T>::hahaha_line_segment(const hahahalib::hahaha_point<T>& p1,
     const hahahalib::hahaha_point<T>& p2
 )
@@ -25,12 +26,14 @@ hahaha_line_segment<T>::hahaha_line_segment(const hahahalib::hahaha_point<T>& p1
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 解構物件並釋放相關資源。
 hahaha_line_segment<T>::~hahaha_line_segment()
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_line_segment<T>::hahaha_line_segment(const hahaha_line_segment<T>& hls)
 {
     Reset();
@@ -38,6 +41,7 @@ hahaha_line_segment<T>::hahaha_line_segment(const hahaha_line_segment<T>& hls)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以移動方式建構物件並接手既有資源。
 hahaha_line_segment<T>::hahaha_line_segment(hahaha_line_segment<T>&& hls) noexcept
 {
     Move(std::move(hls));
@@ -53,6 +57,7 @@ hahaha_line_segment<T>& hahaha_line_segment<T>::operator=(const hahaha_line_segm
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 移動指派目前物件內容。
 hahaha_line_segment<T>& hahaha_line_segment<T>::operator=(hahaha_line_segment<T>&& hls) noexcept
 {
 	if (this != &hls)
@@ -64,6 +69,7 @@ hahaha_line_segment<T>& hahaha_line_segment<T>::operator=(hahaha_line_segment<T>
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 複製來源物件的內部狀態。
 void hahaha_line_segment<T>::Copy(const hahaha_line_segment& hls)
 {
     P1_ = hls.P1_;
@@ -71,6 +77,7 @@ void hahaha_line_segment<T>::Copy(const hahaha_line_segment& hls)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 接手來源物件的內部資源。
 void hahaha_line_segment<T>::Move(hahaha_line_segment&& hls) noexcept
 {
     P1_ = hls.P1_;
@@ -80,6 +87,7 @@ void hahaha_line_segment<T>::Move(hahaha_line_segment&& hls) noexcept
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 重設內部狀態。
 int hahaha_line_segment<T>::Reset()
 {
     P1_.Reset();

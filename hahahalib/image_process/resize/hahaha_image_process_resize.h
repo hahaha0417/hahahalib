@@ -31,33 +31,33 @@ public:
 	//---------------------------------------------------------------------------
     // gray
     //---------------------------------------------------------------------------
-    static halib_def::result Resize(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
-        const halib::roi& roi_dst,
-        const halib_def_image::resize& method
+    static halib_def::result Resize(const halib::bitmap_gray& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_gray& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+        const halib_def_image::resize& method  // 指定要使用的插值或處理方法。
 
     );
 
     //---------------------------------------------------------------------------
     // color
     //---------------------------------------------------------------------------
-    static halib_def::result Resize(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
-        const halib::roi& roi_dst,
-        const halib_def_image::resize& method
+    static halib_def::result Resize(const halib::bitmap_rgb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_rgb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+        const halib_def_image::resize& method  // 指定要使用的插值或處理方法。
 
     );
 
     //---------------------------------------------------------------------------
     // argb
     //---------------------------------------------------------------------------
-    static halib_def::result Resize(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
-        const halib::roi& roi_dst,
-        const halib_def_image::resize& method
+    static halib_def::result Resize(const halib::bitmap_argb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_argb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+        const halib_def_image::resize& method  // 指定要使用的插值或處理方法。
 
     );
 
@@ -65,45 +65,48 @@ public:
     //---------------------------------------------------------------------------
     // gray
     //---------------------------------------------------------------------------
-    static halib_def::result Resize_Nearest(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
+    static halib_def::result Resize_Nearest(const halib::bitmap_gray& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_gray& dst,  // 輸出結果的目標影像。
         const halib::roi& roi_dst
     );
 
-    static halib_def::result Resize_Linear(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
+    // 使用線性插值縮放影像。
+    static halib_def::result Resize_Linear(const halib::bitmap_gray& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_gray& dst,  // 輸出結果的目標影像。
         const halib::roi& roi_dst
     );
 
     //---------------------------------------------------------------------------
     // color
     //---------------------------------------------------------------------------
-    static halib_def::result Resize_Nearest(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
+    static halib_def::result Resize_Nearest(const halib::bitmap_rgb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_rgb& dst,  // 輸出結果的目標影像。
         const halib::roi& roi_dst
     );
 
-    static halib_def::result Resize_Linear(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
+    // 使用線性插值縮放影像。
+    static halib_def::result Resize_Linear(const halib::bitmap_rgb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_rgb& dst,  // 輸出結果的目標影像。
         const halib::roi& roi_dst
     );
 
     //---------------------------------------------------------------------------
     // argb
     //---------------------------------------------------------------------------
-    static halib_def::result Resize_Nearest(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
+    static halib_def::result Resize_Nearest(const halib::bitmap_argb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_argb& dst,  // 輸出結果的目標影像。
         const halib::roi& roi_dst
     );
 
-    static halib_def::result Resize_Linear(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
+    // 使用線性插值縮放影像。
+    static halib_def::result Resize_Linear(const halib::bitmap_argb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_argb& dst,  // 輸出結果的目標影像。
         const halib::roi& roi_dst
     );
 

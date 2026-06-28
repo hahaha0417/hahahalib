@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #ifndef hahaha_xmlH
 #define hahaha_xmlH
@@ -15,16 +15,25 @@ namespace hahahalib
 class hahaha_xml
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_xml();
+	// 解構物件並釋放相關資源。
 	~hahaha_xml();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_xml(const hahaha_xml& hx);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_xml(hahaha_xml&& hx) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_xml& operator=(const hahaha_xml& hx);
+    // 移動指派目前物件內容。
     hahaha_xml& operator=(hahaha_xml&& hx) noexcept;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_xml& hx);
+    // 接手來源物件的內部資源。
     void Move(hahaha_xml&& hx) noexcept;
 public:
+	// 重設內部狀態。
 	int Reset();
 
 public:

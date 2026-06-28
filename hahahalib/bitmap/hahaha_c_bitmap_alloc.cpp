@@ -13,6 +13,7 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 建構物件並初始化預設狀態。
 hahaha_c_bitmap_alloc<T, U>::hahaha_c_bitmap_alloc()
 {
     this->Image_Ptr_ = nullptr;
@@ -34,6 +35,7 @@ hahaha_c_bitmap_alloc<T, U>::hahaha_c_bitmap_alloc()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 解構物件並釋放相關資源。
 hahaha_c_bitmap_alloc<T, U>::~hahaha_c_bitmap_alloc()
 {
     if(this->Image_Ptr_ != nullptr)
@@ -50,6 +52,7 @@ hahaha_c_bitmap_alloc<T, U>::~hahaha_c_bitmap_alloc()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 建構物件並初始化預設狀態。
 hahaha_c_bitmap_alloc<T, U>::hahaha_c_bitmap_alloc(const hahaha_c_bitmap_alloc<T, U>& hcba)
 {
     Reset();
@@ -73,6 +76,7 @@ hahaha_c_bitmap_alloc<T, U>& hahaha_c_bitmap_alloc<T, U>::operator=(const hahaha
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 移動指派目前物件內容。
 hahaha_c_bitmap_alloc<T, U>& hahaha_c_bitmap_alloc<T, U>::operator=(hahaha_c_bitmap_alloc<T, U>&& hcba) noexcept
 {
     if (this != &hcba)
@@ -86,32 +90,38 @@ hahaha_c_bitmap_alloc<T, U>& hahaha_c_bitmap_alloc<T, U>::operator=(hahaha_c_bit
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依索引存取內部資料。
 T*& hahaha_c_bitmap_alloc<T, U>::operator[](const int& y)
 {
    return this->Image_Scanline_[y];
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依索引存取內部資料。
 T*& hahaha_c_bitmap_alloc<T, U>::operator[](const int& y) const
 {
    return this->Image_Scanline_[y];
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 複製來源物件的內部狀態。
 void hahaha_c_bitmap_alloc<T, U>::Copy(const hahaha_c_bitmap_alloc<T, U>& hcbp)
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 接手來源物件的內部資源。
 void hahaha_c_bitmap_alloc<T, U>::Move(hahaha_c_bitmap_alloc<T, U>&& hcbp) noexcept
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 重設內部狀態。
 int hahaha_c_bitmap_alloc<T, U>::Reset()
 {
+	// 先讓基底欄位回到初始值，再釋放實際持有的像素緩衝區。
 	hahaha_c_bitmap<T, U>::Reset();
 
 
@@ -132,15 +142,17 @@ int hahaha_c_bitmap_alloc<T, U>::Reset()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依指定尺寸重新配置內部資料。
 int hahaha_c_bitmap_alloc<T, U>::Resize(const int& width, const int& height)
 {
-
+	// stride 依 Windows bitmap 慣例做 4-byte 對齊。
 //    https://learn.microsoft.com/zh-tw/windows/win32/api/wingdi/ns-wingdi-bitmapinfoheader
 	int stride_ = ((((width * this->Bits_) + 31) & ~31) >> 3);
 	int size_ = stride_ * height;
 
 	if(size_ != 0 && size_ != this->Size_)
 	{
+		// 尺寸改變時，重建像素區與 scanline 索引表。
 		if(this->Image_Ptr_ != nullptr)
 		{
 			delete[] this->Image_Ptr_;
@@ -194,6 +206,7 @@ int hahaha_c_bitmap_alloc<T, U>::Resize(const int& width, const int& height)
 	}
 	else if(size_ != 0 && size_ == this->Size_)
 	{
+		// 總容量相同時，不重配像素區，只重建 scanline 對應。
 		if(this->Image_Scanline_ != nullptr)
 		{
 			delete[] this->Image_Scanline_;
@@ -236,6 +249,7 @@ int hahaha_c_bitmap_alloc<T, U>::Resize(const int& width, const int& height)
 	}
 	else
 	{
+		// width 或 height 為 0 時，視為清空影像。
 		Reset();
         this->Channel_ = U;
 		this->Depth_ = sizeof(T);
@@ -266,8 +280,10 @@ int hahaha_c_bitmap_alloc<T, U>::Resize(const int& width, const int& height)
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 清空目前資料內容。
 int hahaha_c_bitmap_alloc<T, U>::Clear()
 {
+	// 將整塊影像緩衝區歸零；呼叫端需自行確保目前已配置記憶體。
     memset(this->Image_Ptr_, 0, this->Size_);
 
     return 0;

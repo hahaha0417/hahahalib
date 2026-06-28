@@ -42,22 +42,26 @@ namespace hahahalib
 {
 //---------------------------------------------------------------------------
 
+// 建構物件並初始化預設狀態。
 hahaha_capture_form_gdi::hahaha_capture_form_gdi()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
+// 解構物件並釋放相關資源。
 hahaha_capture_form_gdi::~hahaha_capture_form_gdi()
 {
     Close();
 }
 //---------------------------------------------------------------------------
+// 以既有物件內容建構新的物件實例。
 hahaha_capture_form_gdi::hahaha_capture_form_gdi(const hahaha_capture_form_gdi& hcfg)
 {
     Reset();
     Copy(hcfg);
 }
 //---------------------------------------------------------------------------
+// 以移動方式建構物件並接手既有資源。
 hahaha_capture_form_gdi::hahaha_capture_form_gdi(hahaha_capture_form_gdi&& hcfg) noexcept
 {
     Move(std::move(hcfg));
@@ -76,6 +80,7 @@ hahaha_capture_form_gdi::operator=(const hahaha_capture_form_gdi& hcfg)
 }
 //---------------------------------------------------------------------------
 hahaha_capture_form_gdi&
+// 移動指派目前物件內容。
 hahaha_capture_form_gdi::operator=(hahaha_capture_form_gdi&& hcfg) noexcept
 {
     if (this != &hcfg)
@@ -86,6 +91,7 @@ hahaha_capture_form_gdi::operator=(hahaha_capture_form_gdi&& hcfg) noexcept
     return *this;
 }
 //---------------------------------------------------------------------------
+// 複製來源物件的內部狀態。
 void hahaha_capture_form_gdi::Copy(const hahaha_capture_form_gdi& hcfg)
 {
     // 不複製 GDI 狀態，只複製參數
@@ -99,6 +105,7 @@ void hahaha_capture_form_gdi::Copy(const hahaha_capture_form_gdi& hcfg)
     Is_Capture_Window_Frame_ = hcfg.Is_Capture_Window_Frame_;
 }
 //---------------------------------------------------------------------------
+// 接手來源物件的內部資源。
 void hahaha_capture_form_gdi::Move(hahaha_capture_form_gdi&& hcfg) noexcept
 {
     Form_Wnd_       = hcfg.Form_Wnd_;
@@ -127,6 +134,7 @@ void hahaha_capture_form_gdi::Move(hahaha_capture_form_gdi&& hcfg) noexcept
     hcfg.Is_Cursor_Draw_ = false;
 }
 //---------------------------------------------------------------------------
+// 重設內部狀態。
 int hahaha_capture_form_gdi::Reset()
 {
     Form_Wnd_       = nullptr;
@@ -149,6 +157,7 @@ int hahaha_capture_form_gdi::Reset()
     return 0;
 }
 //---------------------------------------------------------------------------
+// 開啟指定資源或建立連線。
 int hahaha_capture_form_gdi::Open(HWND hwnd)
 {
     if (Is_Open_)
@@ -243,6 +252,7 @@ int hahaha_capture_form_gdi::Open(HWND hwnd)
 }
 
 //---------------------------------------------------------------------------
+// 擷取目前資料並輸出到目標物件。
 int hahaha_capture_form_gdi::Grab()
 {
 	if (!Is_Open_)
@@ -339,6 +349,7 @@ int hahaha_capture_form_gdi::Grab()
     return 0;
 }
 //---------------------------------------------------------------------------
+// 擷取目前資料並輸出到目標物件。
 int hahaha_capture_form_gdi::Grab(const halib::roi& roi)
 {
     if (!Is_Open_)
@@ -444,6 +455,7 @@ int hahaha_capture_form_gdi::Grab(const halib::roi& roi)
     return 0;
 }
 //---------------------------------------------------------------------------
+// 關閉並釋放目前持有的資源。
 void hahaha_capture_form_gdi::Close()
 {
     if (Mem_DC_ && Old_Bitmap_)
@@ -476,4 +488,3 @@ void hahaha_capture_form_gdi::Close()
 //---------------------------------------------------------------------------
 } // namespace hahahalib
 //---------------------------------------------------------------------------
-

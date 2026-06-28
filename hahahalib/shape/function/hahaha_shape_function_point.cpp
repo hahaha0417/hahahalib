@@ -22,6 +22,7 @@ namespace shape
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算 ROI 的中心點。
 hahahalib::hahaha_roi<T> hahaha_shape_function_point<T>::Center_Roi(const hahahalib::hahaha_point<T>& center, int length)
 {
     return hahahalib::hahaha_roi<T>(

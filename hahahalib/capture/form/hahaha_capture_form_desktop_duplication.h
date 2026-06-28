@@ -20,30 +20,40 @@ namespace hahahalib
 class hahaha_capture_form_desktop_duplication
 {
 public:
+    // 建構物件並初始化預設狀態。
     hahaha_capture_form_desktop_duplication();
+    // 解構物件並釋放相關資源。
     ~hahaha_capture_form_desktop_duplication();
 
     hahaha_capture_form_desktop_duplication(const hahaha_capture_form_desktop_duplication&) = delete;
     hahaha_capture_form_desktop_duplication& operator=(const hahaha_capture_form_desktop_duplication&) = delete;
 
+    // 以移動方式建構物件並接手既有資源。
     hahaha_capture_form_desktop_duplication(hahaha_capture_form_desktop_duplication&& other) noexcept;
+    // 移動指派目前物件內容。
     hahaha_capture_form_desktop_duplication& operator=(hahaha_capture_form_desktop_duplication&& other) noexcept;
 
+    // 接手來源物件的內部資源。
     void Move(hahaha_capture_form_desktop_duplication&& other) noexcept;
 
 public:
+    // 重設內部狀態。
     int Reset();
 
     // 新增 include_titlebar 選項
-    int Open(HWND hwnd);
+    int Open(HWND hwnd /* 目標視窗的 Windows Handle。 */);
 
+    // 擷取目前資料並輸出到目標物件。
     int Grab();
-    int Grab(const halib::roi& roi);
+    // 擷取目前資料並輸出到目標物件。
+    int Grab(const halib::roi& roi /* 要處理的區域範圍。 */);
 
+    // 關閉並釋放目前持有的資源。
     void Close();
 
-    static bool FindOutputForWindow(HWND hwnd,
-        halib_def::com_ptr<IDXGIOutput1>& out_output1,
+    // 依視窗位置尋找對應的 DXGI 輸出裝置。
+    static bool FindOutputForWindow(HWND hwnd,  // 目標視窗的 Windows Handle。
+        halib_def::com_ptr<IDXGIOutput1>& out_output1,  // 輸出的 DXGI Output1 物件。
         DXGI_OUTPUT_DESC& out_desc
     );
 
@@ -73,4 +83,3 @@ public:
 } // namespace hahahalib
 //---------------------------------------------------------------------------
 #endif
-

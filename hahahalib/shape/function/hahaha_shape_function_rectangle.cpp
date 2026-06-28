@@ -20,6 +20,7 @@ namespace shape
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_rectangle<T>::Is_Point_In(const hahahalib::hahaha_rectangle<T>& rectangle, const hahahalib::hahaha_point<T>& point)
 {
     return point.X_ >= rectangle.X1_ && point.X_ < rectangle.X2_ && point.Y_ >= rectangle.Y1_ && point.Y_ < rectangle.Y2_;

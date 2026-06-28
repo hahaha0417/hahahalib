@@ -13,6 +13,7 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 建構物件並初始化預設狀態。
 hahaha_c_bitmap_ptr<T, U>::hahaha_c_bitmap_ptr(T* image_ptr)
 {
     this->Image_Ptr_ = image_ptr;
@@ -29,6 +30,7 @@ hahaha_c_bitmap_ptr<T, U>::hahaha_c_bitmap_ptr(T* image_ptr)
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 解構物件並釋放相關資源。
 hahaha_c_bitmap_ptr<T, U>::~hahaha_c_bitmap_ptr()
 {
 
@@ -41,6 +43,7 @@ hahaha_c_bitmap_ptr<T, U>::~hahaha_c_bitmap_ptr()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 建構物件並初始化預設狀態。
 hahaha_c_bitmap_ptr<T, U>::hahaha_c_bitmap_ptr(const hahaha_c_bitmap_ptr<T, U>& hcbp)
 {
     Reset();
@@ -64,6 +67,7 @@ hahaha_c_bitmap_ptr<T, U>& hahaha_c_bitmap_ptr<T, U>::operator=(const hahaha_c_b
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 移動指派目前物件內容。
 hahaha_c_bitmap_ptr<T, U>& hahaha_c_bitmap_ptr<T, U>::operator=(hahaha_c_bitmap_ptr<T, U>&& hcbp) noexcept
 {
 	if (this != &hcbp)
@@ -77,30 +81,35 @@ hahaha_c_bitmap_ptr<T, U>& hahaha_c_bitmap_ptr<T, U>::operator=(hahaha_c_bitmap_
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依索引存取內部資料。
 T*& hahaha_c_bitmap_ptr<T, U>::operator[](const int& y)
 {
    return this->Image_Scanline_[y];
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依索引存取內部資料。
 T*& hahaha_c_bitmap_ptr<T, U>::operator[](const int& y) const
 {
    return this->Image_Scanline_[y];
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 複製來源物件的內部狀態。
 void hahaha_c_bitmap_ptr<T, U>::Copy(const hahaha_c_bitmap_ptr<T, U>& hcbp)
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 接手來源物件的內部資源。
 void hahaha_c_bitmap_ptr<T, U>::Move(hahaha_c_bitmap_ptr<T, U>&& hcbp) noexcept
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 重設內部狀態。
 int hahaha_c_bitmap_ptr<T, U>::Reset()
 {
 	hahaha_c_bitmap<T, U>::Reset();
@@ -116,6 +125,7 @@ int hahaha_c_bitmap_ptr<T, U>::Reset()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依指定尺寸重新配置內部資料。
 int hahaha_c_bitmap_ptr<T, U>::Resize(const int& width, const int& height)
 {
 
@@ -243,6 +253,7 @@ int hahaha_c_bitmap_ptr<T, U>::Resize(const int& width, const int& height)
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 清空目前資料內容。
 int hahaha_c_bitmap_ptr<T, U>::Clear()
 {
     memset(this->Image_Ptr_, 0, this->Size_);

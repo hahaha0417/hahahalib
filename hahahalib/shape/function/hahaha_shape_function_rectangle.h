@@ -25,6 +25,7 @@ class hahaha_shape_function_rectangle
 {
 
 public:
+    // 回傳目前狀態判斷結果。
     static bool Is_Point_In(const hahahalib::hahaha_rectangle<T>& rectangle, const hahahalib::hahaha_point<T>& point);
 public:
 

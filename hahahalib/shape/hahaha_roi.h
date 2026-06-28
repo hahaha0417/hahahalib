@@ -22,31 +22,46 @@ template <typename T>
 class hahaha_roi
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_roi();
+	// 以既有物件內容建構新的物件實例。
 	hahaha_roi(const T& x1,
-		const T& y1,
-		const T& x2,
-		const T& y2,
-        bool normalize = false
+		const T& y1,  // 左上或起點的 Y 座標。
+		const T& x2,  // 右下或終點的 X 座標。
+		const T& y2,  // 右下或終點的 Y 座標。
+        bool normalize = false  // 建構時是否先自動整理座標順序。
 	);
+	// 解構物件並釋放相關資源。
 	~hahaha_roi();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_roi(const hahaha_roi<T>& hr);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_roi(hahaha_roi<T>&& hr) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_roi& operator=(const hahaha_roi<T>& hr);
+    // 移動指派目前物件內容。
     hahaha_roi& operator=(hahaha_roi<T>&& hr) noexcept;
+    // 複製指派目前物件內容。
     bool operator==(const hahaha_roi<T>& hr);
     bool operator!=(const hahaha_roi<T>& hr);
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_roi<T>& hr);
+    // 接手來源物件的內部資源。
     void Move(hahaha_roi<T>&& hr) noexcept;
 public:
+	// 重設內部狀態。
 	int Reset();
 
 
 public:
+    // 計算目前圖形的寬度。
     T Width();
+	// 計算目前圖形的高度。
 	T Height();
+	// 計算目前圖形的寬度。
 	T Width() const;
+	// 計算目前圖形的高度。
 	T Height() const;
 
 public:
@@ -55,6 +70,7 @@ public:
 	T X2_;
 	T Y2_;
 public:
+    // 整理座標順序，確保左上與右下定義正確。
     void Normalize();
 public:
 public:

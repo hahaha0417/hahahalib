@@ -26,6 +26,7 @@ class hahaha_shape_function_roi
 {
 
 public:
+    // 回傳目前狀態判斷結果。
     static bool Is_Point_In(const hahahalib::hahaha_roi<T>& roi, const hahahalib::hahaha_point<T>& point);
     // 修正Roi固定Bitmap比率
     static int Fix_Roi_Fix_Bitmap_Ratio(hahahalib::hahaha_roi<T>& roi, const hahaha_bitmap& bitmap, const double& dx, const double& dy, halib_def::shape_rectangle_control_point control_point);

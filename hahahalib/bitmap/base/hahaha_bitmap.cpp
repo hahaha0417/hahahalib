@@ -12,22 +12,26 @@ namespace hahahalib
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
+// 建構物件並初始化預設狀態。
 hahaha_bitmap::hahaha_bitmap()
 {
 	Reset();
 }
 //---------------------------------------------------------------------------
+// 解構物件並釋放相關資源。
 hahaha_bitmap::~hahaha_bitmap()
 {
     Bmp_Info_Header_.release();
 }
 //---------------------------------------------------------------------------
+// 以既有物件內容建構新的物件實例。
 hahaha_bitmap::hahaha_bitmap(const hahaha_bitmap& hb)
 {
     Reset();
 	Copy(hb);
 }
 //---------------------------------------------------------------------------
+// 以移動方式建構物件並接手既有資源。
 hahaha_bitmap::hahaha_bitmap(hahaha_bitmap&& hb) noexcept
 {
     Move(std::move(hb));
@@ -51,6 +55,7 @@ hahaha_bitmap& hahaha_bitmap::operator=(hahaha_bitmap&& hb) noexcept
 	return *this;
 }
 //---------------------------------------------------------------------------
+// 複製來源物件的內部狀態。
 void hahaha_bitmap::Copy(const hahaha_bitmap& hb)
 {
 	Name_ = hb.Name_;
@@ -64,6 +69,7 @@ void hahaha_bitmap::Copy(const hahaha_bitmap& hb)
 	Size_ = hb.Size_;
 }
 //---------------------------------------------------------------------------
+// 接手來源物件的內部資源。
 void hahaha_bitmap::Move(hahaha_bitmap&& hb) noexcept
 {
 	Name_ = std::move(hb.Name_);
@@ -79,8 +85,10 @@ void hahaha_bitmap::Move(hahaha_bitmap&& hb) noexcept
     Bmp_Info_Header_ = std::move(hb.Bmp_Info_Header_);
 }
 //---------------------------------------------------------------------------
+// 重設內部狀態。
 int hahaha_bitmap::Reset()
 {
+	// 將描述資訊重置為空狀態，但保留物件仍可被後續 Resize / Open 重用。
 	Name_ = L"";
 	Type_ = L"";
 	Channel_ = 0;

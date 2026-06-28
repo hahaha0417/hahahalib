@@ -21,12 +21,14 @@ namespace shape
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_roi<T>::Is_Point_In(const hahahalib::hahaha_roi<T>& roi, const hahahalib::hahaha_point<T>& point)
 {
     return point.X_ >= roi.X1_ && point.X_ <= roi.X2_ && point.Y_ >= roi.Y1_ && point.Y_ <= roi.Y2_;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 在固定影像比例條件下修正 ROI 範圍。
 int hahaha_shape_function_roi<T>::Fix_Roi_Fix_Bitmap_Ratio(hahahalib::hahaha_roi<T>& roi, const hahaha_bitmap& bitmap, const double& dx, const double& dy, halib_def::shape_rectangle_control_point control_point)
 {
     if(bitmap.Width_ == 0 || bitmap.Height_ == 0)

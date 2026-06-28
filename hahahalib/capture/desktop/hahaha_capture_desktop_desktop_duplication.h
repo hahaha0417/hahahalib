@@ -1,4 +1,4 @@
-#ifndef hahaha_capture_desktop_desktop_duplicationH
+﻿#ifndef hahaha_capture_desktop_desktop_duplicationH
 #define hahaha_capture_desktop_desktop_duplicationH
 #pragma once
 
@@ -20,26 +20,37 @@ namespace hahahalib
 class hahaha_capture_desktop_desktop_duplication
 {
 public:
+    // 建構物件並初始化預設狀態。
     hahaha_capture_desktop_desktop_duplication();
+    // 解構物件並釋放相關資源。
     ~hahaha_capture_desktop_desktop_duplication();
 
     hahaha_capture_desktop_desktop_duplication(const hahaha_capture_desktop_desktop_duplication&) = delete;
     hahaha_capture_desktop_desktop_duplication& operator=(const hahaha_capture_desktop_desktop_duplication&) = delete;
 
+    // 以移動方式建構物件並接手既有資源。
     hahaha_capture_desktop_desktop_duplication(hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept;
+    // 移動指派目前物件內容。
     hahaha_capture_desktop_desktop_duplication& operator=(hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept;
 
+    // 接手來源物件的內部資源。
     void Move(hahaha_capture_desktop_desktop_duplication&& hcddd) noexcept;
 
 public:
+    // 重設內部狀態。
     int Reset();
 
+    // 列出目前可用的項目資訊。
     int List_Monitors(std::vector<std::wstring>& list);
+    // 開啟指定資源或建立連線。
     int Open(int monitor_index);
 
+    // 擷取目前資料並輸出到目標物件。
     int Grab();
-    int Grab(const halib::roi& roi);
+    // 擷取目前資料並輸出到目標物件。
+    int Grab(const halib::roi& roi /* 要處理的區域範圍。 */);
 
+    // 關閉並釋放目前持有的資源。
     void Close();
 
 public:
@@ -63,4 +74,3 @@ public:
 } // namespace hahahalib
 //---------------------------------------------------------------------------
 #endif
-

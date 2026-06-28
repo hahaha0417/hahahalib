@@ -15,6 +15,7 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 建構物件並初始化預設狀態。
 hahaha_c_bitmap_share<T, U>::hahaha_c_bitmap_share(const std::wstring& name_mapping, const int& width, const int& height)
 {
 
@@ -41,6 +42,7 @@ hahaha_c_bitmap_share<T, U>::hahaha_c_bitmap_share(const std::wstring& name_mapp
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 解構物件並釋放相關資源。
 hahaha_c_bitmap_share<T, U>::~hahaha_c_bitmap_share()
 {
     if(this->Image_Ptr_ != nullptr)
@@ -57,6 +59,7 @@ hahaha_c_bitmap_share<T, U>::~hahaha_c_bitmap_share()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 建構物件並初始化預設狀態。
 hahaha_c_bitmap_share<T, U>::hahaha_c_bitmap_share(const hahaha_c_bitmap_share<T, U>& hcbs)
 {
     Reset();
@@ -80,6 +83,7 @@ hahaha_c_bitmap_share<T, U>& hahaha_c_bitmap_share<T, U>::operator=(const hahaha
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 移動指派目前物件內容。
 hahaha_c_bitmap_share<T, U>& hahaha_c_bitmap_share<T, U>::operator=(hahaha_c_bitmap_share<T, U>&& hcbs) noexcept
 {
     if (this != &hcbs)
@@ -93,30 +97,35 @@ hahaha_c_bitmap_share<T, U>& hahaha_c_bitmap_share<T, U>::operator=(hahaha_c_bit
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依索引存取內部資料。
 T*& hahaha_c_bitmap_share<T, U>::operator[](const int& y)
 {
    return this->Image_Scanline_[y];
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依索引存取內部資料。
 T*& hahaha_c_bitmap_share<T, U>::operator[](const int& y) const
 {
    return this->Image_Scanline_[y];
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 複製來源物件的內部狀態。
 void hahaha_c_bitmap_share<T, U>::Copy(const hahaha_c_bitmap_share<T, U>& hcbs)
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 接手來源物件的內部資源。
 void hahaha_c_bitmap_share<T, U>::Move(hahaha_c_bitmap_share<T, U>&& hcbs) noexcept
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 重設內部狀態。
 int hahaha_c_bitmap_share<T, U>::Reset()
 {
 	hahaha_c_bitmap<T, U>::Reset();
@@ -142,6 +151,7 @@ int hahaha_c_bitmap_share<T, U>::Reset()
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 依指定尺寸重新配置內部資料。
 int hahaha_c_bitmap_share<T, U>::Resize(const int& width, const int& height)
 {
 
@@ -269,6 +279,7 @@ int hahaha_c_bitmap_share<T, U>::Resize(const int& width, const int& height)
 }
 //---------------------------------------------------------------------------
 template <typename T, int U>
+// 清空目前資料內容。
 int hahaha_c_bitmap_share<T, U>::Clear()
 {
     memset(this->Image_Ptr_, 0, this->Size_);

@@ -42,16 +42,25 @@ class hahaha_image_view :
     public hahaha_image_view_deal_painter
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_image_view();
+	// 解構物件並釋放相關資源。
 	~hahaha_image_view();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_image_view(const hahaha_image_view& hiv);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_image_view(hahaha_image_view&& hiv) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_image_view& operator=(const hahaha_image_view& hiv);
+    // 移動指派目前物件內容。
     hahaha_image_view& operator=(hahaha_image_view&& hiv) noexcept;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_image_view& hiv);
+    // 接手來源物件的內部資源。
     void Move(hahaha_image_view&& hiv) noexcept;
 public:
+	// 重設內部狀態。
 	int Reset();
 
 public:
@@ -68,6 +77,7 @@ public:
     // 座標轉換，屬架構，不做回傳halib::point，繼承再實現
     // 避免搞混，限制double
     virtual int View_To_Image(const halib::point_double& point_view, halib::point_double& point_image) const;
+    // 將影像座標轉換成顯示區座標。
     virtual int Image_To_View(const halib::point_double& point_image, halib::point_double& point_view) const;
 public:
     // 畫面重畫

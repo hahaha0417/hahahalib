@@ -10,22 +10,26 @@
 namespace hahahalib
 {
 //---------------------------------------------------------------------------
+// 建構物件並初始化預設狀態。
 hahaha_name_pipeline::hahaha_name_pipeline()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
+// 解構物件並釋放相關資源。
 hahaha_name_pipeline::~hahaha_name_pipeline()
 {
     Close();
 }
 //---------------------------------------------------------------------------
+// 以既有物件內容建構新的物件實例。
 hahaha_name_pipeline::hahaha_name_pipeline(const hahaha_name_pipeline& hpp)
 {
     Reset();
     Copy(hpp);
 }
 //---------------------------------------------------------------------------
+// 以移動方式建構物件並接手既有資源。
 hahaha_name_pipeline::hahaha_name_pipeline(hahaha_name_pipeline&& hpp) noexcept
 {
     Move(std::move(hpp));
@@ -44,11 +48,13 @@ hahaha_name_pipeline& hahaha_name_pipeline::operator=(hahaha_name_pipeline&& hpp
     return *this;
 }
 //---------------------------------------------------------------------------
+// 複製來源物件的內部狀態。
 void hahaha_name_pipeline::Copy(const hahaha_name_pipeline& /*hpp*/)
 {
     // Named Pipe 不允許複製
 }
 //---------------------------------------------------------------------------
+// 接手來源物件的內部資源。
 void hahaha_name_pipeline::Move(hahaha_name_pipeline&& hpp) noexcept
 {
     Pipeline_      = hpp.Pipeline_;
@@ -62,6 +68,7 @@ void hahaha_name_pipeline::Move(hahaha_name_pipeline&& hpp) noexcept
     hpp.Name_.clear();
 }
 //---------------------------------------------------------------------------
+// 重設內部狀態。
 int hahaha_name_pipeline::Reset()
 {
     Pipeline_ = INVALID_HANDLE_VALUE;
@@ -72,6 +79,7 @@ int hahaha_name_pipeline::Reset()
     return 0;
 }
 //---------------------------------------------------------------------------
+// 關閉並釋放目前持有的資源。
 int hahaha_name_pipeline::Close()
 {
     if (Pipeline_ != INVALID_HANDLE_VALUE)
@@ -272,6 +280,5 @@ int hahaha_name_pipeline::Read_Line(std::wstring& text, DWORD timeout)
 //---------------------------------------------------------------------------
 } // namespace hahahalib
 //---------------------------------------------------------------------------
-
 
 

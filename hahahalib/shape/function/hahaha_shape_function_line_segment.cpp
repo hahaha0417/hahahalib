@@ -23,6 +23,7 @@ namespace shape
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算線段長度。
 double hahaha_shape_function_line_segment<T>::Length(const hahaha_line_segment<T>& line_segment)
 {
     return std::sqrt((line_segment.P2_.X_ - line_segment.P1_.X_) * (line_segment.P2_.X_ - line_segment.P1_.X_) + (line_segment.P2_.Y_ - line_segment.P1_.Y_) * (line_segment.P2_.Y_ - line_segment.P1_.Y_));
@@ -30,6 +31,7 @@ double hahaha_shape_function_line_segment<T>::Length(const hahaha_line_segment<T
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算線段或直線的斜率。
 double hahaha_shape_function_line_segment<T>::Slope(const hahaha_line_segment<T>& line_segment)
 {
     if (line_segment.P1_.X_ == line_segment.P2_.X_)
@@ -42,6 +44,7 @@ double hahaha_shape_function_line_segment<T>::Slope(const hahaha_line_segment<T>
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_line_segment<T>::Is_On_Line_Segment(const hahaha_line_segment<T>& line_segment, const hahahalib::hahaha_point<T>& point)
 {
     int cross_product_ = (line_segment.P2_.X_ - line_segment.P1_.X_) * (point.Y_ - line_segment.P1_.Y_) - (line_segment.P2_.Y_ - line_segment.P1_.Y_) * (point.X_ - line_segment.P1_.X_);
@@ -112,6 +115,7 @@ bool hahaha_shape_function_line_segment<T>::Intersect(const hahaha_line_segment<
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_line_segment<T>::Is_On_Line_Segment_With_Tolerance(const hahaha_line_segment<T>& line_segment, const hahahalib::hahaha_point<T>& point, double tolerance)
 {
     double x1_ = line_segment.P1_.X_;

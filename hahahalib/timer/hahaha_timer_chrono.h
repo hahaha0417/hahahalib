@@ -18,22 +18,34 @@ namespace hahahalib
 class hahaha_timer_chrono
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_timer_chrono();
+	// 解構物件並釋放相關資源。
 	~hahaha_timer_chrono();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_timer_chrono(const hahaha_timer_chrono& htc);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_timer_chrono(hahaha_timer_chrono&& htc) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_timer_chrono& operator=(const hahaha_timer_chrono& htc);
+    // 移動指派目前物件內容。
     hahaha_timer_chrono& operator=(hahaha_timer_chrono&& htc) noexcept;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_timer_chrono& htc);
+    // 接手來源物件的內部資源。
     void Move(hahaha_timer_chrono&& htc) noexcept;
 public:
+	// 重設內部狀態。
 	int Reset();
+	// 開始執行目前功能流程。
 	int Start();
+	// 結束計時並固定終點時間。
 	int End();
 
     //默认输出毫秒
 	template<typename Duration=std::chrono::milliseconds>
+	// 計算目前累積的耗時。
 	int64_t Time();
 
 	//毫妙

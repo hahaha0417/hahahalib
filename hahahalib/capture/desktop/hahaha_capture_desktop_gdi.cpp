@@ -11,23 +11,27 @@ namespace hahahalib
 {
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
+// 建構物件並初始化預設狀態。
 hahaha_capture_desktop_gdi::hahaha_capture_desktop_gdi()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
+// 解構物件並釋放相關資源。
 hahaha_capture_desktop_gdi::~hahaha_capture_desktop_gdi()
 {
 
 }
 
 //---------------------------------------------------------------------------
+// 以既有物件內容建構新的物件實例。
 hahaha_capture_desktop_gdi::hahaha_capture_desktop_gdi(const hahaha_capture_desktop_gdi& hcdg)
 {
     Reset();
     Copy(hcdg);
 }
 //---------------------------------------------------------------------------
+// 以移動方式建構物件並接手既有資源。
 hahaha_capture_desktop_gdi::hahaha_capture_desktop_gdi(hahaha_capture_desktop_gdi&& hcdg) noexcept
 {
     Move(std::move(hcdg));
@@ -46,6 +50,7 @@ hahaha_capture_desktop_gdi::operator=(const hahaha_capture_desktop_gdi& hcdg)
 }
 //---------------------------------------------------------------------------
 hahaha_capture_desktop_gdi&
+// 移動指派目前物件內容。
 hahaha_capture_desktop_gdi::operator=(hahaha_capture_desktop_gdi&& hcdg) noexcept
 {
     if (this != &hcdg)
@@ -69,6 +74,7 @@ void hahaha_capture_desktop_gdi::Copy(const hahaha_capture_desktop_gdi& hcdg)
 	Is_Cursor_Draw_ = hcdg.Is_Cursor_Draw_;
 }
 //---------------------------------------------------------------------------
+// 接手來源物件的內部資源。
 void hahaha_capture_desktop_gdi::Move(hahaha_capture_desktop_gdi&& hcdg) noexcept
 {
     Monitor_Index_ = hcdg.Monitor_Index_;
@@ -97,6 +103,7 @@ void hahaha_capture_desktop_gdi::Move(hahaha_capture_desktop_gdi&& hcdg) noexcep
 }
 
 //---------------------------------------------------------------------------
+// 重設內部狀態。
 int hahaha_capture_desktop_gdi::Reset()
 {
     Monitor_Index_ = 0;
@@ -116,6 +123,7 @@ int hahaha_capture_desktop_gdi::Reset()
 }
 
 //---------------------------------------------------------------------------
+// 列舉螢幕輸出並收集座標資訊。
 BOOL CALLBACK hahaha_capture_desktop_gdi::Monitor_Enum_Proc(HMONITOR, HDC, LPRECT rc, LPARAM data)
 {
     auto* self_ = reinterpret_cast<hahaha_capture_desktop_gdi*>(data);
@@ -123,6 +131,7 @@ BOOL CALLBACK hahaha_capture_desktop_gdi::Monitor_Enum_Proc(HMONITOR, HDC, LPREC
     return TRUE;
 }
 //---------------------------------------------------------------------------
+// 列出目前可擷取的螢幕清單。
 int hahaha_capture_desktop_gdi::List_Monitors(std::vector<std::wstring>& list)
 {
     Monitor_Rects_.clear();
@@ -144,6 +153,7 @@ int hahaha_capture_desktop_gdi::List_Monitors(std::vector<std::wstring>& list)
 }
 
 //---------------------------------------------------------------------------
+// 開啟指定資源或建立連線。
 int hahaha_capture_desktop_gdi::Open(int monitor_index)
 {
     if (Is_Open_)
@@ -211,6 +221,7 @@ int hahaha_capture_desktop_gdi::Open(int monitor_index)
 }
 
 //---------------------------------------------------------------------------
+// 擷取目前資料並輸出到目標物件。
 int hahaha_capture_desktop_gdi::Grab()
 {
 	if (!Is_Open_)
@@ -306,6 +317,7 @@ int hahaha_capture_desktop_gdi::Grab()
 	return 0;
 }
 //---------------------------------------------------------------------------
+// 擷取目前資料並輸出到目標物件。
 int hahaha_capture_desktop_gdi::Grab(const halib::roi& roi)
 {
     if (!Is_Open_)
@@ -414,6 +426,7 @@ int hahaha_capture_desktop_gdi::Grab(const halib::roi& roi)
 }
 
 //---------------------------------------------------------------------------
+// 關閉並釋放目前持有的資源。
 void hahaha_capture_desktop_gdi::Close()
 {
     if (Mem_DC_ && Old_Bitmap_)

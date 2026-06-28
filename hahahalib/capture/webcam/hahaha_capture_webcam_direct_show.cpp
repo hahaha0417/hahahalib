@@ -49,22 +49,26 @@ namespace hahahalib
 
 
 //---------------------------------------------------------------------------
+// 建構物件並初始化預設狀態。
 hahaha_capture_webcam_direct_show::hahaha_capture_webcam_direct_show()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
+// 解構物件並釋放相關資源。
 hahaha_capture_webcam_direct_show::~hahaha_capture_webcam_direct_show()
 {
 
 }
 //---------------------------------------------------------------------------
+// 以既有物件內容建構新的物件實例。
 hahaha_capture_webcam_direct_show::hahaha_capture_webcam_direct_show(const hahaha_capture_webcam_direct_show& hcwds)
 {
     Reset();
     Copy(hcwds);
 }
 //---------------------------------------------------------------------------
+// 以移動方式建構物件並接手既有資源。
 hahaha_capture_webcam_direct_show::hahaha_capture_webcam_direct_show(hahaha_capture_webcam_direct_show&& hcwds) noexcept
 {
     Move(std::move(hcwds));
@@ -86,11 +90,13 @@ hahaha_capture_webcam_direct_show& hahaha_capture_webcam_direct_show::operator=(
     return *this;
 }
 //---------------------------------------------------------------------------
+// 複製來源物件的內部狀態。
 void hahaha_capture_webcam_direct_show::Copy(const hahaha_capture_webcam_direct_show& hcwds)
 {
     // 不複製 DirectShow 狀態
 }
 //---------------------------------------------------------------------------
+// 接手來源物件的內部資源。
 void hahaha_capture_webcam_direct_show::Move(hahaha_capture_webcam_direct_show&& hcwds) noexcept
 {
     Graph_ = std::move(hcwds.Graph_);
@@ -113,8 +119,11 @@ void hahaha_capture_webcam_direct_show::Move(hahaha_capture_webcam_direct_show&&
     hcwds.Buffer_Size_ = 0;
 }
 //---------------------------------------------------------------------------
+// 重設內部狀態。
 int hahaha_capture_webcam_direct_show::Reset()
 {
+    // DirectShow 的釋放順序很重要。
+    // 這裡刻意先解除 callback，再由上層控制物件一路往 graph 本體回收。
     // 1) 停止 Graph（一定要最先做）
 //    if (Media_Control_)
 //    {
@@ -156,8 +165,10 @@ int hahaha_capture_webcam_direct_show::Reset()
     return 0;
 }
 //---------------------------------------------------------------------------
+// 開啟指定資源或建立連線。
 int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int height, int fps, GUID sub_type)
 {
+    // 這個類別假設同一時間只管理一個已開啟的 graph。
     if(Is_Open_)
     {
         return -1;
@@ -226,6 +237,7 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
     IMoniker* moniker_ = nullptr;
     int index_ = 0;
 
+    // 依列舉順序挑選指定索引的攝影機。
     while (enum_moniker_->Next(1,
     	&moniker_,
         &fetched_
@@ -341,6 +353,7 @@ int hahaha_capture_webcam_direct_show::Open(int camera_index, int width, int hei
 }
 
 //---------------------------------------------------------------------------
+// 開始執行目前功能流程。
 int hahaha_capture_webcam_direct_show::Start()
 {
 	HRESULT hr_ = Media_Control_->Run();
@@ -370,6 +383,7 @@ int hahaha_capture_webcam_direct_show::Start()
     return E_FAIL;
 }
 //---------------------------------------------------------------------------
+// 擷取目前資料並輸出到目標物件。
 int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
 {
     if(!Is_Open_)
@@ -405,6 +419,7 @@ int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_rgb& bitmap)
     return 0;
 }
 //---------------------------------------------------------------------------
+// 擷取目前資料並輸出到目標物件。
 int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_argb& bitmap)
 {
     if(!Is_Open_)
@@ -461,6 +476,7 @@ int hahaha_capture_webcam_direct_show::Grab(hahahalib::bitmap_argb& bitmap)
     return 0;
 }
 //---------------------------------------------------------------------------
+// 停止目前功能流程。
 void hahaha_capture_webcam_direct_show::Stop()
 {
     if (Media_Control_)
@@ -471,6 +487,7 @@ void hahaha_capture_webcam_direct_show::Stop()
 
 }
 //---------------------------------------------------------------------------
+// 關閉並釋放目前持有的資源。
 void hahaha_capture_webcam_direct_show::Close()
 {
     // 1) 停止 Graph（一定要最先做）
@@ -513,6 +530,7 @@ void hahaha_capture_webcam_direct_show::Close()
 
 }
 //---------------------------------------------------------------------------
+// 列出目前可用的格式或能力資訊。
 int hahaha_capture_webcam_direct_show::List_Format(std::vector<std::wstring>& list)
 {
 	if (!Camera_Filter_)
@@ -608,6 +626,7 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<std::wstring>& li
     return hr_;
 }
 //---------------------------------------------------------------------------
+// 列出目前可用的格式或能力資訊。
 int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha_capture_webcam_direct_show_item>& list)
 {
     if (!Camera_Filter_)
@@ -725,6 +744,7 @@ int hahaha_capture_webcam_direct_show::List_Format(std::vector<hahahalib::hahaha
     return hr_;
 }
 //---------------------------------------------------------------------------
+// 設定目前要使用的輸入或輸出格式。
 int hahaha_capture_webcam_direct_show::Set_Format(int width, int height, int fps, GUID sub_type)
 {
     if (!Camera_Filter_ || !Builder_)

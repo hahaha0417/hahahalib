@@ -22,6 +22,7 @@ namespace shape
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算線段或直線的斜率。
 double hahaha_shape_function_line<T>::Slope(const hahahalib::hahaha_line<T>& line)
 {
     if (line.B_ == 0)
@@ -34,6 +35,7 @@ double hahaha_shape_function_line<T>::Slope(const hahahalib::hahaha_line<T>& lin
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_line<T>::Is_On_Line(const hahahalib::hahaha_line<T>& line, const hahahalib::hahaha_point<T>& point)
 {
     return std::fabs(line.A_ * point.X_ + line.B_ * point.Y_ + line.C_) < 1e-9;  // 允许小数误差
@@ -41,6 +43,7 @@ bool hahaha_shape_function_line<T>::Is_On_Line(const hahahalib::hahaha_line<T>& 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_line<T>::Is_Parallel(const hahahalib::hahaha_line<T>& line1, const hahahalib::hahaha_line<T>& line2)
 {
     return std::fabs(line1.A_ * line2.B_ - line1.B_ * line2.A_) < 1e-9;
@@ -48,6 +51,7 @@ bool hahaha_shape_function_line<T>::Is_Parallel(const hahahalib::hahaha_line<T>&
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_line<T>::Is_Coincident(const hahahalib::hahaha_line<T>& line1, const hahahalib::hahaha_line<T>& line2)
 {
     return Is_Parallel(line1, line2) && std::fabs(line1.A_ * line2.C_ - line1.C_ * line2.A_) < 1e-9;
@@ -55,6 +59,7 @@ bool hahaha_shape_function_line<T>::Is_Coincident(const hahahalib::hahaha_line<T
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算兩條直線的交點。
 bool hahaha_shape_function_line<T>::Intersection_Point(const hahahalib::hahaha_line<T>& line1, const hahahalib::hahaha_line<T>& line2, hahahalib::hahaha_point<T>& intersection)
 {
     double det_ = line1.A_ * line2.B_ - line2.A_ * line1.B_;
@@ -70,6 +75,7 @@ bool hahaha_shape_function_line<T>::Intersection_Point(const hahahalib::hahaha_l
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_shape_function_line<T>::Is_On_Line_With_Tolerance(const hahahalib::hahaha_line<T>& line, const hahahalib::hahaha_point<T>& point, double tolerance)
 {
     double distance_ = std::fabs(line.A_ * point.X_ + line.B_ * point.Y_ + line.C_) / std::sqrt(line.A_ * line.A_ + line.B_ * line.B_);

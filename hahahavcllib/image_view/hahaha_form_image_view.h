@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #ifndef hahaha_form_image_viewH
 #define hahaha_form_image_viewH
@@ -74,22 +74,34 @@ __published:	// IDE-managed Components
 	TPanel *Panel_R;
 	TComboBox *view_ratio;
 	TPanel *Panel_Time;
-	void __fastcall Image_Title_IconMouseDown(TObject *Sender, TMouseButton Button,
+	// 處理標題列圖示上的滑鼠按下事件。
+	void __fastcall Image_Title_IconMouseDown(TObject *Sender, TMouseButton Button,  // 觸發事件的滑鼠按鍵。
           TShiftState Shift, int X, int Y);
-	void __fastcall Label_TitleMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+	// 處理標題文字上的滑鼠按下事件。
+	void __fastcall Label_TitleMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,  // 事件當下的 Shift / Ctrl / Alt 狀態。
           int X, int Y);
-	void __fastcall Image_Title_BackgroundMouseDown(TObject *Sender, TMouseButton Button,
+	// 處理標題背景上的滑鼠按下事件。
+	void __fastcall Image_Title_BackgroundMouseDown(TObject *Sender, TMouseButton Button,  // 觸發事件的滑鼠按鍵。
           TShiftState Shift, int X, int Y);
+	// 處理最小化按鈕點擊事件。
 	void __fastcall Button_MinClick(TObject *Sender);
+	// 處理最大化按鈕點擊事件。
 	void __fastcall Button_MaxClick(TObject *Sender);
+	// 處理關閉按鈕點擊事件。
 	void __fastcall ButtonCloseClick(TObject *Sender);
+	// 處理主顯示區尺寸變更事件。
 	void __fastcall main_boxResize(TObject *Sender);
+	// 處理顯示倍率調整事件。
 	void __fastcall view_ratioChange(TObject *Sender);
+	// 處理垂直捲軸變更事件。
 	void __fastcall vertical_barChange(TObject *Sender);
+	// 處理水平捲軸變更事件。
 	void __fastcall horizontal_barChange(TObject *Sender);
-	void __fastcall main_boxMouseWheelDown(TObject *Sender, TShiftState Shift, TPoint &MousePos,
+	// 處理滑鼠滾輪向下事件。
+	void __fastcall main_boxMouseWheelDown(TObject *Sender, TShiftState Shift, TPoint &MousePos,  // 滑鼠座標。
           bool &Handled);
-	void __fastcall main_boxMouseWheelUp(TObject *Sender, TShiftState Shift, TPoint &MousePos,
+	// 處理滑鼠滾輪向上事件。
+	void __fastcall main_boxMouseWheelUp(TObject *Sender, TShiftState Shift, TPoint &MousePos,  // 滑鼠座標。
           bool &Handled);
 
 
@@ -113,14 +125,19 @@ __published:	// IDE-managed Components
 
 private:	// User declarations
 public:		// User declarations
+	// 建立 image view 專用表單。
 	__fastcall Thahaha_image_view_form(TComponent* Owner);
 public:
+	// 初始化相關設定。
 	void Initial();
+    // 初始化相關設定。
     void Initial_Layout();
+    // 初始化相關設定。
     void Initial_Color();
 
 public:
-    int Set_Image_View(hahahalib::hahaha_image_view* image_view);
+    // 設定指定參數或狀態。
+    int Set_Image_View(hahahalib::hahaha_image_view* image_view /* 目前正在處理的 image view 物件。 */);
 
 public:
 
@@ -130,6 +147,7 @@ public:
     hahahalib::hahaha_image_view* Image_View_;
 
 public:
+    // 接收並分派自訂視窗訊息。
     void __fastcall On_Message(TMessage& message);
 
     BEGIN_MESSAGE_MAP

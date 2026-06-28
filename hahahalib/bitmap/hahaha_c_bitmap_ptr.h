@@ -19,22 +19,35 @@ template <typename T, int U>
 class hahaha_c_bitmap_ptr : public hahaha_c_bitmap<T, U>
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_c_bitmap_ptr(T* image_ptr);
+	// 解構物件並釋放相關資源。
 	~hahaha_c_bitmap_ptr();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_c_bitmap_ptr(const hahaha_c_bitmap_ptr& hcbp);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_c_bitmap_ptr(hahaha_c_bitmap_ptr&& hcbp) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_c_bitmap_ptr& operator=(const hahaha_c_bitmap_ptr& hcbp);
+	// 移動指派目前物件內容。
 	hahaha_c_bitmap_ptr& operator=(hahaha_c_bitmap_ptr&& hcbp) noexcept;
+	// 依索引存取內部資料。
 	virtual T*& operator[](const int& y);
+    // 依索引存取內部資料。
     virtual T*& operator[](const int& y) const;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_c_bitmap_ptr& hcbp);
+	// 接手來源物件的內部資源。
 	void Move(hahaha_c_bitmap_ptr&& hcbp) noexcept;
 public:
+	// 重設內部狀態。
 	virtual int Reset();
 
 public:
+	// 依指定尺寸重新配置內部資料。
 	virtual int Resize(const int& width, const int& height);
+    // 清空目前資料內容。
     virtual int Clear();
 public:
 

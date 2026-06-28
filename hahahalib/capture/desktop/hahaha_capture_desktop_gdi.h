@@ -18,18 +18,27 @@ namespace hahahalib
 class hahaha_capture_desktop_gdi
 {
 public:
+    // 建構物件並初始化預設狀態。
     hahaha_capture_desktop_gdi();
+    // 解構物件並釋放相關資源。
     ~hahaha_capture_desktop_gdi();
 
+    // 以既有物件內容建構新的物件實例。
     hahaha_capture_desktop_gdi(const hahaha_capture_desktop_gdi& hcdg);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_capture_desktop_gdi(hahaha_capture_desktop_gdi&& hcdg) noexcept;
+    // 複製指派目前物件內容。
     hahaha_capture_desktop_gdi& operator=(const hahaha_capture_desktop_gdi& hcdg);
+    // 移動指派目前物件內容。
     hahaha_capture_desktop_gdi& operator=(hahaha_capture_desktop_gdi&& hcdg) noexcept;
 
+    // 複製來源物件的內部狀態。
     void Copy(const hahaha_capture_desktop_gdi& hcdg);
+    // 接手來源物件的內部資源。
     void Move(hahaha_capture_desktop_gdi&& hcdg) noexcept;
 
 public:
+    // 重設內部狀態。
     int Reset();
 
     // 列出所有螢幕
@@ -40,9 +49,11 @@ public:
 
     // Zero-copy: BitBlt 直接寫入 bitmap.Image_Ptr_
 	int Grab();
-    int Grab(const halib::roi& roi);
+    // 擷取目前資料並輸出到目標物件。
+    int Grab(const halib::roi& roi /* 要處理的區域範圍。 */);
 
 
+    // 關閉並釋放目前持有的資源。
     void Close();
 
 public:
@@ -55,6 +66,7 @@ public:
 	bool Is_Cursor_Draw_;
 
 public:
+    // 列舉螢幕輸出並收集座標資訊。
     static BOOL CALLBACK Monitor_Enum_Proc(HMONITOR hMon, HDC, LPRECT rc, LPARAM data);
 
 public:
@@ -72,4 +84,3 @@ public:
 } // namespace hahahalib
 //---------------------------------------------------------------------------
 #endif
-

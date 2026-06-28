@@ -16,16 +16,24 @@ namespace hahahalib
 class hahaha_pipeline_process
 {
 public:
+    // 建構物件並初始化預設狀態。
     hahaha_pipeline_process();
+    // 解構物件並釋放相關資源。
     ~hahaha_pipeline_process();
 
+    // 以既有物件內容建構新的物件實例。
     hahaha_pipeline_process(const hahaha_pipeline_process& hpp);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_pipeline_process(hahaha_pipeline_process&& hpp) noexcept;
+    // 複製指派目前物件內容。
     hahaha_pipeline_process& operator=(const hahaha_pipeline_process& hpp);
+    // 移動指派目前物件內容。
     hahaha_pipeline_process& operator=(hahaha_pipeline_process&& hpp) noexcept;
 
 public:
+    // 複製來源物件的內部狀態。
     void Copy(const hahaha_pipeline_process& hpp);
+    // 接手來源物件的內部資源。
     void Move(hahaha_pipeline_process&& hpp) noexcept;
 
 public:
@@ -39,16 +47,19 @@ public:
     // 強制結束子行程（如果還在）
     int Terminate(DWORD exit_code = 0);
 
+    // 重設內部狀態。
     int Reset();
 
 
 public:
     // ★ 新增：跨進程文字通訊
     int Write_Line(const std::wstring& text);
+    // 持續讀取一行文字資料。
     int Read_Line(std::wstring& text, DWORD timeout = INFINITE);
 public:
 
 
+    // 回傳目前狀態判斷結果。
     bool Is_Open() const { return Is_Open_; }
 
 public:
@@ -74,4 +85,3 @@ public:
 //---------------------------------------------------------------------------
 
 #endif
-

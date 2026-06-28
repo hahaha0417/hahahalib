@@ -12,31 +12,44 @@ namespace hahahalib
 {
 //---------------------------------------------------------------------------
 
+// 對 Win32 SendMessage / PostMessage 的簡單封裝。
+// 主要用途是把目標 HWND 與常用呼叫方式包成可重用物件。
 class hahaha_ui_message
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_ui_message();
+	// 解構物件並釋放相關資源。
 	~hahaha_ui_message();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_ui_message(const hahaha_ui_message& hum);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_ui_message(hahaha_ui_message&& hum) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_ui_message& operator=(const hahaha_ui_message& hum);
+	// 移動指派目前物件內容。
 	hahaha_ui_message& operator=(hahaha_ui_message&& hum) noexcept;
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_ui_message& hum);
+    // 接手來源物件的內部資源。
     void Move(hahaha_ui_message&& hum) noexcept;
 
 
 public:
+	// 重設內部狀態。
 	int Reset();
 
 public:
 public:
+    // 同步送出 Windows 訊息到指定視窗。
     int Send_Message(
         unsigned int message,       // 訊息代碼（如 WM_COMMAND, WM_USER + N）
         int command,  // 附帶參數1（整數或指標）
         void* parameter   // 附帶參數2（整數或指標）
     );
 
+    // 非同步投遞 Windows 訊息到指定視窗。
     int Post_Message(
         unsigned int message,       // 訊息代碼（如 WM_COMMAND, WM_USER + N）
         int command,  // 附帶參數1（整數或指標）
@@ -46,6 +59,7 @@ public:
 public:
 public:
 public:
+    // 預設要送訊息的視窗控制代碼。
     HWND Handle_;
 };
 

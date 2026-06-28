@@ -27,23 +27,24 @@ namespace set
 class hahaha_image_process_set
 {
 public:
+    // 將來源資料寫入目標影像區域。
     static halib_def::result Set(halib::bitmap_gray& image,
-        const halib::roi& roi,
+        const halib::roi& roi,  // 要處理的區域範圍。
         const unsigned char& value
     );
     //---------------------------------------------------------------------------
     static halib_def::result Set(halib::bitmap_rgb& image,
-        const halib::roi& roi,
-        const unsigned char& value_r,
-        const unsigned char& value_g,
+        const halib::roi& roi,  // 要處理的區域範圍。
+        const unsigned char& value_r,  // 紅色通道值。
+        const unsigned char& value_g,  // 綠色通道值。
         const unsigned char& value_b
     );
     //---------------------------------------------------------------------------
     static halib_def::result Set(halib::bitmap_argb& image,
-        const halib::roi& roi,
-        const unsigned char& value_r,
-        const unsigned char& value_g,
-        const unsigned char& value_b,
+        const halib::roi& roi,  // 要處理的區域範圍。
+        const unsigned char& value_r,  // 紅色通道值。
+        const unsigned char& value_g,  // 綠色通道值。
+        const unsigned char& value_b,  // 藍色通道值。
         const unsigned char& value_a
     );
     //---------------------------------------------------------------------------

@@ -26,6 +26,7 @@ class hahaha_shape_function_point
 
 
 public:
+    // 計算 ROI 的中心點。
     static hahahalib::hahaha_roi<T> Center_Roi(const hahahalib::hahaha_point<T>& center, int length);
 };
 

@@ -15,12 +15,14 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_roi<T>::hahaha_roi()
 {
 	Reset();
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以既有物件內容建構新的物件實例。
 hahaha_roi<T>::hahaha_roi(const T& x1,
 	const T& y1,
 	const T& x2,
@@ -45,12 +47,14 @@ hahaha_roi<T>::hahaha_roi(const T& x1,
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 解構物件並釋放相關資源。
 hahaha_roi<T>::~hahaha_roi()
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_roi<T>::hahaha_roi(const hahaha_roi<T>& hr)
 {
     Reset();
@@ -58,6 +62,7 @@ hahaha_roi<T>::hahaha_roi(const hahaha_roi<T>& hr)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以移動方式建構物件並接手既有資源。
 hahaha_roi<T>::hahaha_roi(hahaha_roi<T>&& hr) noexcept
 {
     Move(std::move(hr));
@@ -73,6 +78,7 @@ hahaha_roi<T>& hahaha_roi<T>::operator=(const hahaha_roi<T>& hr)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 移動指派目前物件內容。
 hahaha_roi<T>& hahaha_roi<T>::operator=(hahaha_roi<T>&& hr) noexcept
 {
 	if (this != &hr)
@@ -84,6 +90,7 @@ hahaha_roi<T>& hahaha_roi<T>::operator=(hahaha_roi<T>&& hr) noexcept
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 複製指派目前物件內容。
 bool hahaha_roi<T>::operator==(const hahaha_roi<T>& hr)
 {
     bool equal_ = true;
@@ -110,6 +117,7 @@ bool hahaha_roi<T>::operator!=(const hahaha_roi<T>& hr)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 複製來源物件的內部狀態。
 void hahaha_roi<T>::Copy(const hahaha_roi<T>& hr)
 {
 	X1_ = hr.X1_;
@@ -120,6 +128,7 @@ void hahaha_roi<T>::Copy(const hahaha_roi<T>& hr)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 接手來源物件的內部資源。
 void hahaha_roi<T>::Move(hahaha_roi<T>&& hr) noexcept
 {
 	X1_ = hr.X1_;
@@ -132,6 +141,7 @@ void hahaha_roi<T>::Move(hahaha_roi<T>&& hr) noexcept
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 重設內部狀態。
 int hahaha_roi<T>::Reset()
 {
 	X1_ = 0;
@@ -143,30 +153,35 @@ int hahaha_roi<T>::Reset()
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的寬度。
 T hahaha_roi<T>::Width()
 {
 	return X2_ - X1_ + 1;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的高度。
 T hahaha_roi<T>::Height()
 {
 	return Y2_ - Y1_ + 1;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的寬度。
 T hahaha_roi<T>::Width() const
 {
 	return X2_ - X1_ + 1;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的高度。
 T hahaha_roi<T>::Height() const
 {
 	return Y2_ - Y1_ + 1;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 整理座標順序，確保左上與右下定義正確。
 void hahaha_roi<T>::Normalize()
 {
     if(X1_ < X2_)

@@ -15,22 +15,33 @@ template <typename T>
 class hahaha_point
 {
 public:
+	// 建構物件並初始化預設狀態。
 	hahaha_point();
+    // 建構物件並初始化預設狀態。
     hahaha_point(
-    	const T& x,
-        const T& y
+    	const T& x,  // X 座標值。
+        const T& y  // Y 座標值。
     );
+	// 解構物件並釋放相關資源。
 	~hahaha_point();
 
+	// 以既有物件內容建構新的物件實例。
 	hahaha_point(const hahaha_point<T>& hp);
+    // 以移動方式建構物件並接手既有資源。
     hahaha_point(hahaha_point<T>&& hp) noexcept;
+	// 複製指派目前物件內容。
 	hahaha_point& operator=(const hahaha_point<T>& hp);
+    // 移動指派目前物件內容。
     hahaha_point& operator=(hahaha_point<T>&& hp) noexcept;
+    // 複製指派目前物件內容。
     bool operator==(const hahaha_point<T>& hp);
     bool operator!=(const hahaha_point<T>& hp);
+	// 複製來源物件的內部狀態。
 	void Copy(const hahaha_point& hp);
+    // 接手來源物件的內部資源。
     void Move(hahaha_point&& hp) noexcept;
 public:
+	// 重設內部狀態。
 	int Reset();
 
 public:

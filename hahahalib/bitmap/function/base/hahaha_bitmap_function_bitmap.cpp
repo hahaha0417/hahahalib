@@ -19,18 +19,21 @@ namespace bitmap
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_bitmap_function_bitmap<T>::hahaha_bitmap_function_bitmap()
 {
 	Reset();
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 解構物件並釋放相關資源。
 hahaha_bitmap_function_bitmap<T>::~hahaha_bitmap_function_bitmap()
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_bitmap_function_bitmap<T>::hahaha_bitmap_function_bitmap(const hahaha_bitmap_function_bitmap<T>& hsfr)
 {
     Reset();
@@ -38,6 +41,7 @@ hahaha_bitmap_function_bitmap<T>::hahaha_bitmap_function_bitmap(const hahaha_bit
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以移動方式建構物件並接手既有資源。
 hahaha_bitmap_function_bitmap<T>::hahaha_bitmap_function_bitmap(hahaha_bitmap_function_bitmap<T>&& hsfr) noexcept
 {
     Move(std::move(hsfr));
@@ -52,6 +56,7 @@ hahaha_bitmap_function_bitmap<T>& hahaha_bitmap_function_bitmap<T>::operator=(co
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 移動指派目前物件內容。
 hahaha_bitmap_function_bitmap<T>& hahaha_bitmap_function_bitmap<T>::operator=(hahaha_bitmap_function_bitmap<T>&& hsfr) noexcept
 {
     if (this != &hsfr)
@@ -63,18 +68,21 @@ hahaha_bitmap_function_bitmap<T>& hahaha_bitmap_function_bitmap<T>::operator=(ha
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 複製來源物件的內部狀態。
 void hahaha_bitmap_function_bitmap<T>::Copy(const hahaha_bitmap_function_bitmap<T>& hsfr)
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 接手來源物件的內部資源。
 void hahaha_bitmap_function_bitmap<T>::Move(hahaha_bitmap_function_bitmap<T>&& hsfr) noexcept
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 重設內部狀態。
 int hahaha_bitmap_function_bitmap<T>::Reset()
 {
 
@@ -83,6 +91,7 @@ int hahaha_bitmap_function_bitmap<T>::Reset()
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 修正 ROI 範圍，避免超出影像邊界。
 bool hahaha_bitmap_function_bitmap<T>::Fix_Roi(hahahalib::hahaha_roi<T>& roi, const hahaha_bitmap& bitmap, bool normalize)
 {
     if(normalize)
@@ -113,6 +122,7 @@ bool hahaha_bitmap_function_bitmap<T>::Fix_Roi(hahahalib::hahaha_roi<T>& roi, co
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 修正矩形範圍，避免超出影像邊界。
 bool hahaha_bitmap_function_bitmap<T>::Fix_Rectangle(hahahalib::hahaha_rectangle<T>& rectangle, const hahaha_bitmap& bitmap, bool normalize)
 {
     if(normalize)
@@ -143,6 +153,7 @@ bool hahaha_bitmap_function_bitmap<T>::Fix_Rectangle(hahahalib::hahaha_rectangle
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 回傳目前狀態判斷結果。
 bool hahaha_bitmap_function_bitmap<T>::Is_In_Image(const hahahalib::hahaha_point<T>& point, const hahaha_bitmap& bitmap)
 {
     if(0 <= point.X_ && point.X_ < bitmap.Width_ &&
@@ -156,6 +167,7 @@ bool hahaha_bitmap_function_bitmap<T>::Is_In_Image(const hahahalib::hahaha_point
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 依影像長寬比修正 ROI 範圍。
 bool hahaha_bitmap_function_bitmap<T>::Fix_Roi_Bitmap_Ratio(hahahalib::hahaha_roi<T>& roi, const hahaha_bitmap& bitmap)
 {
     if(bitmap.Width_ >= bitmap.Height_)

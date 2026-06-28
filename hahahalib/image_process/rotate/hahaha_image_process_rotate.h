@@ -33,45 +33,45 @@ public:
     //---------------------------------------------------------------------------
     // 旋轉後目標roi
     static halib_def::result Rotate_Roi(
-        const halib::roi& roi_src,
-        halib::roi& roi_dst,
-        const double& angle
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+        const double& angle  // 旋轉角度。
     );
 
 
 	//---------------------------------------------------------------------------
     // gray
     //---------------------------------------------------------------------------
-    static halib_def::result Rotate(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
-        const halib::roi& roi_dst,
-    	const double& angle,
-        const halib_def_image::rotate& method
+    static halib_def::result Rotate(const halib::bitmap_gray& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_gray& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle,  // 旋轉角度。
+        const halib_def_image::rotate& method  // 指定要使用的插值或處理方法。
 
     );
 
     //---------------------------------------------------------------------------
     // color
     //---------------------------------------------------------------------------
-    static halib_def::result Rotate(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
-        const halib::roi& roi_dst,
-    	const double& angle,
-        const halib_def_image::rotate& method
+    static halib_def::result Rotate(const halib::bitmap_rgb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_rgb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle,  // 旋轉角度。
+        const halib_def_image::rotate& method  // 指定要使用的插值或處理方法。
 
     );
 
     //---------------------------------------------------------------------------
     // argb
     //---------------------------------------------------------------------------
-    static halib_def::result Rotate(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
-        const halib::roi& roi_dst,
-    	const double& angle,
-        const halib_def_image::rotate& method
+    static halib_def::result Rotate(const halib::bitmap_argb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_argb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle,  // 旋轉角度。
+        const halib_def_image::rotate& method  // 指定要使用的插值或處理方法。
 
     );
 
@@ -79,52 +79,55 @@ public:
     //---------------------------------------------------------------------------
     // gray
     //---------------------------------------------------------------------------
-    static halib_def::result Rotate_Nearest(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
-        const halib::roi& roi_dst,
-        const double& angle
+    static halib_def::result Rotate_Nearest(const halib::bitmap_gray& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_gray& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+        const double& angle  // 旋轉角度。
     );
 
-    static halib_def::result Rotate_Linear(const halib::bitmap_gray& src,
-        const halib::roi& roi_src,
-        halib::bitmap_gray& dst,
-        const halib::roi& roi_dst,
-        const double& angle
+    // 使用線性插值旋轉影像。
+    static halib_def::result Rotate_Linear(const halib::bitmap_gray& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_gray& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+        const double& angle  // 旋轉角度。
     );
 
     //---------------------------------------------------------------------------
     // color
     //---------------------------------------------------------------------------
-    static halib_def::result Rotate_Nearest(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
-        const halib::roi& roi_dst,
-    	const double& angle
+    static halib_def::result Rotate_Nearest(const halib::bitmap_rgb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_rgb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle  // 旋轉角度。
     );
 
-    static halib_def::result Rotate_Linear(const halib::bitmap_rgb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_rgb& dst,
-        const halib::roi& roi_dst,
-    	const double& angle
+    // 使用線性插值旋轉影像。
+    static halib_def::result Rotate_Linear(const halib::bitmap_rgb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_rgb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle  // 旋轉角度。
     );
 
     //---------------------------------------------------------------------------
     // argb
     //---------------------------------------------------------------------------
-    static halib_def::result Rotate_Nearest(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
-        const halib::roi& roi_dst,
-    	const double& angle
+    static halib_def::result Rotate_Nearest(const halib::bitmap_argb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_argb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle  // 旋轉角度。
     );
 
-    static halib_def::result Rotate_Linear(const halib::bitmap_argb& src,
-        const halib::roi& roi_src,
-        halib::bitmap_argb& dst,
-        const halib::roi& roi_dst,
-    	const double& angle
+    // 使用線性插值旋轉影像。
+    static halib_def::result Rotate_Linear(const halib::bitmap_argb& src,  // 來源影像。
+        const halib::roi& roi_src,  // 來源影像中要讀取的區域。
+        halib::bitmap_argb& dst,  // 輸出結果的目標影像。
+        const halib::roi& roi_dst,  // 目標影像中要寫入的區域。
+    	const double& angle  // 旋轉角度。
     );
 
     //---------------------------------------------------------------------------

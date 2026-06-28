@@ -20,10 +20,12 @@ class hahaha_ui_update
 
 public:
 public:
+    // 在主執行緒同步執行 UI 更新。
     static int Synchronize(
         const std::function<void()>& callback
     );
 
+    // 將 UI 更新工作排入主執行緒佇列。
     static int Queue(
         const std::function<void()>& callback
     );

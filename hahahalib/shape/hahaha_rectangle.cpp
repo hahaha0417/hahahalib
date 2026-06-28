@@ -15,12 +15,14 @@ namespace hahahalib
 
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_rectangle<T>::hahaha_rectangle()
 {
 	Reset();
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以既有物件內容建構新的物件實例。
 hahaha_rectangle<T>::hahaha_rectangle(
     const T& x1,
     const T& y1,
@@ -45,12 +47,14 @@ hahaha_rectangle<T>::hahaha_rectangle(
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 解構物件並釋放相關資源。
 hahaha_rectangle<T>::~hahaha_rectangle()
 {
 
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 建構物件並初始化預設狀態。
 hahaha_rectangle<T>::hahaha_rectangle(const hahaha_rectangle<T>& hr)
 {
     Reset();
@@ -58,6 +62,7 @@ hahaha_rectangle<T>::hahaha_rectangle(const hahaha_rectangle<T>& hr)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 以移動方式建構物件並接手既有資源。
 hahaha_rectangle<T>::hahaha_rectangle(hahaha_rectangle<T>&& hr) noexcept
 {
     Move(std::move(hr));
@@ -73,6 +78,7 @@ hahaha_rectangle<T>& hahaha_rectangle<T>::operator=(const hahaha_rectangle<T>& h
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 移動指派目前物件內容。
 hahaha_rectangle<T>& hahaha_rectangle<T>::operator=(hahaha_rectangle<T>&& hr) noexcept
 {
 	if (this != &hr)
@@ -84,6 +90,7 @@ hahaha_rectangle<T>& hahaha_rectangle<T>::operator=(hahaha_rectangle<T>&& hr) no
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 複製來源物件的內部狀態。
 void hahaha_rectangle<T>::Copy(const hahaha_rectangle<T>& hr)
 {
     X1_ = hr.X1_;
@@ -93,6 +100,7 @@ void hahaha_rectangle<T>::Copy(const hahaha_rectangle<T>& hr)
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 接手來源物件的內部資源。
 void hahaha_rectangle<T>::Move(hahaha_rectangle<T>&& hr) noexcept
 {
     X1_ = hr.X1_;
@@ -104,6 +112,7 @@ void hahaha_rectangle<T>::Move(hahaha_rectangle<T>&& hr) noexcept
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 重設內部狀態。
 int hahaha_rectangle<T>::Reset()
 {
     X1_ = 0;
@@ -115,30 +124,35 @@ int hahaha_rectangle<T>::Reset()
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的寬度。
 T hahaha_rectangle<T>::Width()
 {
 	return X2_ - X1_;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的高度。
 T hahaha_rectangle<T>::Height()
 {
 	return Y2_ - Y1_;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的寬度。
 T hahaha_rectangle<T>::Width() const
 {
 	return X2_ - X1_;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 計算目前圖形的高度。
 T hahaha_rectangle<T>::Height() const
 {
 	return Y2_ - Y1_;
 }
 //---------------------------------------------------------------------------
 template <typename T>
+// 整理座標順序，確保左上與右下定義正確。
 void hahaha_rectangle<T>::Normalize()
 {
     if(X1_ < X2_)

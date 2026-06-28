@@ -14,22 +14,26 @@ namespace hahahalib
 {
 //---------------------------------------------------------------------------
 
+// 建構物件並初始化預設狀態。
 hahaha_pipeline_process::hahaha_pipeline_process()
 {
     Reset();
 }
 //---------------------------------------------------------------------------
+// 解構物件並釋放相關資源。
 hahaha_pipeline_process::~hahaha_pipeline_process()
 {
     Close();
 }
 //---------------------------------------------------------------------------
+// 以既有物件內容建構新的物件實例。
 hahaha_pipeline_process::hahaha_pipeline_process(const hahaha_pipeline_process& hpp)
 {
     Reset();
     Copy(hpp);
 }
 //---------------------------------------------------------------------------
+// 以移動方式建構物件並接手既有資源。
 hahaha_pipeline_process::hahaha_pipeline_process(hahaha_pipeline_process&& hpp) noexcept
 {
     Move(std::move(hpp));
@@ -50,12 +54,14 @@ hahaha_pipeline_process& hahaha_pipeline_process::operator=(hahaha_pipeline_proc
     return *this;
 }
 //---------------------------------------------------------------------------
+// 複製來源物件的內部狀態。
 void hahaha_pipeline_process::Copy(const hahaha_pipeline_process& /*hpp*/)
 {
     // 不支援複製：process / handle 不適合被複製
     // 保持空實作或直接 assert
 }
 //---------------------------------------------------------------------------
+// 接手來源物件的內部資源。
 void hahaha_pipeline_process::Move(hahaha_pipeline_process&& hpp) noexcept
 {
     Information_Process_   = hpp.Information_Process_;
@@ -72,6 +78,7 @@ void hahaha_pipeline_process::Move(hahaha_pipeline_process&& hpp) noexcept
     hpp.Reset();
 }
 //---------------------------------------------------------------------------
+// 重設內部狀態。
 int hahaha_pipeline_process::Reset()
 {
     ZeroMemory(&Information_Process_, sizeof(Information_Process_));
@@ -89,6 +96,7 @@ int hahaha_pipeline_process::Reset()
     return 0;
 }
 //---------------------------------------------------------------------------
+// 持續讀取一行文字資料。
 int hahaha_pipeline_process::Read_Line(std::wstring& text, DWORD timeout)
 {
 
@@ -148,6 +156,7 @@ int hahaha_pipeline_process::Read_Line(std::wstring& text, DWORD timeout)
 }
 //---------------------------------------------------------------------------
 
+// 將一行文字寫入目前通道。
 int hahaha_pipeline_process::Write_Line(const std::wstring& text)
 {
     if (!Child_Std_IN_W_)
@@ -173,6 +182,7 @@ int hahaha_pipeline_process::Write_Line(const std::wstring& text)
 
 
 //---------------------------------------------------------------------------
+// 建立所需資源並完成初始化。
 int hahaha_pipeline_process::Create(const std::wstring& command)
 {
 
@@ -258,6 +268,7 @@ int hahaha_pipeline_process::Create(const std::wstring& command)
     return 0;
 }
 //---------------------------------------------------------------------------
+// 關閉並釋放目前持有的資源。
 int hahaha_pipeline_process::Close()
 {
     // 關閉父進程持有的 pipe 端點
@@ -301,6 +312,7 @@ int hahaha_pipeline_process::Close()
     return 0;
 }
 //---------------------------------------------------------------------------
+// 要求目前外部程序或工作結束。
 int hahaha_pipeline_process::Terminate(DWORD exit_code)
 {
     if (Information_Process_.hProcess)
@@ -313,5 +325,4 @@ int hahaha_pipeline_process::Terminate(DWORD exit_code)
 
 } // namespace hahahalib
 //---------------------------------------------------------------------------
-
 

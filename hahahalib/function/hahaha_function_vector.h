@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #ifndef hahaha_function_vectorH
 #define hahaha_function_vectorH
@@ -23,6 +23,7 @@ namespace hahahalib
 template<typename T>
 void Vector_Copy(const std::vector<T>& from, std::vector<T>& to)
 {
+	// 將來源容器的元素複製到目標容器尾端。
 	std::copy(from.begin(), from.end(),
 		std::back_inserter(to));
 
@@ -36,7 +37,7 @@ void Vector_Copy(const std::vector<T>& from, std::vector<T>& to)
 template<typename T>
 void Vector_Insert(const std::vector<T>& from, std::vector<T>& to)
 {
-	// �]�����ӴN�|reverse�n�A�o��u�����J
+	// 因為本來就會reverse好，這邊只做插入
 	std::copy(from.begin(), from.end(),
 		std::back_inserter(to));
 }
@@ -45,13 +46,17 @@ void Vector_Insert(const std::vector<T>& from, std::vector<T>& to)
 template<typename T>
 void Vector_Unique_Ptr_Copy(const std::vector<std::unique_ptr<T>>& from, std::vector<std::unique_ptr<T>>& to)
 {
-	// iterator�n������
+	// iterator好像不行
 	std::vector<std::unique_ptr<T>>().swap(to);
+	// 預先保留目標容器容量，避免複製時重複配置。
 	to.reserve(from.size());
+	// 取得來源容器目前的元素數量。
 	int n = from.size();
 	for(int i = 0; i < n; i++)
 	{
+		// 先建立一份新的暫存物件，避免直接共享原始資源。
 		std::unique_ptr<T> t_(new T(*from[i]));
+		// 把新建立的物件加入目標容器尾端。
 		to.emplace_back(std::move(t_));
 
 	}
@@ -62,12 +67,14 @@ void Vector_Unique_Ptr_Copy(const std::vector<std::unique_ptr<T>>& from, std::ve
 template<typename T>
 void Vector_Unique_Ptr_Insert(const std::vector<std::unique_ptr<T>>& from, std::vector<std::unique_ptr<T>>& to)
 {
-	// iterator�n������
-	// �]�����ӴN�|reverse�n�A�o��u�����J
+	// iterator好像不行
+	// 因為本來就會reverse好，這邊只做插入
 	int n = from.size();
 	for(int i = 0; i < n; i++)
 	{
+		// 先建立一份新的暫存物件，避免直接共享原始資源。
 		std::unique_ptr<T> t_(new T(*from[i]));
+		// 把新建立的物件加入目標容器尾端。
 		to.emplace_back(std::move(t_));
 
 	}
